@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "367132040812",
+    "firebase_url": "https://fyp-bahria.firebaseio.com",
+    "project_id": "fyp-bahria",
+    "storage_bucket": "fyp-bahria.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:367132040812:android:7798dacc6481d5aa77c249",
+        "android_client_info": {
+          "package_name": "com.atruesolution.fypbahria"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "367132040812-m1llodpoppg3so2ljjsp5249e1q7r64d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3toMaSOuIzehjGx_-s0tBUlAe58-13fw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "367132040812-m1llodpoppg3so2ljjsp5249e1q7r64d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:367132040812:android:94db49b3c098d62177c249",
+        "android_client_info": {
+          "package_name": "com.fypbahria"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "367132040812-ptb165b4s0afi413tpaidg7qasr5j9b1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fypbahria",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "367132040812-m1llodpoppg3so2ljjsp5249e1q7r64d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3toMaSOuIzehjGx_-s0tBUlAe58-13fw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "367132040812-m1llodpoppg3so2ljjsp5249e1q7r64d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
