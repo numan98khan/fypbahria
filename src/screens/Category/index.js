@@ -3,7 +3,9 @@ import { View, StyleSheet } from 'react-native';
 
 import ScreenName from '../../components/ScreenName.js'
 
-export default class AddProduct extends React.Component {
+import NavBar from '../../navigation/navBar'
+
+export default class Category extends React.Component {
 
   static navigationOptions = {
 
@@ -11,7 +13,8 @@ export default class AddProduct extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View>
+        <NavBar/>
         <ScreenName name={'Add'} />
       </View>
     );

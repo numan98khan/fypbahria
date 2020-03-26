@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import ScreenName from '../../components/ScreenName.js'
+import NavBar from '../../navigation/navBar'
 
 export default class ScreenTwo extends React.Component {
 
@@ -11,7 +12,8 @@ export default class ScreenTwo extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View>
+        <NavBar/>
         <ScreenName name={'Cart'} />
       </View>
     );
