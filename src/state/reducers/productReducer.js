@@ -9,7 +9,10 @@ const INITIAL_STATE = {
     dataSourceSearch: ds,
     dataSourceFilter: ds,
     dataSourceDup: ds,
-    search: ''
+    search: '',
+    isFilterOn: false,
+    category: 'NONE',
+
 };
 
 const productReducer = (state = INITIAL_STATE, action) => {
@@ -23,8 +26,31 @@ const productReducer = (state = INITIAL_STATE, action) => {
             dataSourceDup: action.payload.dataSourceDup,
         });
     case types.UPDATE_PRODUCTS:
+        // getMethods = (obj) => Object.getOwnPropertyNames(obj).filter(item => typeof obj[item] === 'function')
+        // console.log(getMethods(action.payload));
+        var updateSend;
+
+        if (action.payload.dataSourceSearch !== undefined) {
+            updateSend = Object.assign({}, state, {
+                dataSourceSearch: action.payload.dataSourceSearch,
+            });
+        } else if (action.payload.category !== undefined) {
+            updateSend = Object.assign({}, state, {
+                category: action.payload.category,
+            });
+            console.log('category updated');
+        }
+        return updateSend
+    case types.TOGGLE_FILTER_OVERLAY:
+        var boolSet;
+        if (state.isFilterOn){
+            boolSet = false;
+        } else {
+            boolSet = true;
+        }
+        console.log("changeed")
         return Object.assign({}, state, {
-            dataSourceSearch: action.payload.dataSourceSearch,
+            isFilterOn: boolSet,
         });
     default:
       return state

@@ -4,6 +4,10 @@ import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
 import { Header, Icon, ButtonGroup } from 'react-native-elements';
 import { withNavigation} from 'react-navigation';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { updateProducts, initiateProducts, toggleFilter } from '../state/actions';
+
 class NavBar extends React.Component {
 
     // state = {
@@ -46,7 +50,7 @@ class NavBar extends React.Component {
           <Icon
                 name='tune'
                 color='#fff'
-                onPress={() => console.log('filters enabled')} />
+                onPress={() => this.props.toggleFilter()} />
         </View>
         return(
       <View>
@@ -63,4 +67,17 @@ class NavBar extends React.Component {
     }
   }
 
-export default withNavigation(NavBar) 
+const mapStateToProps = (state) => {
+  const { products } = state
+  return { products }
+};
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    toggleFilter,
+    updateProducts,
+  }, dispatch)
+);
+
+// export default withNavigation(NavBar) 
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(NavBar));

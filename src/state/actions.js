@@ -1,4 +1,4 @@
-import {INITIATE_PRODUCTS, UPDATE_PRODUCTS} from './TYPES'
+import {INITIATE_PRODUCTS, UPDATE_PRODUCTS, TOGGLE_FILTER_OVERLAY} from './TYPES'
 
 // Responsible for first get from db
 export const initiateProducts = productsSettings => (
@@ -14,3 +14,10 @@ export const initiateProducts = productsSettings => (
      payload: productsSettings,
    }
  );
+
+ export const toggleFilter = productsSettings => (
+  {
+    type: TOGGLE_FILTER_OVERLAY,
+    payload: productsSettings,
+  }
+);

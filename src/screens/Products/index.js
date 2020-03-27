@@ -85,9 +85,8 @@ import FilterOverlay from '../../navigation/filterOverlay'
 import database from '@react-native-firebase/database';
 
 import { connect } from 'react-redux';
-
 import { bindActionCreators } from 'redux';
-import { updateProducts, initiateProducts } from '../../state/actions';
+import { updateProducts, initiateProducts, toggleFilter } from '../../state/actions';
 
 import { FloatingAction } from "react-native-floating-action";
 SampleFunction=()=>{
@@ -135,18 +134,32 @@ class ScreenOne extends React.Component {
         for(var i in eJSON){
           rows.push(eJSON[i]);
         }
-
         var ds = rows;
-        this.props.initiateProducts(
-          {
-              dataSourceSearch: ds,
-              dataSourceFilter: ds,
-              dataSourceDup: ds,
-               loading: false,
-            }
-          );
-          console.log(this.props.products.dataSourceSearch);
+
+        this.props.products.dbh.ref('categories').on('value', (e) => {
+          var rowsCat = [{"description": "NONE", "name": "NONE"}];
+          eJSON = e.toJSON()
+          for(var i in eJSON){
+            rowsCat.push(eJSON[i]);
+          }
+  
+          var dsCat = rowsCat;
+          // console.log('>>>>>>>>>>>')
+          // console.log(ds)
+          // console.log(dsCat)
+          // console.log('>>>>>>>>>>>')
+          this.props.initiateProducts(
+            {
+                dataSourceSearch: ds,
+                dataSourceFilter: dsCat,
+                dataSourceDup: ds,
+                 loading: false,
+              }
+            );
+            // console.log(this.props.products.dataSourceSearch);
+       });
      });
+
   }
 
   componentDidUnMount() {
@@ -318,6 +331,7 @@ const mapDispatchToProps = dispatch => (
   bindActionCreators({
     updateProducts,
     initiateProducts,
+    toggleFilter,
   }, dispatch)
 );
 

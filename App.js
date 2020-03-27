@@ -48,8 +48,56 @@ console.disableYellowBox = true;
 export default class App extends React.Component{
 render()
 {
-  // *** Porduct addition code
-  // var i;
+
+  
+  // *** Product addition code
+  var i;
+
+  // for (i = 0; i < 4; i++) {
+  //   database()
+  //     .ref("categories")
+  //     .push()
+  //     .set(
+  //       {
+  //         name: "Category"+String(i),
+  //         description: "This is an excellent widget with 21 features and 4 colors.",
+  //       })
+  // }  
+
+  // var categoryData;
+  // database().ref('categories').on('value', (e) => {
+  //     categoryData = [];
+  //     // console.log(e);
+  //     eJSON = e.toJSON()
+  //     for(var i in eJSON){
+  //       // console.log(eJSON[i])
+  //       categoryData.push(eJSON[i]);
+  //     }
+  //     for (i = 0; i < 20; i++) {
+  //   database()
+  //     .ref("products")
+  //     .push()
+  //     .set(
+  //       {
+  //         brand: "Acme",
+  //         logo: "http://www.example.com/logo.png",
+  //         name: "Product"+String(i),
+  //         category: "Widgets",
+  //         image: "http://www.example.com/image.jpg",
+  //         description: "This is an excellent widget with 21 features and 4 colors.",
+  //         aggregateRating: {
+  //           type: "aggregateRating",
+  //           ratingValue: "5",
+  //           reviewCount: "21"
+  //         }
+  //       })
+  // }
+  //     // console.log(categoryData)
+  // });
+
+  // console.log('dalli')
+  // console.log(categoryData);
+
   // for (i = 0; i < 20; i++) {
   //   database()
   //     .ref("products")
@@ -58,7 +106,7 @@ render()
   //       {
   //         brand: "Acme",
   //         logo: "http://www.example.com/logo.png",
-  //         name: "WidgetPress"+String(i),
+  //         name: "Product"+String(i),
   //         category: "Widgets",
   //         image: "http://www.example.com/image.jpg",
   //         description: "This is an excellent widget with 21 features and 4 colors.",
