@@ -41,6 +41,8 @@ import database from '@react-native-firebase/database';
 import { Provider } from 'react-redux'
 import store from './src/state/store'
 
+import { MenuProvider } from 'react-native-popup-menu';
+
 console.disableYellowBox = true;
 
 export default class App extends React.Component{
@@ -68,8 +70,10 @@ render()
   //       })
   // }
 
-  return <Provider store={store}>
+  return <MenuProvider>
+        <Provider store={store}>
           <Home />
-         </Provider>;
+         </Provider>
+       </MenuProvider>;
 }
 }

@@ -89,6 +89,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updateProducts, initiateProducts } from '../../state/actions';
 
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
+
 class ScreenOne extends React.Component {
   constructor(props) {
     super(props);
@@ -165,11 +172,20 @@ class ScreenOne extends React.Component {
     />
 
     const customIcon = <Icon
-        raised
-        name='heartbeat'
-        type='font-awesome'
-        color='#f50'
-        onPress={() => this.props.navigation.toggleDrawer()} />
+        name='create'
+        type='material'
+        color='#517fa4'/>
+
+      const myMenu = <Menu>
+        <MenuTrigger children={customIcon} />
+        <MenuOptions>
+          <MenuOption onSelect={() => alert('Edit')} text='Save' />
+          <MenuOption onSelect={() => alert('Delete')} >
+            <Text style={{color: 'red'}}>Delete</Text>
+          </MenuOption>
+        </MenuOptions>
+      </Menu>
+
     return (
       <View>
         <NavBar/>
@@ -202,7 +218,7 @@ class ScreenOne extends React.Component {
                 title={l.name}
                 subtitle={l.subtitle}
                 bottomDivider
-                chevron
+                chevron={myMenu}
               />
             ))
           }
