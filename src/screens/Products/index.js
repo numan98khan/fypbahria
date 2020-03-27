@@ -72,7 +72,7 @@ const list = [
 ]
 
 import React from 'react';
-import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 
 // pull in the ScreenName component from ScreenName.js
 import ScreenName from '../../components/ScreenName.js'
@@ -88,6 +88,28 @@ import { connect } from 'react-redux';
 
 import { bindActionCreators } from 'redux';
 import { updateProducts, initiateProducts } from '../../state/actions';
+
+import { FloatingAction } from "react-native-floating-action";
+SampleFunction=()=>{
+
+  // Write your own code here, Which you want to execute on Floating Button Click Event.
+  Alert.alert("Floating Button Clicked");
+
+}
+
+// // FAB Implementation
+// const addIcon = <Icon
+//         name='add'
+//         type='material'
+//         color='#517fa4'/>
+// const actions = [
+//   {
+//     text: "Add Product",
+//     icon: {addIcon},
+//     name: "bt_accessibility",
+//     position: 2
+//   }
+// ];
 
 import {
   Menu,
@@ -190,6 +212,7 @@ class ScreenOne extends React.Component {
       <View>
         <NavBar/>
         <FilterOverlay/>
+        
         <SearchBar
           placeholder="Type Here..."
           onChangeText={this.updateSearch}
@@ -206,7 +229,8 @@ class ScreenOne extends React.Component {
           // searchIcon={mySearchIcon}
           // cancelIcon={myCancelIcon}
         />
-        <ScrollView>
+
+        { <ScrollView>
         <View style={{flex: 1}}>
           {
             // list.map((l, i) => (
@@ -222,9 +246,12 @@ class ScreenOne extends React.Component {
               />
             ))
           }
+          
         </View>
-        </ScrollView>
         
+        </ScrollView> }
+    
+
 
       </View>
       
@@ -241,6 +268,45 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  scrollContainer: {
+    flex: 1,
+},
+addButton: {
+  position: 'relative',
+  zIndex: 11,
+  left: 0,
+  top: 0,
+  backgroundColor: '#1A237E',
+  width: 70,
+  height: 70,
+  alignItems: 'center',
+  justifyContent: 'center',
+  elevation: 8
+},
+addButtonText: {
+  color: '#fff',
+  fontSize: 60
+},
+scrollViewContainer: {
+  flex: 1,
+  marginBottom: 70,
+},
+  fab: { 
+    position: 'absolute', 
+    width: 56, 
+    height: 56, 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    right: 20, 
+    bottom: 20, 
+    backgroundColor: '#03A9F4', 
+    borderRadius: 30, 
+    elevation: 8 
+    }, 
+    fabIcon: { 
+      fontSize: 40, 
+      color: 'white' 
+    }
 });
 
 const mapStateToProps = (state) => {
