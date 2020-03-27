@@ -41,7 +41,7 @@ class NavBar extends React.Component {
                 name='add'
                 color='#fff'
                 // onPress={() => console.log('add enabled')} 
-                onPress={() => this.props.navigation.navigate()} 
+                onPress={() => this.props.navigation.navigate('adder')} 
                 />
           <Icon
                 name='tune'

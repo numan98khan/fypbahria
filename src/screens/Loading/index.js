@@ -13,6 +13,7 @@ export default class Loading extends Component {
       // **for the purpose of directly logging in if creds entered already
       
       const routeToGoTo = 'home';
+      // const routeToGoTo = 'adder';
 
       this.props.navigation.navigate(routeToGoTo)
       // this.props.navigation.navigate(user ? 'home' : 'signup')

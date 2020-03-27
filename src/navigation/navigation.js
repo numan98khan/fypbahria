@@ -1,7 +1,7 @@
 // import {createStackNavigator} from 'react-navigation-stack';
 import {createNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
-// import { createStackNavigator } from 'react-navigation-stack';
+import { createStackNavigator } from 'react-navigation-stack';
 
 import SignUp from '../screens/SignUp'
 import Login from '../screens/Login'
@@ -14,15 +14,11 @@ import ScreenOne from '../screens/Products';
 import ScreenTwo from '../screens/Cart';
 // import BottomTabNavigator from './BottomTabNavigator'
 import Category from '../screens/Category'
+import AddProduct from '../screens/AddProduct';
 
-// const BottomTabAdder = createBottomTabNavigator(
-//     {
-//         Shop: ScreenOne,
-//         Cart: ScreenTwo
-//     }
-// );
 
-// Makes this drawer
+
+// The main drawer
 const homeDrawer = createDrawerNavigator({
     Products: {
       screen: ScreenOne,
@@ -44,6 +40,18 @@ const homeDrawer = createDrawerNavigator({
 });
 
 
+// Add this stack to your switch stack
+const adderStack = createStackNavigator(
+    {
+        addProduct: {
+            screen:AddProduct,
+            navigationOptions: {
+                headerShown: false,
+            },
+        }
+    }
+);
+
 const Home = createSwitchNavigator(
     {
         loading: Loading,
@@ -53,6 +61,7 @@ const Home = createSwitchNavigator(
         // addpage: BottomTabAdder,
         // livestream: LiveStream,
         home: homeDrawer,
+        adder: adderStack,
     },
     {
         initialRouteName:'loading'
