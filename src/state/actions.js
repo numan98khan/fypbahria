@@ -1,4 +1,4 @@
-import {INITIATE_PRODUCTS, UPDATE_PRODUCTS, TOGGLE_FILTER_OVERLAY, TOGGLE_IMAGE_OVERLAY} from './TYPES'
+import {INITIATE_PRODUCTS, UPDATE_PRODUCTS, TOGGLE_FILTER_OVERLAY} from './TYPES'
 
 // Responsible for first get from db
 export const initiateProducts = productsSettings => (
@@ -19,11 +19,5 @@ export const initiateProducts = productsSettings => (
   {
     type: TOGGLE_FILTER_OVERLAY,
     payload: productsSettings,
-  });
-
- export const toggleImageFilter = productsSettings => (
-    {
-      type: TOGGLE_IMAGE_OVERLAY,
-      payload: productsSettings,
-    }
+  }
 );
