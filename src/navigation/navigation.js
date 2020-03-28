@@ -19,6 +19,7 @@ import LiveStream from '../screens/LiveStream';
 import Credit from '../screens/Credit';
 import Hire from '../screens/Hire';
 import Reviews from '../screens/Reviews';
+import EditProduct from '../screens/EditProduct';
 
 // The main drawer
 const homeDrawer = createDrawerNavigator({
@@ -64,6 +65,17 @@ const adderStack = createStackNavigator(
     }
 );
 
+const editorStack = createStackNavigator(
+    {
+        editProduct: {
+            screen:EditProduct,
+            navigationOptions: {
+                headerShown: false,
+            },
+        }
+    }
+);
+
 const Home = createSwitchNavigator(
     {
         loading: Loading,
@@ -74,6 +86,7 @@ const Home = createSwitchNavigator(
         // livestream: LiveStream,
         home: homeDrawer,
         adder: adderStack,
+        editor: editorStack
     },
     {
         initialRouteName:'loading'
