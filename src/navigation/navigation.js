@@ -12,26 +12,38 @@ import Loading from '../screens/Loading';
 
 import ScreenOne from '../screens/Products';
 import ScreenTwo from '../screens/Cart';
-// import BottomTabNavigator from './BottomTabNavigator'
-import Category from '../screens/Category'
+// import BottomTabNavigator from './BottomTabNavigator';
+import Category from '../screens/Category';
 import AddProduct from '../screens/AddProduct';
-
-
+import LiveStream from '../screens/LiveStream';
+import Credit from '../screens/Credit';
+import Hire from '../screens/Hire';
+import Reviews from '../screens/Reviews';
 
 // The main drawer
 const homeDrawer = createDrawerNavigator({
     Products: {
       screen: ScreenOne,
     },
-    Cart: {
-      screen: ScreenTwo,
-    },
     Category: {
-      screen: Category,
-    }
+        screen: Category,
+    },
+    Reviews: {
+        screen: Reviews,
+    },
+    Live: {
+        screen: LiveStream,
+    },
+    Hire: {
+        screen: Hire,
+    },
+    Credit: {
+        screen: Credit,
+    },
 },{
     drawerWidth:250,
     drawerType:'slide',
+    initialRouteName:'Products',
     
     // The drawer menu will be added throough here (thorugh component just like NavBar)
     // https://medium.com/@arunkmoury/customize-drawer-of-react-navigation-like-champ-9b42df489d42
