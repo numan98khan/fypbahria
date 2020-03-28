@@ -16,8 +16,6 @@ export default class Loading extends Component {
       // const routeToGoTo = 'adder';
 
       this.props.navigation.navigate(routeToGoTo)
-
-      // this.props.navigation.toggleDrawer()
       // this.props.navigation.navigate(user ? 'home' : 'signup')
       // **For testing only
       // this.props.navigation.navigate('signup')

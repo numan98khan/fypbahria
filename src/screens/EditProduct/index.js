@@ -14,7 +14,7 @@ import ImgDetailOverlay from '../../components/imageDetailOverlay'
 import ImagePicker from 'react-native-image-picker';
 // import PhotoUpload from 'react-native-photo-upload'
 
-class AddProduct extends React.Component {
+class EditProduct extends React.Component {
 
   // static navigationOptions = {
 
@@ -22,7 +22,7 @@ class AddProduct extends React.Component {
 
   // START
   static navigationOptions= {
-    title: "Add",
+    title: "Edit",
     headerStyle: {
       backgroundColor: "#00ff80"
     },
@@ -45,32 +45,10 @@ class AddProduct extends React.Component {
   }
 
   handleSubmit = () => {
-    let {
-      title,
-      category,
-      additionalInfo,
-      price
-    } = this.state;
-    if(!title){
-      this.setState({titleError:'Title is required'})
-      return;
-    }
-    fetch(`${URI}/products`, {
-      body: JSON.stringify({
-        title,
-        category,
-        additionalInfo,
-        price
-      }),
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json'
-      },
-    }).then(p => {Alert.alert('Success','Product Saved Successfully')})
+
   }
 
   renderCategories = () => {
-    return this.state.categories.map(c => <Picker.Item key={c} label={c} value={c} />)
   }
 
   // END
@@ -100,12 +78,12 @@ class AddProduct extends React.Component {
     pickImage()
     {
     console.log("preeeee");
-        const options= {
-            noData:true
-        }
-        ImagePicker.launchImageLibrary(options, response => {
-        console.log("response", response);
-        })
+    const options= {
+        noData:true
+    }
+    ImagePicker.launchImageLibrary(options, response => {
+    console.log("response", response);
+    })
     }
   render() {
     const BackIcon = <Icon
@@ -114,7 +92,7 @@ class AddProduct extends React.Component {
                 type='material'
                 onPress={() => this.props.navigation.navigate('home')} />
     const TitleView = <View style={{ flexDirection: 'row', justifyContent: 'space-between', width:100 }}>
-                          <Text>Add Product</Text>
+                          <Text>Edit Product</Text>
                       </View>
     return (
       // <View>
@@ -146,7 +124,7 @@ class AddProduct extends React.Component {
       </PhotoUpload> */}
 
       {/* // Standard Avatar with edit button */}
-      
+
       <View style={styles.container}>
       {/* <View > */}
       <Avatar size="large"
@@ -159,7 +137,7 @@ class AddProduct extends React.Component {
         showEditButton
         onEditPress={() => this.pickImage()}
         onPress={() => this.props.toggleImageFilter()}
-      />  
+      />
         <TextInput
           style={styles.control}
           onChangeText={(title) => {
@@ -196,7 +174,7 @@ class AddProduct extends React.Component {
           {this.renderCategories()}
         </Picker>
         <Button
-          title="Add"
+          title="Save"
           onPress={this.handleSubmit}
         />
       </View>
@@ -252,4 +230,4 @@ const mapDispatchToProps = dispatch => (
   }, dispatch)
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddProduct);
+export default connect(mapStateToProps, mapDispatchToProps)(EditProduct);
