@@ -72,7 +72,7 @@ const list = [
 ]
 
 import React from 'react';
-import { View, StyleSheet, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, StyleSheet, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 
 // pull in the ScreenName component from ScreenName.js
 import ScreenName from '../../components/ScreenName.js'
@@ -166,7 +166,6 @@ class ScreenOne extends React.Component {
     this.props.products.dbulref.off('value');
   } 
 
-  // deleteProduct(){}
 
   updateSearch = search => {
     // this.setState({ search });
@@ -215,26 +214,8 @@ class ScreenOne extends React.Component {
       const myMenu = <Menu>
         <MenuTrigger children={customIcon} />
         <MenuOptions>
-          <MenuOption onSelect={() => alert('Edit')} text='Save' />
-          {/* <MenuOption onSelect={() => Alert.alert(
-                  'Alert Title',
-                  'My Alert Msg',
-                  [
-                    {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-                    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => console.log('OK Pressed')},
-                  ],
-                  { cancelable: false }
-                )} text='Save' /> */}
-          <MenuOption onSelect={(optionValue) => Alert.alert(
-                  'Alert!',
-                  'Are you sure you want to delete this product?',// + optionValue,
-                  [
-                    {text: 'Cancel', style: 'cancel'},
-                    {text: 'Yes', onPress: () => console.log('OK Pressed')},
-                  ],
-                  { cancelable: false }
-                )} >
+          <MenuOption onSelect={() => this.props.navigation.navigate('editor')} text='Edit' />
+          <MenuOption onSelect={() => alert('Delete')} >
             <Text style={{color: 'red'}}>Delete</Text>
           </MenuOption>
         </MenuOptions>

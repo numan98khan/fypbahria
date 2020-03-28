@@ -12,7 +12,7 @@ const INITIAL_STATE = {
     search: '',
     isFilterOn: false,
     category: 'NONE',
-
+    isFilterVisible: false
 };
 
 const productReducer = (state = INITIAL_STATE, action) => {
@@ -52,6 +52,17 @@ const productReducer = (state = INITIAL_STATE, action) => {
         return Object.assign({}, state, {
             isFilterOn: boolSet,
         });
+    case types.TOGGLE_IMAGE_OVERLAY:
+            var boolSet;
+            if (state.isFilterVisible){
+                boolSet = false;
+            } else {
+                boolSet = true;
+            }
+            console.log("changeed")
+            return Object.assign({}, state, {
+                isFilterVisible: boolSet,
+            });
     default:
       return state
   }
