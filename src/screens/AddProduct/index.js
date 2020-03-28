@@ -1,9 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Button, BackHandler, Alert, Text } from 'react-native';
 import { TextInput, Picker, Platform } from 'react-native';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import {toggleImageFilter } from '../../state/actions';
 
 import ScreenName from '../../components/ScreenName.js'
 // import NavBar from '../../navigation/navBar'
@@ -11,10 +8,10 @@ import ScreenName from '../../components/ScreenName.js'
 import { Header, Icon, ButtonGroup, Avatar } from 'react-native-elements';
 // import { withNavigation} from 'react-navigation';
 import ImgDetailOverlay from '../../components/imageDetailOverlay'
-import ImagePicker from 'react-native-image-picker';
+
 // import PhotoUpload from 'react-native-photo-upload'
 
-class AddProduct extends React.Component {
+export default class AddProduct extends React.Component {
 
   // static navigationOptions = {
 
@@ -97,16 +94,7 @@ class AddProduct extends React.Component {
   componentWillUnmount() {
     this.backHandler.remove();
   }
-    pickImage()
-    {
-    console.log("preeeee");
-        const options= {
-            noData:true
-        }
-        ImagePicker.launchImageLibrary(options, response => {
-        console.log("response", response);
-        })
-    }
+
   render() {
     const BackIcon = <Icon
                 name='clear'
@@ -149,7 +137,7 @@ class AddProduct extends React.Component {
       
       <View style={styles.container}>
       {/* <View > */}
-      <Avatar size="large"
+      <Avatar
         // containerStyle={styles.AvatarStyle}
         avatarStyle={styles.AvatarStyle}
         source={{
@@ -157,8 +145,7 @@ class AddProduct extends React.Component {
             'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
         }}
         showEditButton
-        onEditPress={() => this.pickImage()}
-        onPress={() => this.props.toggleImageFilter()}
+        onPress={() => console.log('Avatar Pressed!!!')}
       />  
         <TextInput
           style={styles.control}
@@ -241,15 +228,3 @@ const styles = StyleSheet.create({
     })
   }
 });
-const mapStateToProps = (state) => {
-  const { products } = state
-  return { products }
-};
-
-const mapDispatchToProps = dispatch => (
-  bindActionCreators({
-    toggleImageFilter
-  }, dispatch)
-);
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddProduct);

@@ -1,17 +1,14 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import {  toggleImageFilter } from '../state/actions';
+
 import { Header, Icon, Overlay } from 'react-native-elements';
 import { withNavigation} from 'react-navigation';
 import Slideshow from 'react-native-image-slider-show';
 
-
 class ImgDetailOverlay extends React.Component {
 
     state = {
-      isFilterVisible: false,
+      isFilterVisible: true,
     };
 
     render(){
@@ -23,16 +20,17 @@ class ImgDetailOverlay extends React.Component {
         return(
       <View>
           <Overlay 
-            isVisible={this.props.products.isFilterVisible}
-            onBackdropPress={() => this.props.toggleImageFilter()}
+            isVisible={this.state.isFilterVisible}
+            onBackdropPress={() => this.setState({ isFilterVisible: false })}
             height='auto'
           >
-        <Slideshow
+        <Slideshow 
             dataSource={[
                 { url:'http://placeimg.com/640/480/any' },
                 { url:'http://placeimg.com/640/480/any' },
                 { url:'http://placeimg.com/640/480/any' }
             ]}
+            onPress={() => console.log('deleteooo')}
             />
             
         </Overlay>
@@ -42,15 +40,4 @@ class ImgDetailOverlay extends React.Component {
   }
 
 // export default withNavigation(NavBar)
-const mapStateToProps = (state) => {
-  const { products } = state
-  return { products }
-};
-
-const mapDispatchToProps = dispatch => (
-  bindActionCreators({
-    toggleImageFilter
-  }, dispatch)
-);
-
-export default connect(mapStateToProps, mapDispatchToProps)(ImgDetailOverlay);
+export default ImgDetailOverlay 
