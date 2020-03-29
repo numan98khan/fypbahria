@@ -50,11 +50,12 @@ render()
 {
 
   
-  // *** Product addition code
-  var i;
+  // // *** Product addition code
+  // var i;
 
   // for (i = 0; i < 4; i++) {
-  //   database()
+  //   // console.log('>>>>>>'+
+  //     database()
   //     .ref("categories")
   //     .push()
   //     .set(
@@ -62,6 +63,7 @@ render()
   //         name: "Category"+String(i),
   //         description: "This is an excellent widget with 21 features and 4 colors.",
   //       })
+  //     // )
   // }  
 
   // var categoryData;
@@ -71,27 +73,27 @@ render()
   //     eJSON = e.toJSON()
   //     for(var i in eJSON){
   //       // console.log(eJSON[i])
-  //       categoryData.push(eJSON[i]);
+  //       categoryData.push(i);
   //     }
   //     for (i = 0; i < 20; i++) {
-  //   database()
-  //     .ref("products")
-  //     .push()
-  //     .set(
-  //       {
-  //         brand: "Acme",
-  //         logo: "http://www.example.com/logo.png",
-  //         name: "Product"+String(i),
-  //         category: "Widgets",
-  //         image: "http://www.example.com/image.jpg",
-  //         description: "This is an excellent widget with 21 features and 4 colors.",
-  //         aggregateRating: {
-  //           type: "aggregateRating",
-  //           ratingValue: "5",
-  //           reviewCount: "21"
-  //         }
-  //       })
-  // }
+  //       database()
+  //         .ref("products")
+  //         .push()
+  //         .set(
+  //           {
+  //             brand: "Acme",
+  //             logo: "http://www.example.com/logo.png",
+  //             name: "Product"+String(i),
+  //             category: categoryData[i%4],
+  //             image: "http://www.example.com/image.jpg",
+  //             description: "This is an excellent widget with 21 features and 4 colors.",
+  //             aggregateRating: {
+  //               type: "aggregateRating",
+  //               ratingValue: "5",
+  //               reviewCount: "21"
+  //             }
+  //           })
+  //     }
   //     // console.log(categoryData)
   // });
 

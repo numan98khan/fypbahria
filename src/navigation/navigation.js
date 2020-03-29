@@ -20,6 +20,7 @@ import Credit from '../screens/Credit';
 import Hire from '../screens/Hire';
 import Reviews from '../screens/Reviews';
 import EditProduct from '../screens/EditProduct';
+import Statistics from '../screens/Statistics';
 
 // The main drawer
 const homeDrawer = createDrawerNavigator({
@@ -35,6 +36,9 @@ const homeDrawer = createDrawerNavigator({
     Live: {
         screen: LiveStream,
     },
+    Statistics: {
+        screen: Statistics,
+    },
     Hire: {
         screen: Hire,
     },
@@ -44,7 +48,8 @@ const homeDrawer = createDrawerNavigator({
 },{
     drawerWidth:250,
     drawerType:'slide',
-    initialRouteName:'Category',
+    // initialRouteName:'Category',
+    initialRouteName:'Products',
     
     // The drawer menu will be added throough here (thorugh component just like NavBar)
     // https://medium.com/@arunkmoury/customize-drawer-of-react-navigation-like-champ-9b42df489d42

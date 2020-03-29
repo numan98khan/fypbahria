@@ -38,7 +38,8 @@ class NavBar extends React.Component {
 
         let rightComp;
         if (this.props.products.currentScreen === 'products'){
-          rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between', width:100 }}>
+          console.log('debug1');
+          rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Icon
                   name='search'
                   color='#fff'
@@ -55,7 +56,8 @@ class NavBar extends React.Component {
                   onPress={() => this.props.toggleFilter()} />
           </View>
         } else if (this.props.products.currentScreen === 'category') {
-          rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between', width:65 }}>
+          console.log('debug');
+          rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Icon
                   name='search'
                   color='#fff'

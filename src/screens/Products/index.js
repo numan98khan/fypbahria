@@ -1,9 +1,6 @@
-
-
 import React from 'react';
 import { View, StyleSheet, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 
-// pull in the ScreenName component from ScreenName.js
 import ScreenName from '../../components/ScreenName.js'
 import { SearchBar } from 'react-native-elements';
 
@@ -18,33 +15,8 @@ import { bindActionCreators } from 'redux';
 import { updateProducts, initiateProducts, toggleFilter, updateScreenVar  } from '../../state/actions';
 
 import { FloatingAction } from "react-native-floating-action";
-SampleFunction=()=>{
 
-  // Write your own code here, Which you want to execute on Floating Button Click Event.
-  Alert.alert("Floating Button Clicked");
-
-}
-
-// // FAB Implementation
-// const addIcon = <Icon
-//         name='add'
-//         type='material'
-//         color='#517fa4'/>
-// const actions = [
-//   {
-//     text: "Add Product",
-//     icon: {addIcon},
-//     name: "bt_accessibility",
-//     position: 2
-//   }
-// ];
-
-import {
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from 'react-native-popup-menu';
+import MenuPopUp from '../../components/MenuPopUp';
 
 class ScreenOne extends React.Component {
   constructor(props) {
@@ -53,6 +25,9 @@ class ScreenOne extends React.Component {
 
   componentDidMount() {
     this.props.updateScreenVar({screen:'products'});
+    
+    // this.props.updateScreenVar({screen:'category'});
+    
     // connect to a Firebase table
      var dbref = this.props.products.dbh.ref('products');
     // save database reference for later
@@ -60,10 +35,14 @@ class ScreenOne extends React.Component {
     // meat: this is where it all happens
      dbref.on('value', (e) => {
         var rows = [];
+        // console.log(e);
         eJSON = e.toJSON()
         for(var i in eJSON){
-          rows.push(eJSON[i]);
+          tempJSON = eJSON[i]
+          tempJSON["id"] = i;
+          rows.push(tempJSON);
         }
+        // console.log(rows[0])
         var ds = rows;
 
         this.props.products.dbh.ref('categories').on('value', (e) => {
@@ -75,8 +54,8 @@ class ScreenOne extends React.Component {
   
           var dsCat = rowsCat;
           // console.log('>>>>>>>>>>>')
-          // console.log(ds)
-          // console.log(dsCat)
+          // console.log(ds[0])
+          // // console.log(dsCat)
           // console.log('>>>>>>>>>>>')
           this.props.initiateProducts(
             {
@@ -142,24 +121,6 @@ class ScreenOne extends React.Component {
         type='material'
         color='#517fa4'/>
 
-      const myMenu = <Menu>
-        <MenuTrigger children={customIcon} />
-        <MenuOptions>
-          <MenuOption onSelect={() => this.props.navigation.navigate('editor')} text='Edit' />
-          <MenuOption onSelect={(optionValue) => Alert.alert(
-                  'Alert!',
-                  'Are you sure you want to delete this product?',// + optionValue,
-                  [
-                    {text: 'Cancel', style: 'cancel'},
-                    {text: 'Yes', onPress: () => console.log('OK Pressed')},
-                  ],
-                  { cancelable: false }
-                )} >
-            <Text style={{color: 'red'}}>Delete</Text>
-          </MenuOption>
-        </MenuOptions>
-      </Menu>
-
     return (
       <View>
         <NavBar/>
@@ -194,17 +155,14 @@ class ScreenOne extends React.Component {
                 title={l.name}
                 subtitle={l.subtitle}
                 bottomDivider
-                chevron={myMenu}
+                // chevron={myMenu}
+                chevron={<MenuPopUp item={l} attachProduct={1}/>}
               />
             ))
           }
           
         </View>
-        
         </ScrollView> }
-    
-
-
       </View>
       
 

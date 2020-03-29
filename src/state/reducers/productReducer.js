@@ -75,7 +75,7 @@ const productReducer = (state = INITIAL_STATE, action) => {
                 dataCategorySearch: action.payload.dataCategorySearch,
             });
             console.log('category list initiated');
-            console.log(action.payload.dataCategoryDup)
+            // console.log(action.payload.dataCategoryDup)
         } else if (action.payload.dataCategorySearch !== undefined) {
             updateSend = Object.assign({}, state, {
                 dataCategorySearch: action.payload.dataCategorySearch,
