@@ -44,7 +44,7 @@ const homeDrawer = createDrawerNavigator({
 },{
     drawerWidth:250,
     drawerType:'slide',
-    initialRouteName:'Products',
+    initialRouteName:'Category',
     
     // The drawer menu will be added throough here (thorugh component just like NavBar)
     // https://medium.com/@arunkmoury/customize-drawer-of-react-navigation-like-champ-9b42df489d42

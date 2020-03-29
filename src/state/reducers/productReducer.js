@@ -9,10 +9,13 @@ const INITIAL_STATE = {
     dataSourceSearch: ds,
     dataSourceFilter: ds,
     dataSourceDup: ds,
+    dataCategoryDup: ds,
+    dataCategorySearch: ds,
     search: '',
     isFilterOn: false,
     category: 'NONE',
-    isFilterVisible: false
+    isFilterVisible: false,
+    currentScreen:''
 };
 
 const productReducer = (state = INITIAL_STATE, action) => {
@@ -38,7 +41,7 @@ const productReducer = (state = INITIAL_STATE, action) => {
             updateSend = Object.assign({}, state, {
                 category: action.payload.category,
             });
-            console.log('category updated');
+            // console.log('category updated');
         }
         return updateSend
     case types.TOGGLE_FILTER_OVERLAY:
@@ -63,6 +66,28 @@ const productReducer = (state = INITIAL_STATE, action) => {
             return Object.assign({}, state, {
                 isFilterVisible: boolSet,
             });
+    case types.UPDATE_CATEGORY:
+        var updateSend;
+
+        if (action.payload.dataCategoryDup !== undefined) {
+            updateSend = Object.assign({}, state, {
+                dataCategoryDup: action.payload.dataCategoryDup,
+                dataCategorySearch: action.payload.dataCategorySearch,
+            });
+            console.log('category list initiated');
+            console.log(action.payload.dataCategoryDup)
+        } else if (action.payload.dataCategorySearch !== undefined) {
+            updateSend = Object.assign({}, state, {
+                dataCategorySearch: action.payload.dataCategorySearch,
+            
+            });
+            console.log('category list updated');
+        }
+        return updateSend
+    case types.UPDATE_SCREEN_VAR:
+        return Object.assign({}, state, {
+            currentScreen: action.payload.screen,
+        });
     default:
       return state
   }

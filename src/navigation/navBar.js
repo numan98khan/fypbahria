@@ -36,22 +36,38 @@ class NavBar extends React.Component {
         //         color='#fff'
         //         onPress={() => console.log('filters enabled')} />
 
-        const rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between', width:100 }}>
-          <Icon
-                name='search'
-                color='#fff'
-                onPress={() => console.log('filters enabled')} />
-          <Icon
-                name='add'
-                color='#fff'
-                // onPress={() => console.log('add enabled')} 
-                onPress={() => this.props.navigation.navigate('adder')} 
-                />
-          <Icon
-                name='tune'
-                color='#fff'
-                onPress={() => this.props.toggleFilter()} />
-        </View>
+        let rightComp;
+        if (this.props.products.currentScreen === 'products'){
+          rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between', width:100 }}>
+            <Icon
+                  name='search'
+                  color='#fff'
+                  onPress={() => console.log('filters enabled')} />
+            <Icon
+                  name='add'
+                  color='#fff'
+                  // onPress={() => console.log('add enabled')} 
+                  onPress={() => this.props.navigation.navigate('adder')} 
+                  />
+            <Icon
+                  name='tune'
+                  color='#fff'
+                  onPress={() => this.props.toggleFilter()} />
+          </View>
+        } else if (this.props.products.currentScreen === 'category') {
+          rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between', width:65 }}>
+            <Icon
+                  name='search'
+                  color='#fff'
+                  onPress={() => console.log('filters enabled')} />
+            <Icon
+                  name='add'
+                  color='#fff'
+                  // onPress={() => console.log('add enabled')} 
+                  onPress={() => this.props.navigation.navigate('adder')} 
+                  />
+          </View>
+        }
         return(
       <View>
        {this.props.children}
