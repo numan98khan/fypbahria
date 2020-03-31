@@ -15,7 +15,8 @@ const INITIAL_STATE = {
     isFilterOn: false,
     category: 'NONE',
     isFilterVisible: false,
-    currentScreen:''
+    currentScreen:'',
+    isSearchBar:false,
 };
 
 const productReducer = (state = INITIAL_STATE, action) => {
@@ -84,6 +85,18 @@ const productReducer = (state = INITIAL_STATE, action) => {
             console.log('category list updated');
         }
         return updateSend
+    case types.TOGGLE_SEARCH_BAR:
+        console.log('saex');
+        var boolSet;
+        if (state.isSearchBar){
+            boolSet = false;
+        } else {
+            boolSet = true;
+        }
+        console.log("changeed")
+        return Object.assign({}, state, {
+            isSearchBar: boolSet,
+        });
     case types.UPDATE_SCREEN_VAR:
         return Object.assign({}, state, {
             currentScreen: action.payload.screen,

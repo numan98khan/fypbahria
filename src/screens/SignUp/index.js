@@ -72,7 +72,7 @@ export default class signUp extends React.Component {
 
     auth().onAuthStateChanged(user => {
       // This function captures the user id and adds it to the db
-      // console.log("user: " + user);
+      console.log("user: " + user);
       database().ref("users/"+user.uid).set(
         {
           property1:"dallu",

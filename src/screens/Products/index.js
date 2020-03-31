@@ -12,16 +12,25 @@ import database from '@react-native-firebase/database';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { updateProducts, initiateProducts, toggleFilter, updateScreenVar  } from '../../state/actions';
+import { updateProducts, initiateProducts, 
+        toggleFilter, updateScreenVar,
+      toggleSearch  } from '../../state/actions';
 
 import { FloatingAction } from "react-native-floating-action";
 
 import MenuPopUp from '../../components/MenuPopUp';
 
+// import MySearchBar from '../../components/SearchBar/index.js';
+
+
 class ScreenOne extends React.Component {
   constructor(props) {
     super(props);
   }
+
+  state = {
+    search: '',
+  };
 
   componentDidMount() {
     this.props.updateScreenVar({screen:'products'});
@@ -121,27 +130,31 @@ class ScreenOne extends React.Component {
         type='material'
         color='#517fa4'/>
 
+    let MySearchComp;
+
+    if (this.props.products.isSearchBar){
+        MySearchComp = <SearchBar
+                  placeholder="Type Here..."
+                    onChangeText={this.updateSearch}
+                    value={search}
+                    platform="android"
+                    containerStyle={StyleSheet.create({
+                      container: {
+                        flex: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      },
+                    })}
+              />
+    } else {
+      MySearchComp = null;
+    }
     return (
       <View>
         <NavBar/>
         <FilterOverlay/>
         
-        <SearchBar
-          placeholder="Type Here..."
-          onChangeText={this.updateSearch}
-          value={search}
-          platform="android"
-          containerStyle={StyleSheet.create({
-            container: {
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-            },
-          })}
-          // searchIcon={customIcon}
-          // searchIcon={mySearchIcon}
-          // cancelIcon={myCancelIcon}
-        />
+        {MySearchComp}
 
         { <ScrollView>
         <View style={{flex: 1}}>
@@ -230,7 +243,25 @@ const mapDispatchToProps = dispatch => (
     initiateProducts,
     toggleFilter,
     updateScreenVar,
+    toggleSearch,
   }, dispatch)
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScreenOne);
+
+// <SearchBar
+//           placeholder="Type Here..."
+//           onChangeText={this.updateSearch}
+//           value={search}
+//           platform="android"
+//           containerStyle={StyleSheet.create({
+//             container: {
+//               flex: 1,
+//               alignItems: 'center',
+//               justifyContent: 'center',
+//             },
+//           })}
+//           // searchIcon={customIcon}
+//           // searchIcon={mySearchIcon}
+//           // cancelIcon={myCancelIcon}
+//         />

@@ -6,7 +6,9 @@ import { withNavigation} from 'react-navigation';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { updateProducts, initiateProducts, toggleFilter } from '../state/actions';
+import { updateProducts, initiateProducts, toggleFilter, toggleSearch } from '../state/actions';
+
+import styles from "./style";
 
 class NavBar extends React.Component {
 
@@ -29,44 +31,53 @@ class NavBar extends React.Component {
         const MenuIcon = <Icon
                 name='menu'
                 color='#fff'
-                onPress={() => this.props.navigation.toggleDrawer()} />
+                onPress={() => this.props.navigation.toggleDrawer()}
+                iconStyle={styles.iconStyle} />
 
         // const FilterIcon = <Icon
         //         name='tune'
         //         color='#fff'
         //         onPress={() => console.log('filters enabled')} />
 
+        let searchIconName;
+        if (this.props.products.isSearchBar){
+          searchIconName = 'close';
+        } else {
+          searchIconName = 'search';
+        }
+        let searchIcon = <Icon
+            name={searchIconName}
+            color='#fff'
+            onPress={() => this.props.toggleSearch()} 
+            iconStyle={styles.iconStyle} />;
+
         let rightComp;
         if (this.props.products.currentScreen === 'products'){
           console.log('debug1');
           rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Icon
-                  name='search'
-                  color='#fff'
-                  onPress={() => console.log('filters enabled')} />
-            <Icon
+            {searchIcon}  
+          <Icon
                   name='add'
                   color='#fff'
                   // onPress={() => console.log('add enabled')} 
                   onPress={() => this.props.navigation.navigate('adder')} 
-                  />
+                  iconStyle={styles.iconStyle} />
             <Icon
                   name='tune'
                   color='#fff'
-                  onPress={() => this.props.toggleFilter()} />
+                  onPress={() => this.props.toggleFilter()}
+                  iconStyle={styles.iconStyle}  />
           </View>
         } else if (this.props.products.currentScreen === 'category') {
           console.log('debug');
           rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Icon
-                  name='search'
-                  color='#fff'
-                  onPress={() => console.log('filters enabled')} />
+            {searchIcon}
             <Icon
                   name='add'
                   color='#fff'
                   // onPress={() => console.log('add enabled')} 
                   onPress={() => this.props.navigation.navigate('adder')} 
+                  iconStyle={styles.iconStyle}
                   />
           </View>
         }
@@ -85,6 +96,8 @@ class NavBar extends React.Component {
     }
   }
 
+  
+
 const mapStateToProps = (state) => {
   const { products } = state
   return { products }
@@ -94,6 +107,7 @@ const mapDispatchToProps = dispatch => (
   bindActionCreators({
     toggleFilter,
     updateProducts,
+    toggleSearch,
   }, dispatch)
 );
 

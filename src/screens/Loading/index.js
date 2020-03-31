@@ -5,6 +5,7 @@ import auth from '@react-native-firebase/auth';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { DrawerActions } from 'react-navigation-drawer';
 
+import database from '@react-native-firebase/database';
 
 export default class Loading extends Component {
   
@@ -19,6 +20,16 @@ export default class Loading extends Component {
 
       // this.props.navigation.toggleDrawer()
       // this.props.navigation.navigate(user ? 'home' : 'signup')
+
+      // console.log("user: " + user);
+      // database().ref("users/"+user.uid).set(
+      //   {
+      //     property1:"dallu",
+      //     property2:"dallu",
+      //     property3:"dallu",
+      //     property4:"dallu",
+      //   })
+
       // **For testing only
       // this.props.navigation.navigate('signup')
 
