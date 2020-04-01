@@ -177,7 +177,7 @@ class ScreenOne extends React.Component {
                 // chevron={myMenu}
                 chevron={<MenuPopUp item={l} attachProduct={1}/>}
                 onPress={() => {
-                  this.props.navigation.navigate('productDetails', {
+                  this.props.navigation.navigate('detailProduct', {
                     itemId: 86,
                     otherParam: 'anything you want here',
                   });

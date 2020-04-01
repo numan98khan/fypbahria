@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Button, BackHandler, Alert, Text } from 'react-native';
-import { TextInput, Picker, Platform } from 'react-native';
+import { TextInput, Picker, Platform ,ScrollView} from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {toggleImageFilter } from '../../state/actions';
@@ -8,11 +8,15 @@ import {toggleImageFilter } from '../../state/actions';
 import ScreenName from '../../components/ScreenName.js'
 // import NavBar from '../../navigation/navBar'
 
-import { Header, Icon, ButtonGroup, Avatar } from 'react-native-elements';
+import { Header, Icon, ButtonGroup, Avatar, Divider, Rating, AirbnbRating } from 'react-native-elements';
 // import { withNavigation} from 'react-navigation';
 import ImgDetailOverlay from '../../components/imageDetailOverlay'
 import ImagePicker from 'react-native-image-picker';
 // import PhotoUpload from 'react-native-photo-upload'
+
+import Slideshow from 'react-native-image-slider-show';
+
+import ProductStyles from '../../common/productStyle';
 
 class ProductDetails extends React.Component {
 
@@ -73,30 +77,20 @@ class ProductDetails extends React.Component {
     return this.state.categories.map(c => <Picker.Item key={c} label={c} value={c} />)
   }
 
-  // END
-
-  backAction = () => {
-    Alert.alert("Hold on!", "Are you sure you want to go back?", [
-      {
-        text: "Cancel",
-        onPress: () => null,
-        style: "cancel"
-      },
-      { text: "YES", onPress: () => this.props.navigation.navigate('home') }
-    ]);
-    return true;
-  };
 
   componentDidMount() {
-    this.backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      this.backAction
-    );
-
   }
 
+  getImages() {
+      let datasource = [];
+      datasource.push({url:'http://placeimg.com/640/480/any'})
+      datasource.push({url:'http://placeimg.com/640/480/any'})
+      datasource.push({url:'http://placeimg.com/640/480/any'})
+        return datasource;
+    }
+
   componentWillUnmount() {
-    this.backHandler.remove();
+    // this.backHandler.remove();
   }
     pickImage()
     {
@@ -111,7 +105,7 @@ class ProductDetails extends React.Component {
   render() {
     const { navigation } = this.props;
 
-    console.log("deets " + this.props.navigation.state.params);
+    // console.log("deets " + this.props.navigation.state.params.itemId);
 
     const BackIcon = <Icon
                 name='clear'
@@ -122,105 +116,46 @@ class ProductDetails extends React.Component {
                           <Text>Add Product</Text>
                       </View>
     return (
-      // <View>
-      //   <Header
-      //     leftComponent={BackIcon}
-      //     centerComponent={TitleView}
-      //     // rightComponent={{ icon: 'home', style: { color: '#fff' } }}
-      //   />
-      //   <ScreenName name={'Add Product'} />
-      //   <Button
-      //       title="Go to Back"
-      //       onPress={() => this.props.navigation.navigate('home')}
-      //     />
-      // </View>
-      <View>
-      <Header
-          leftComponent={BackIcon}
-          centerComponent={TitleView}
-          // rightComponent={{ icon: 'home', style: { color: '#fff' } }}
-        />
-
-      <ImgDetailOverlay/>
-      {/* <PhotoUpload>
-        <Image
-          source={{
-            uri: 'https://www.sparklabs.com/forum/styles/comboot/theme/images/default_avatar.jpg'
-          }}
-        />
-      </PhotoUpload> */}
-
-      {/* // Standard Avatar with edit button */}
-      
+        
       <View style={styles.container}>
       {/* <View > */}
-      <Avatar size="large"
-        // containerStyle={styles.AvatarStyle}
-        avatarStyle={styles.AvatarStyle}
-        source={{
-          uri:
-            'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-        }}
-        showEditButton
-        onEditPress={() => this.pickImage()}
-        onPress={() => this.props.toggleImageFilter()}
-      />  
-        <TextInput
-          style={styles.control}
-          onChangeText={(title) => {
-            this.setState({ title,titleError:null })
-            if(title.length==0){
-              this.setState({ titleError:'Title is required' })
-            }
-          }}
-          value={this.state.title}
-          placeholder="Product Name"
-          placeholderTextColor="grey"
-        />
-        {this.state.titleError && <Text style={{color:'red'}}>Title is required</Text>}
-        <TextInput
-          numberOfLines={5}
-          onChangeText={(additionalInfo) => this.setState({ additionalInfo })}
-          multiline={true}
-          value={this.state.additionalInfo}
-          placeholder="Additional Info"
-          placeholderTextColor="grey"
-          style={styles.additionalInfo}
-        />
-        <TextInput
-          style={styles.control}
-          onChangeText={(price) => this.setState({ price })}
-          value={this.state.price}
-          placeholder="Product Price"
-          placeholderTextColor="grey"
-          keyboardType="number-pad"
-        />
-        <Picker
-          selectedValue={this.state.language}
-          onValueChange={(itemValue, itemIndex) => this.setState({ language: itemValue })}>
-          {this.renderCategories()}
-        </Picker>
-        <Button
-          title="Add"
-          onPress={this.handleSubmit}
-        />
+      <ScrollView>
+            <Slideshow 
+            dataSource={this.getImages()}/>
+            <Text style={ProductStyles.headerText}>Product</Text>
+            <Text style={ProductStyles.priceText}>Price</Text>
+            <Divider style={ProductStyles.dividerStyle} />
+            <Rating
+                imageSize={20}
+                readonly
+                startingValue={2.5}
+                fractions="{1}"
+                />
+            <View style={{justifyContent: 'center', flexDirection:'row'}}>
+                <Text style={ProductStyles.ratingText}>2.5/5</Text>
+            </View>
+            <View style={{justifyContent: 'center', flexDirection:'row'}}>
+                <Text style={ProductStyles.ratingCount}>125 Reviews</Text>
+            </View>
+            <Divider style={ProductStyles.dividerStyle} />
+            <Text style={ProductStyles.descriptionHeader}>Description</Text>
+            <Text style={ProductStyles.descriptionText}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</Text>
+        </ScrollView>
       </View>
-      </View>
+      
     );
   }
 }
 
 const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  // },
+  
   AvatarStyle:{
     alignItems: 'center',
     flex: 1,
     justifyContent: 'center'
   },
   container: {
-    // flex: 2,
+    flex: 1,
     padding: 20,
     alignItems: "stretch",
     backgroundColor: '#ffffff',
@@ -246,6 +181,7 @@ const styles = StyleSheet.create({
     })
   }
 });
+
 const mapStateToProps = (state) => {
   const { products } = state
   return { products }

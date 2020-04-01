@@ -82,7 +82,7 @@ class AddProduct extends React.Component {
         onPress: () => null,
         style: "cancel"
       },
-      { text: "YES", onPress: () => this.props.navigation.navigate('home') }
+      { text: "YES", onPress: () => this.props.navigation.goBack() }
     ]);
     return true;
   };
@@ -130,11 +130,6 @@ class AddProduct extends React.Component {
       //     />
       // </View>
       <View>
-      <Header
-          leftComponent={BackIcon}
-          centerComponent={TitleView}
-          // rightComponent={{ icon: 'home', style: { color: '#fff' } }}
-        />
 
       <ImgDetailOverlay/>
       {/* <PhotoUpload>

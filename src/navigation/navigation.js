@@ -3,6 +3,10 @@ import {createNavigator, createAppContainer, createSwitchNavigator} from 'react-
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createStackNavigator } from 'react-navigation-stack';
 
+import React, { Component } from "react";
+
+import { Header, Icon, ButtonGroup } from 'react-native-elements';
+
 import SignUp from '../screens/SignUp'
 import Login from '../screens/Login'
 import Main from '../screens/Products'
@@ -25,48 +29,72 @@ import ProductDetails from '../screens/ProductDetails';
 
 import drawerContentComponents from './drawerContentComponents'
 
+// import StackNavBar from './StackNavBar';
 
 
-// Add this stack to your switch stack
-const adderStack = createStackNavigator(
+
+const productStack = createStackNavigator(
     {
-        addProduct: {
-            screen:AddProduct,
+        Products: {
+            screen: ScreenOne,
             navigationOptions: {
                 headerShown: false,
             },
-        }
-    }
-);
-
-const editorStack = createStackNavigator(
-    {
-        editProduct: {
-            screen:EditProduct,
-            navigationOptions: {
-                headerShown: false,
-            },
-        }
-    }
-);
-
-// PUT THIS INSIDE OF PRODUCTS STACK
-const productDetailsStack = createStackNavigator(
-    {
+            
+        },
         detailProduct: {
             screen:ProductDetails,
             navigationOptions: {
-                headerShown: false,
+                title:"Details",
             },
+            
+        },
+        editProduct: {
+            screen:EditProduct,
+            navigationOptions: {
+                // headerShown: false,
+            },
+        },
+        addProduct: {
+            screen:AddProduct,
+            navigationOptions: {
+                // headerShown: false,
+            },
+        }
+    },
+    {
+        defaultNavigationOptions: {
+            header: ({ scene, previous, navigation }) => {
+                const { options } = scene.descriptor;
+                const title =
+                  options.headerTitle !== undefined
+                    ? options.headerTitle
+                    : options.title !== undefined
+                    ? options.title
+                    : scene.route.routeName;
+                console.log(title)
+              
+                return (<Header backgroundColor="#6600ff"
+                centerComponent={{ text: title, style: { color: '#fff', fontSize:24 } }}
+                // leftContainerStyle={{width: 400}}
+                // leftComponent={previous ? <Icon
+                //         name="clear"
+                //         color='#fff'
+                //         onPress={navigation.goBack}
+                //         iconStyle={styles.iconStyle} /> : undefined}
+                >
+              {/* <MyCustomLeftComponent />
+              <MyCustomCenterComponent />
+              <MyCustomRightComponent /> */}
+              </Header>);
+              }
         }
     }
 );
 
 // The main drawer
 const homeDrawer = createDrawerNavigator({
-    Products: {
-      screen: ScreenOne,
-    },
+    Products: productStack,
     Category: {
         screen: Category,
     },
@@ -104,13 +132,7 @@ const Home = createSwitchNavigator(
         loading: Loading,
         signup: SignUp,
         login: Login,
-        // main: Main,
-        // addpage: BottomTabAdder,
-        // livestream: LiveStream,
         home: homeDrawer,
-        adder: adderStack,
-        editor: editorStack,
-        productDetails: productDetailsStack
     },
     {
         initialRouteName:'loading'

@@ -60,7 +60,7 @@ class NavBar extends React.Component {
                   name='add'
                   color='#fff'
                   // onPress={() => console.log('add enabled')} 
-                  onPress={() => this.props.navigation.navigate('adder')} 
+                  onPress={() => this.props.navigation.navigate('addProduct')} 
                   iconStyle={styles.iconStyle} />
             <Icon
                   name='tune'
@@ -76,7 +76,7 @@ class NavBar extends React.Component {
                   name='add'
                   color='#fff'
                   // onPress={() => console.log('add enabled')} 
-                  onPress={() => this.props.navigation.navigate('adder')} 
+                  onPress={() => this.props.navigation.navigate('addProduct')} 
                   iconStyle={styles.iconStyle}
                   />
           </View>
