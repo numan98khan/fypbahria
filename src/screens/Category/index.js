@@ -221,9 +221,9 @@ class Category extends React.Component {
               <ListItem
                 // containerStyle={{height:100,width:1080}}
                 key={i}
-                leftAvatar={{ source: { uri: l.avatar_url } }}
+                // leftAvatar={{ source: { uri: l.avatar_url } }}
                 title={l.name}
-                subtitle={l.subtitle}
+                subtitle={l.description}
                 bottomDivider
                 chevron={myMenu}
               />

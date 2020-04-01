@@ -20,6 +20,10 @@ import { FloatingAction } from "react-native-floating-action";
 
 import MenuPopUp from '../../components/MenuPopUp';
 
+import TouchableScale from 'react-native-touchable-scale'; // https://github.com/kohver/react-native-touchable-scale
+import LinearGradient from 'react-native-linear-gradient'; // Only if no expo
+
+
 // import MySearchBar from '../../components/SearchBar/index.js';
 
 
@@ -111,6 +115,7 @@ class ScreenOne extends React.Component {
 
   render() {
 
+    const { navigation } = this.props;
     const { search } = this.props.products.search;
     const mySearchIcon = <Icon
       name='search'
@@ -164,12 +169,19 @@ class ScreenOne extends React.Component {
               <ListItem
                 // containerStyle={{height:100,width:1080}}
                 key={i}
-                leftAvatar={{ source: { uri: l.avatar_url } }}
+                // leftAvatar={{ source: { uri: l.avatar_url } }}
+                leftAvatar={{ source: { uri: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg" } }}
                 title={l.name}
-                subtitle={l.subtitle}
+                subtitle={l.brand}
                 bottomDivider
                 // chevron={myMenu}
                 chevron={<MenuPopUp item={l} attachProduct={1}/>}
+                onPress={() => {
+                  this.props.navigation.navigate('productDetails', {
+                    itemId: 86,
+                    otherParam: 'anything you want here',
+                  });
+                }}
               />
             ))
           }
@@ -184,6 +196,25 @@ class ScreenOne extends React.Component {
     );
   }
 }
+
+// { <ScrollView>
+//   <View style={{flex: 1}}>
+//     {
+//       // list.map((l, i) => (
+//       this.props.products.dataSourceSearch.map((l, i) => (
+//         <ListItem
+//           // containerStyle={{height:100,width:1080}}
+//           key={i}
+//           // leftAvatar={{ source: { uri: l.avatar_url } }}
+//           leftAvatar={{ source: { uri: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg" } }}
+//           title={l.name}
+//           subtitle={l.brand}
+//           bottomDivider
+//           // chevron={myMenu}
+//           chevron={<MenuPopUp item={l} attachProduct={1}/>}
+//         />
+//       ))
+//     }
 
 const styles = StyleSheet.create({
   container: {

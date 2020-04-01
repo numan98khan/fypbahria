@@ -21,6 +21,46 @@ import Hire from '../screens/Hire';
 import Reviews from '../screens/Reviews';
 import EditProduct from '../screens/EditProduct';
 import Statistics from '../screens/Statistics';
+import ProductDetails from '../screens/ProductDetails';
+
+import drawerContentComponents from './drawerContentComponents'
+
+
+
+// Add this stack to your switch stack
+const adderStack = createStackNavigator(
+    {
+        addProduct: {
+            screen:AddProduct,
+            navigationOptions: {
+                headerShown: false,
+            },
+        }
+    }
+);
+
+const editorStack = createStackNavigator(
+    {
+        editProduct: {
+            screen:EditProduct,
+            navigationOptions: {
+                headerShown: false,
+            },
+        }
+    }
+);
+
+// PUT THIS INSIDE OF PRODUCTS STACK
+const productDetailsStack = createStackNavigator(
+    {
+        detailProduct: {
+            screen:ProductDetails,
+            navigationOptions: {
+                headerShown: false,
+            },
+        }
+    }
+);
 
 // The main drawer
 const homeDrawer = createDrawerNavigator({
@@ -50,6 +90,7 @@ const homeDrawer = createDrawerNavigator({
     drawerType:'slide',
     // initialRouteName:'Category',
     initialRouteName:'Products',
+    contentComponent: drawerContentComponents,
     
     // The drawer menu will be added throough here (thorugh component just like NavBar)
     // https://medium.com/@arunkmoury/customize-drawer-of-react-navigation-like-champ-9b42df489d42
@@ -57,29 +98,6 @@ const homeDrawer = createDrawerNavigator({
 
 });
 
-
-// Add this stack to your switch stack
-const adderStack = createStackNavigator(
-    {
-        addProduct: {
-            screen:AddProduct,
-            navigationOptions: {
-                headerShown: false,
-            },
-        }
-    }
-);
-
-const editorStack = createStackNavigator(
-    {
-        editProduct: {
-            screen:EditProduct,
-            navigationOptions: {
-                headerShown: false,
-            },
-        }
-    }
-);
 
 const Home = createSwitchNavigator(
     {
@@ -91,7 +109,8 @@ const Home = createSwitchNavigator(
         // livestream: LiveStream,
         home: homeDrawer,
         adder: adderStack,
-        editor: editorStack
+        editor: editorStack,
+        productDetails: productDetailsStack
     },
     {
         initialRouteName:'loading'

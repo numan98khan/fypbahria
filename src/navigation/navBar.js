@@ -86,6 +86,7 @@ class NavBar extends React.Component {
        {this.props.children}
        <Header leftComponent={MenuIcon}
               rightComponent={rightComp}
+              backgroundColor="#6600ff"
               >
         {/* <MyCustomLeftComponent />
         <MyCustomCenterComponent />

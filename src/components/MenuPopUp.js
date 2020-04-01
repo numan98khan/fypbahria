@@ -26,7 +26,7 @@ export default class MyMenu extends React.Component {
         const customIcon = <Icon
         name='create'
         type='material'
-        color='#517fa4'/>
+        color='#6600ff'/>
 
 
     let removeRef;
