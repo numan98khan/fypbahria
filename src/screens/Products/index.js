@@ -59,16 +59,18 @@ class ScreenOne extends React.Component {
         var ds = rows;
 
         this.props.products.dbh.ref('categories').on('value', (e) => {
-          var rowsCat = [{"description": "NONE", "name": "NONE"}];
+          var rowsCat = [{"description": "NONE", "name": "NONE", "id": "NONE"}];
           eJSON = e.toJSON()
           for(var i in eJSON){
-            rowsCat.push(eJSON[i]);
+            tempJSON = eJSON[i]
+            tempJSON["id"] = i;
+            rowsCat.push(tempJSON);
           }
   
           var dsCat = rowsCat;
           // console.log('>>>>>>>>>>>')
-          // console.log(ds[0])
-          // // console.log(dsCat)
+          // // console.log(ds[0])
+          // console.log(dsCat)
           // console.log('>>>>>>>>>>>')
           this.props.initiateProducts(
             {
@@ -178,8 +180,7 @@ class ScreenOne extends React.Component {
                 chevron={<MenuPopUp item={l} attachProduct={1}/>}
                 onPress={() => {
                   this.props.navigation.navigate('detailProduct', {
-                    itemId: 86,
-                    otherParam: 'anything you want here',
+                    item: l,
                   });
                 }}
               />

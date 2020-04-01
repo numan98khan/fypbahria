@@ -47,6 +47,8 @@ import { bindActionCreators } from 'redux';
 import { updateProducts, initiateProducts,
    toggleFilter, updateCategory, updateScreenVar } from '../../state/actions';
 
+import MenuPopUp from '../../components/MenuPopUp';
+
 import { FloatingAction } from "react-native-floating-action";
 SampleFunction=()=>{
 
@@ -97,19 +99,19 @@ class Category extends React.Component {
         // var ds = rows;
 
         this.props.products.dbh.ref('categories').on('value', (e) => {
-          // var rowsCat = [{"description": "NONE", "name": "NONE"}];
           var rowsCat = [];
-          
           eJSON = e.toJSON()
           for(var i in eJSON){
-            rowsCat.push(eJSON[i]);
+            tempJSON = eJSON[i]
+            tempJSON["id"] = i;
+            rowsCat.push(tempJSON);
           }
   
           var dsCat = rowsCat;
-          // console.log('>>>>>>>>>>>')
+          console.log('>>>>>>>>>>>')
           // console.log(ds)
-          // console.log(dsCat)
-          // console.log('>>>>>>>>>>>')
+          console.log(dsCat)
+          console.log('>>>>>>>>>>>')
           this.props.updateCategory(
             {
                 dataCategorySearch: dsCat,
@@ -225,7 +227,7 @@ class Category extends React.Component {
                 title={l.name}
                 subtitle={l.description}
                 bottomDivider
-                chevron={myMenu}
+                chevron={<MenuPopUp item={l} attachCategory={1}/>}
               />
             ))
           }

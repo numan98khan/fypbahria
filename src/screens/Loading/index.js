@@ -13,14 +13,15 @@ export default class Loading extends Component {
     auth().onAuthStateChanged(user => {
       // **for the purpose of directly logging in if creds entered already
       
-      const routeToGoTo = 'home';
+      // const routeToGoTo = 'home';
       // const routeToGoTo = 'detailProduct';
       // const routeToGoTo = 'addProduct';
+      const routeToGoTo = 'addCategory';
 
-      this.props.navigation.navigate(routeToGoTo)
+      // this.props.navigation.navigate(routeToGoTo)
 
       // this.props.navigation.toggleDrawer()
-      // this.props.navigation.navigate(user ? 'home' : 'signup')
+      this.props.navigation.navigate(user ? routeToGoTo : 'signup')
 
       // console.log("user: " + user);
       // database().ref("users/"+user.uid).set(
@@ -44,7 +45,8 @@ export default class Loading extends Component {
       
       // this.props.navigation.dispatch(resetAction);
       
-      console.log(user.uid);
+      console.log("USERS: ");
+      console.log(user);
 
       // this.props.navigation.dispatch(DrawerActions.openDrawer());
     })

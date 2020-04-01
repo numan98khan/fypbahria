@@ -23,7 +23,7 @@ import Slideshow from 'react-native-image-slider-show';
 
 import ProductStyles from '../../common/productStyle';
 
-class EditProduct extends React.Component {
+class AddCategory extends React.Component {
 
   // static navigationOptions = {
 
@@ -31,7 +31,6 @@ class EditProduct extends React.Component {
 
   state = {
     price:null,
-    itemId:'',
     itemName:'',
     itemDescription:'',
     visible: false,
@@ -40,63 +39,14 @@ class EditProduct extends React.Component {
     snackMessage:'',
   };
 
-  // START
-  // static navigationOptions= {
-  //   title: "Add",
-  //   headerStyle: {
-  //     backgroundColor: "#00ff80"
-  //   },
-  //   headerTintColor: "#fff",
-  //   headerTitleStyle: {
-  //     fontWeight: "bold",
-  //     textAlign: "center"
-  //   },
-  // }
   constructor(props) {
     super(props);
-    // this.state = {
-    //   title: '',
-    //   titleError:null,
-    //   category: 'Mobiles',
-    //   additionalInfo: '',
-    //   categories: ['Mobiles', 'Laptops', 'Desktops', 'Others'],
-    //   price:'',
-    //   itemName:'',
-    //   itemDescription:''
-    // }
   }
 
-  handleSubmit = () => {
-    let {
-      title,
-      category,
-      additionalInfo,
-      price
-    } = this.state;
-    if(!title){
-      this.setState({titleError:'Title is required'})
-      return;
-    }
-    fetch(`${URI}/products`, {
-      body: JSON.stringify({
-        title,
-        category,
-        additionalInfo,
-        price
-      }),
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json'
-      },
-    }).then(p => {Alert.alert('Success','Product Saved Successfully')})
-  }
-
-  renderCategories = () => {
-    return this.state.categories.map(c => <Picker.Item key={c} label={c} value={c} />)
-  }
+  // END
 
   backAction = () => {
-    if (this.isSaveable(false)){
+    if (this.isSaveable()){
       Alert.alert("Hold on!", "Are you sure you want to go back?", [
         {
           text: "Cancel",
@@ -111,28 +61,12 @@ class EditProduct extends React.Component {
     return true;
   };
 
-  getImages() {
-    let datasource = [];
-  //   console.log(imgObj)
-    // datasource.push({url: imgObj})
-    datasource.push({url:'http://placeimg.com/640/480/any'})
-    datasource.push({url:'http://placeimg.com/640/480/any'})
-      return datasource;
-  }
-
   componentDidMount() {
     this.backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       this.backAction
     );
-    
-    // Set the state with the incoming item
-    this.setState({itemName:this.props.navigation.state.params.item.name,
-      itemDescription:this.props.navigation.state.params.item.description,
-      price:'69',
-      itemId:this.props.navigation.state.params.item.id,
-      category:this.props.navigation.state.params.item.category});
-
+    console.log('laure')
     // connect to a Firebase table
     var dbref = this.props.products.dbh.ref('products');
     // save database reference for later
@@ -195,15 +129,14 @@ class EditProduct extends React.Component {
   _onToggleSnackBar = () => this.setState(state => ({ snackVisible: !state.snackVisible }));
   _onDismissSnackBar = () => this.setState({ snackVisible: false });
 
-  isSaveable(isSave){
-    // let dummyState = {
-    //   price:null,
-    //   itemName:'',
-    //   itemId:'',
-    //   itemDescription:'',
-    //   visible: false,
-    //   category:'NONE',
-    // };
+  isSaveable(){
+    let dummyState = {
+      price:null,
+      itemName:'',
+      itemDescription:'',
+      visible: false,
+      category:'NONE',
+    };
 
     let isBool = true;
 
@@ -220,40 +153,40 @@ class EditProduct extends React.Component {
       isBool = false;
     }
 
-    if (isSave){
-      if (isBool){
-        database().ref('products'+'/'+this.state.itemId)
-        .set(
-          {
-            brand: "Acme",
-            logo: "http://www.example.com/logo.png",
-            name: this.state.itemName,
-            category: this.state.category,
-            image: "http://www.example.com/image.jpg",
-            description: this.state.itemDescription,
-            aggregateRating: {
-              type: "aggregateRating",
-              ratingValue: "5",
-              reviewCount: "21"
-            }
-          })
-        this.setState({ snackMessage: "Product saved successfully." })
-        this._onToggleSnackBar()
-        // this.setState({
-        //   price:null,
-        //   itemName:'',
-        //   itemDescription:'',
-        //   visible: false,
-        //   category:'NONE',
-        // })
+    if (isBool){
+      database()
+      .ref("categories")
+      .push()
+      .set(
+        {
+          brand: "Acme",
+          logo: "http://www.example.com/logo.png",
+          name: this.state.itemName,
+          category: this.state.category,
+          image: "http://www.example.com/image.jpg",
+          description: this.state.itemDescription,
+          aggregateRating: {
+            type: "aggregateRating",
+            ratingValue: "5",
+            reviewCount: "21"
+          }
+        })
+      this.setState({ snackMessage: "Product added successfully." })
+      this._onToggleSnackBar()
+      this.setState({
+        price:null,
+        itemName:'',
+        itemDescription:'',
+        visible: false,
+        category:'NONE',
+      })
 
-      } else {
-        this.setState({ snackMessage: "Please fill all the fields." })
-        // if (this.state.category === 'NONE') {
-        //   this.setState({ snackMessage: "Please choose a category." })
-        // }
-        this._onToggleSnackBar()
-      }
+    } else {
+      this.setState({ snackMessage: "Please fill all the fields." })
+      // if (this.state.category === 'NONE') {
+      //   this.setState({ snackMessage: "Please choose a category." })
+      // }
+      this._onToggleSnackBar()
     }
 
     return isBool;
@@ -298,47 +231,15 @@ class EditProduct extends React.Component {
       {this.state.snackMessage}
     </Snackbar>
       <ScrollView>
-
-            
-            <Slideshow 
-            dataSource={this.getImages()}/>
-            
             <TextInput
               selectionColor='#6600ff'
               // mode='outlined'
-              label='Product Name'
+              label='Category Name'
               value={this.state.itemName}
               onChangeText={itemName => this.setState({ itemName })}
               style={{marginVertical:'2%'}}
             />
             
-            <TextInput
-              selectionColor='#6600ff'
-              // mode='outlined'
-              label='Price'
-              value={this.state.price}
-              onChangeText={price => this.checkAndSet(price)}
-              style={{marginVertical:'2%'}}
-            />
-
-            <List.Section title="Category" titleStyle={{color:'#6600ff'}}>
-              <List.Accordion
-                title={this.state.category}
-              >
-              {
-                // list.map((l, i) => (
-                this.props.products.dataSourceFilter.map((l, i) => (
-                  <List.Item
-                    title={l.name}
-                    onPress={category => {
-                      this.setState({category:l.name})
-                    }}
-                  />
-                ))
-              }
-              </List.Accordion>
-            </List.Section>
-
             <Divider style={ProductStyles.dividerStyle} />
             <TextInput
               selectionColor='#6600ff'
@@ -364,8 +265,8 @@ class EditProduct extends React.Component {
                 mode="contained"
                 color="#6600ff"
                 style={{marginVertical:'3%', marginHorizontal:'2%', width:'40%'}} 
-                onPress={() => this.isSaveable(true)}> {/* isSave is true here */}
-                  Save              
+                onPress={() => this.isSaveable()}>
+                  Add              
               </Button>
             </View>
           </ScrollView>
@@ -375,11 +276,6 @@ class EditProduct extends React.Component {
     );
   }
 }
-
-// <Text style={ProductStyles.headerText}>item.name</Text>
-// <Text style={ProductStyles.categoryText}>item.category</Text>
-// <Text style={ProductStyles.priceText}>Price</Text>
-            
 
 const styles = StyleSheet.create({
   // container: {
@@ -429,4 +325,4 @@ const mapDispatchToProps = dispatch => (
   }, dispatch)
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditProduct);
+export default connect(mapStateToProps, mapDispatchToProps)(AddCategory);

@@ -5,6 +5,12 @@ export default StyleSheet.create({
     // container: {
     //   flex: 1,
     // },
+    categoryText:{
+        fontSize:12,
+        fontWeight:'bold',
+        // marginVertical:'2%',
+        marginBottom:'2%'
+      },
     ratingText:{
       fontSize:14,
       fontWeight:'bold',
@@ -26,7 +32,8 @@ export default StyleSheet.create({
     headerText:{
       fontSize:30,
       fontWeight:'bold',
-      marginVertical:'2%'
+    //   marginVertical:'2%'
+      marginTop:'2%'
     },
     priceText:{
       fontSize:20,

@@ -81,9 +81,10 @@ class ProductDetails extends React.Component {
   componentDidMount() {
   }
 
-  getImages() {
+  getImages(imgObj) {
       let datasource = [];
-      datasource.push({url:'http://placeimg.com/640/480/any'})
+    //   console.log(imgObj)
+      datasource.push({url: imgObj})
       datasource.push({url:'http://placeimg.com/640/480/any'})
       datasource.push({url:'http://placeimg.com/640/480/any'})
         return datasource;
@@ -105,7 +106,9 @@ class ProductDetails extends React.Component {
   render() {
     const { navigation } = this.props;
 
-    // console.log("deets " + this.props.navigation.state.params.itemId);
+    // this
+
+    const item = this.props.navigation.state.params.item;
 
     const BackIcon = <Icon
                 name='clear'
@@ -121,8 +124,9 @@ class ProductDetails extends React.Component {
       {/* <View > */}
       <ScrollView>
             <Slideshow 
-            dataSource={this.getImages()}/>
-            <Text style={ProductStyles.headerText}>Product</Text>
+            dataSource={this.getImages(item.image)}/>
+            <Text style={ProductStyles.headerText}>{item.name}</Text>
+            <Text style={ProductStyles.categoryText}>{item.category}</Text>
             <Text style={ProductStyles.priceText}>Price</Text>
             <Divider style={ProductStyles.dividerStyle} />
             <Rating
@@ -132,14 +136,14 @@ class ProductDetails extends React.Component {
                 fractions="{1}"
                 />
             <View style={{justifyContent: 'center', flexDirection:'row'}}>
-                <Text style={ProductStyles.ratingText}>2.5/5</Text>
+                <Text style={ProductStyles.ratingText}>{item.aggregateRating.ratingValue}/5</Text>
             </View>
             <View style={{justifyContent: 'center', flexDirection:'row'}}>
-                <Text style={ProductStyles.ratingCount}>125 Reviews</Text>
+                <Text style={ProductStyles.ratingCount}>{item.aggregateRating.reviewCount} Reviews</Text>
             </View>
             <Divider style={ProductStyles.dividerStyle} />
             <Text style={ProductStyles.descriptionHeader}>Description</Text>
-            <Text style={ProductStyles.descriptionText}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</Text>
+            <Text style={ProductStyles.descriptionText}>{item.description}</Text>
         </ScrollView>
       </View>
       

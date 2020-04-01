@@ -76,7 +76,7 @@ class NavBar extends React.Component {
                   name='add'
                   color='#fff'
                   // onPress={() => console.log('add enabled')} 
-                  onPress={() => this.props.navigation.navigate('addProduct')} 
+                  onPress={() => this.props.navigation.navigate('addCategory')} 
                   iconStyle={styles.iconStyle}
                   />
           </View>

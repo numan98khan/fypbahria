@@ -5,6 +5,8 @@ import { Card, ListItem, Button, Icon, Overlay } from 'react-native-elements'
 
 import database from '@react-native-firebase/database';
 
+import { withNavigation} from 'react-navigation';
+
 import {
     Menu,
     MenuOptions,
@@ -12,7 +14,7 @@ import {
     MenuTrigger,
   } from 'react-native-popup-menu';
 
-export default class MyMenu extends React.Component {
+class MyMenu extends React.Component {
 
     deleteItemDB(dbRef, itemId){
         console.log();
@@ -27,20 +29,20 @@ export default class MyMenu extends React.Component {
         name='create'
         type='material'
         color='#6600ff'
-        containerStyle={{paddingVertical:'10%', paddingHorizontal: '2%'}}/>
+        containerStyle={{paddingVertical:'10%', paddingHorizontal: '3%'}}/>
 
 
     let removeRef;
     if (this.props.attachProduct !== undefined) {
         removeRef = 'products'
-    } else if (this.props.attachProduct !== undefined) {
+    } else if (this.props.attachCategory !== undefined) {
         removeRef = 'categories'
     }
 
 
     let firstOpt;// = <MenuOption onSelect={() => this.props.navigation.navigate('editor')} text='Edit' />;
     if (removeRef === 'products') {
-        firstOpt = <MenuOption onSelect={() => this.props.navigation.navigate('editor')} text='Edit' />;    
+        firstOpt = <MenuOption onSelect={() => this.props.navigation.navigate('editProduct', {item:this.props.item})} text='Edit' />;    
     } else if (removeRef === 'categories') {
         firstOpt = null;
     }
@@ -70,3 +72,5 @@ export default class MyMenu extends React.Component {
       );
     }
   }
+
+export default withNavigation(MyMenu)

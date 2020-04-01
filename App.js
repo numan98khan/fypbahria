@@ -42,6 +42,7 @@ import { Provider } from 'react-redux'
 import store from './src/state/store'
 
 import { MenuProvider } from 'react-native-popup-menu';
+import {Provider as PaperProvider} from 'react-native-paper';
 
 console.disableYellowBox = true;
 
@@ -120,10 +121,12 @@ render()
   //       })
   // }
 
-  return <MenuProvider>
+  return <PaperProvider> 
+      <MenuProvider>
         <Provider store={store}>
           <Home />
          </Provider>
-       </MenuProvider>;
+       </MenuProvider>
+       </PaperProvider>;
 }
 }

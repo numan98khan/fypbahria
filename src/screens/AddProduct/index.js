@@ -1,18 +1,27 @@
 import React from 'react';
-import { View, StyleSheet, Button, BackHandler, Alert, Text } from 'react-native';
-import { TextInput, Picker, Platform } from 'react-native';
+import { View, StyleSheet, BackHandler, Alert, Text } from 'react-native';
+import {  Picker, Platform ,ScrollView} from 'react-native';
+
+import {Snackbar, TextInput, Card, Avatar, Button, Dialog, Portal, Title,List, Checkbox , Paragraph  } from 'react-native-paper';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {toggleImageFilter } from '../../state/actions';
+import {toggleImageFilter, initiateProducts } from '../../state/actions';
 
 import ScreenName from '../../components/ScreenName.js'
 // import NavBar from '../../navigation/navBar'
+import database from '@react-native-firebase/database';
 
-import { Header, Icon, ButtonGroup, Avatar } from 'react-native-elements';
-// import { withNavigation} from 'react-navigation';
 import ImgDetailOverlay from '../../components/imageDetailOverlay'
 import ImagePicker from 'react-native-image-picker';
 // import PhotoUpload from 'react-native-photo-upload'
+
+import { Header, Icon, ButtonGroup, Divider, Rating, AirbnbRating } from 'react-native-elements';
+// import { withNavigation} from 'react-navigation';
+
+import Slideshow from 'react-native-image-slider-show';
+
+import ProductStyles from '../../common/productStyle';
 
 class AddProduct extends React.Component {
 
@@ -20,28 +29,40 @@ class AddProduct extends React.Component {
 
   // };
 
+  state = {
+    price:null,
+    itemName:'',
+    itemDescription:'',
+    visible: false,
+    snackVisible: false,
+    category:'NONE',
+    snackMessage:'',
+  };
+
   // START
-  static navigationOptions= {
-    title: "Add",
-    headerStyle: {
-      backgroundColor: "#00ff80"
-    },
-    headerTintColor: "#fff",
-    headerTitleStyle: {
-      fontWeight: "bold",
-      textAlign: "center"
-    },
-  }
+  // static navigationOptions= {
+  //   title: "Add",
+  //   headerStyle: {
+  //     backgroundColor: "#00ff80"
+  //   },
+  //   headerTintColor: "#fff",
+  //   headerTitleStyle: {
+  //     fontWeight: "bold",
+  //     textAlign: "center"
+  //   },
+  // }
   constructor(props) {
     super(props);
-    this.state = {
-      title: '',
-      titleError:null,
-      category: 'Mobiles',
-      additionalInfo: '',
-      categories: ['Mobiles', 'Laptops', 'Desktops', 'Others'],
-      price:''
-    }
+    // this.state = {
+    //   title: '',
+    //   titleError:null,
+    //   category: 'Mobiles',
+    //   additionalInfo: '',
+    //   categories: ['Mobiles', 'Laptops', 'Desktops', 'Others'],
+    //   price:'',
+    //   itemName:'',
+    //   itemDescription:''
+    // }
   }
 
   handleSubmit = () => {
@@ -76,22 +97,76 @@ class AddProduct extends React.Component {
   // END
 
   backAction = () => {
-    Alert.alert("Hold on!", "Are you sure you want to go back?", [
-      {
-        text: "Cancel",
-        onPress: () => null,
-        style: "cancel"
-      },
-      { text: "YES", onPress: () => this.props.navigation.goBack() }
-    ]);
+    if (this.isSaveable()){
+      Alert.alert("Hold on!", "Are you sure you want to go back?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel"
+        },
+        { text: "YES", onPress: () => this.props.navigation.goBack() }
+      ]);
+    } else {
+      this.props.navigation.goBack()
+    }
     return true;
   };
+
+  getImages() {
+    let datasource = [];
+  //   console.log(imgObj)
+    // datasource.push({url: imgObj})
+    datasource.push({url:'http://placeimg.com/640/480/any'})
+    datasource.push({url:'http://placeimg.com/640/480/any'})
+      return datasource;
+  }
 
   componentDidMount() {
     this.backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       this.backAction
     );
+    console.log('laure')
+    // connect to a Firebase table
+    var dbref = this.props.products.dbh.ref('products');
+    // save database reference for later
+    //  this.props.products.setState ( {dbulref: dbref});
+    // meat: this is where it all happens
+     dbref.on('value', (e) => {
+        var rows = [];
+        // console.log(e);
+        eJSON = e.toJSON()
+        for(var i in eJSON){
+          tempJSON = eJSON[i]
+          tempJSON["id"] = i;
+          rows.push(tempJSON);
+        }
+        // console.log(rows[0])
+        var ds = rows;
+
+        this.props.products.dbh.ref('categories').on('value', (e) => {
+          var rowsCat = [{"description": "NONE", "name": "NONE"}];
+          eJSON = e.toJSON()
+          for(var i in eJSON){
+            rowsCat.push(eJSON[i]);
+          }
+  
+          var dsCat = rowsCat;
+          // console.log('>>>>>>>>>>>')
+          // // console.log(ds[0])
+          // console.log(dsCat)
+          // console.log('>>>>>>>>>>>')
+          this.props.initiateProducts(
+            {
+                dataSourceSearch: ds,
+                dataSourceFilter: dsCat,
+                dataSourceDup: ds,
+                 loading: false,
+              }
+            );
+            // console.log(this.props.products.dataSourceSearch);
+       });
+     });
   }
 
   componentWillUnmount() {
@@ -107,7 +182,89 @@ class AddProduct extends React.Component {
         console.log("response", response);
         })
     }
+
+  _showDialog = () => this.setState({ visible: true });
+  _hideDialog = () => this.setState({ visible: false });
+
+  _onToggleSnackBar = () => this.setState(state => ({ snackVisible: !state.snackVisible }));
+  _onDismissSnackBar = () => this.setState({ snackVisible: false });
+
+  isSaveable(){
+    let dummyState = {
+      price:null,
+      itemName:'',
+      itemDescription:'',
+      visible: false,
+      category:'NONE',
+    };
+
+    let isBool = true;
+
+    if (this.state.price === null) {
+      isBool = false;
+    }
+    if (this.state.itemName === '') {
+      isBool = false;
+    }
+    if (this.state.itemDescription === '') {
+      isBool = false;
+    }
+    if (this.state.category === 'NONE') {
+      isBool = false;
+    }
+
+    if (isBool){
+      database()
+      .ref("products")
+      .push()
+      .set(
+        {
+          brand: "Acme",
+          logo: "http://www.example.com/logo.png",
+          name: this.state.itemName,
+          category: this.state.category,
+          image: "http://www.example.com/image.jpg",
+          description: this.state.itemDescription,
+          aggregateRating: {
+            type: "aggregateRating",
+            ratingValue: "5",
+            reviewCount: "21"
+          }
+        })
+      this.setState({ snackMessage: "Product added successfully." })
+      this._onToggleSnackBar()
+      this.setState({
+        price:null,
+        itemName:'',
+        itemDescription:'',
+        visible: false,
+        category:'NONE',
+      })
+
+    } else {
+      this.setState({ snackMessage: "Please fill all the fields." })
+      // if (this.state.category === 'NONE') {
+      //   this.setState({ snackMessage: "Please choose a category." })
+      // }
+      this._onToggleSnackBar()
+    }
+
+    return isBool;
+  }
+
+  checkAndSet(price){
+    if (isNaN(parseInt(price))){
+      console.log('not int');
+      this.setState({ snackMessage: "Please enter a numerical value" })
+      this._onToggleSnackBar()
+    } else {
+      this.setState({ price })
+    }
+  }
+
   render() {
+    const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
+    // const [value, onChangeText] = React.useState('Useless Placeholder');
     const BackIcon = <Icon
                 name='clear'
                 color='#fff'
@@ -117,88 +274,105 @@ class AddProduct extends React.Component {
                           <Text>Add Product</Text>
                       </View>
     return (
-      // <View>
-      //   <Header
-      //     leftComponent={BackIcon}
-      //     centerComponent={TitleView}
-      //     // rightComponent={{ icon: 'home', style: { color: '#fff' } }}
-      //   />
-      //   <ScreenName name={'Add Product'} />
-      //   <Button
-      //       title="Go to Back"
-      //       onPress={() => this.props.navigation.navigate('home')}
-      //     />
-      // </View>
-      <View>
-
-      <ImgDetailOverlay/>
-      {/* <PhotoUpload>
-        <Image
-          source={{
-            uri: 'https://www.sparklabs.com/forum/styles/comboot/theme/images/default_avatar.jpg'
-          }}
-        />
-      </PhotoUpload> */}
-
-      {/* // Standard Avatar with edit button */}
-      
       <View style={styles.container}>
       {/* <View > */}
-      <Avatar size="large"
-        // containerStyle={styles.AvatarStyle}
-        avatarStyle={styles.AvatarStyle}
-        source={{
-          uri:
-            'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+      <Snackbar
+        visible={this.state.snackVisible}
+        onDismiss={this._onDismissSnackBar}
+        duration={1000}
+        action={{
+          label: 'Ok',
+          onPress: () => {
+            this._onDismissSnackBar()
+          },
         }}
-        showEditButton
-        onEditPress={() => this.pickImage()}
-        onPress={() => this.props.toggleImageFilter()}
-      />  
-        <TextInput
-          style={styles.control}
-          onChangeText={(title) => {
-            this.setState({ title,titleError:null })
-            if(title.length==0){
-              this.setState({ titleError:'Title is required' })
-            }
-          }}
-          value={this.state.title}
-          placeholder="Product Name"
-          placeholderTextColor="grey"
-        />
-        {this.state.titleError && <Text style={{color:'red'}}>Title is required</Text>}
-        <TextInput
-          numberOfLines={5}
-          onChangeText={(additionalInfo) => this.setState({ additionalInfo })}
-          multiline={true}
-          value={this.state.additionalInfo}
-          placeholder="Additional Info"
-          placeholderTextColor="grey"
-          style={styles.additionalInfo}
-        />
-        <TextInput
-          style={styles.control}
-          onChangeText={(price) => this.setState({ price })}
-          value={this.state.price}
-          placeholder="Product Price"
-          placeholderTextColor="grey"
-          keyboardType="number-pad"
-        />
-        <Picker
-          selectedValue={this.state.language}
-          onValueChange={(itemValue, itemIndex) => this.setState({ language: itemValue })}>
-          {this.renderCategories()}
-        </Picker>
-        <Button
-          title="Add"
-          onPress={this.handleSubmit}
-        />
-      </View>
+        style={{width:'100%', marginHorizontal:'6.2%'}}
+      >
+      {this.state.snackMessage}
+    </Snackbar>
+      <ScrollView>
+
+            
+            <Slideshow 
+            dataSource={this.getImages()}/>
+            
+            <TextInput
+              selectionColor='#6600ff'
+              // mode='outlined'
+              label='Product Name'
+              value={this.state.itemName}
+              onChangeText={itemName => this.setState({ itemName })}
+              style={{marginVertical:'2%'}}
+            />
+            
+            <TextInput
+              selectionColor='#6600ff'
+              // mode='outlined'
+              label='Price'
+              value={this.state.price}
+              onChangeText={price => this.checkAndSet(price)}
+              style={{marginVertical:'2%'}}
+            />
+
+            <List.Section title="Category" titleStyle={{color:'#6600ff'}}>
+              <List.Accordion
+                title={this.state.category}
+              >
+              {
+                // list.map((l, i) => (
+                this.props.products.dataSourceFilter.map((l, i) => (
+                  <List.Item
+                    title={l.name}
+                    onPress={category => {
+                      this.setState({category:l.name})
+                    }}
+                  />
+                ))
+              }
+              </List.Accordion>
+            </List.Section>
+
+            <Divider style={ProductStyles.dividerStyle} />
+            <TextInput
+              selectionColor='#6600ff'
+              mode='outlined'
+              multiline={true}
+              label='Description'
+              value={this.state.itemDescription}
+              onChangeText={itemDescription => this.setState({ itemDescription })}
+              style={{marginBottom:'10%'}}
+            />
+
+            <View style={{justifyContent: 'center', flexDirection:'row'}}>
+              <Button 
+                // icon="cancel" 
+                mode="contained" 
+                color="#6600ff"
+                style={{marginVertical:'3%', marginHorizontal:'2%', width:'40%'}}
+                onPress={() => this.props.navigation.goBack()}>
+                  Discard
+              </Button>
+              <Button 
+                // icon="plus" 
+                mode="contained"
+                color="#6600ff"
+                style={{marginVertical:'3%', marginHorizontal:'2%', width:'40%'}} 
+                onPress={() => this.isSaveable()}>
+                  Add              
+              </Button>
+            </View>
+          </ScrollView>
+          
+          
       </View>
     );
   }
 }
+
+// <Text style={ProductStyles.headerText}>item.name</Text>
+// <Text style={ProductStyles.categoryText}>item.category</Text>
+// <Text style={ProductStyles.priceText}>Price</Text>
+            
 
 const styles = StyleSheet.create({
   // container: {
@@ -210,7 +384,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   container: {
-    // flex: 2,
+    flex: 1,
     padding: 20,
     alignItems: "stretch",
     backgroundColor: '#ffffff',
@@ -243,7 +417,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
-    toggleImageFilter
+    toggleImageFilter,
+    initiateProducts
   }, dispatch)
 );
 

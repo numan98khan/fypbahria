@@ -27,11 +27,66 @@ import EditProduct from '../screens/EditProduct';
 import Statistics from '../screens/Statistics';
 import ProductDetails from '../screens/ProductDetails';
 
+import AddCategory from '../screens/AddCategory';
+
 import drawerContentComponents from './drawerContentComponents'
 
 // import StackNavBar from './StackNavBar';
 
 
+const categoryStack = createStackNavigator(
+    {
+        Category: {
+            screen: Category,
+            navigationOptions: {
+                headerShown: false,
+            },
+            
+        },
+        // detailCategory: {
+        //     screen:ProductDetails,
+        //     navigationOptions: {
+        //         title:"Details",
+        //     },
+            
+        // },
+        addCategory: {
+            screen:AddCategory,
+            navigationOptions: {
+                title:"Add Category",
+                // headerShown: false,
+            },
+        }
+    },
+    {
+        defaultNavigationOptions: {
+            header: ({ scene, previous, navigation }) => {
+                const { options } = scene.descriptor;
+                const title =
+                  options.headerTitle !== undefined
+                    ? options.headerTitle
+                    : options.title !== undefined
+                    ? options.title
+                    : scene.route.routeName;
+                console.log(title)
+              
+                return (<Header backgroundColor="#6600ff"
+                centerComponent={{ text: title, style: { color: '#fff', fontSize:24 } }}
+                // leftContainerStyle={{width: 400}}
+                // leftComponent={previous ? <Icon
+                //         name="clear"
+                //         color='#fff'
+                //         onPress={navigation.goBack}
+                //         iconStyle={styles.iconStyle} /> : undefined}
+                >
+              {/* <MyCustomLeftComponent />
+              <MyCustomCenterComponent />
+              <MyCustomRightComponent /> */}
+              </Header>);
+              }
+        }
+    }
+);
 
 const productStack = createStackNavigator(
     {
@@ -52,12 +107,13 @@ const productStack = createStackNavigator(
         editProduct: {
             screen:EditProduct,
             navigationOptions: {
-                // headerShown: false,
+                title:"Edit Product",
             },
         },
         addProduct: {
             screen:AddProduct,
             navigationOptions: {
+                title:"Add Product",
                 // headerShown: false,
             },
         }
@@ -95,14 +151,13 @@ const productStack = createStackNavigator(
 // The main drawer
 const homeDrawer = createDrawerNavigator({
     Products: productStack,
-    Category: {
-        screen: Category,
-    },
+    Category: categoryStack,
     Reviews: {
         screen: Reviews,
     },
     Live: {
-        screen: LiveStream,
+        // screen: LiveStream,
+        screen: Reviews,
     },
     Statistics: {
         screen: Statistics,
@@ -116,8 +171,8 @@ const homeDrawer = createDrawerNavigator({
 },{
     drawerWidth:250,
     drawerType:'slide',
-    // initialRouteName:'Category',
-    initialRouteName:'Products',
+    initialRouteName:'Category',
+    // initialRouteName:'Products',
     contentComponent: drawerContentComponents,
     
     // The drawer menu will be added throough here (thorugh component just like NavBar)
@@ -126,6 +181,16 @@ const homeDrawer = createDrawerNavigator({
 
 });
 
+// const editorStack = createStackNavigator(
+//     {
+//         editProduct: {
+//             screen:EditProduct,
+//             navigationOptions: {
+//                 headerShown: false,
+//             },
+//         }
+//     }
+// );
 
 const Home = createSwitchNavigator(
     {
@@ -133,6 +198,7 @@ const Home = createSwitchNavigator(
         signup: SignUp,
         login: Login,
         home: homeDrawer,
+        // editor: EditProduct,
     },
     {
         initialRouteName:'loading'
