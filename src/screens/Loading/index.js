@@ -13,10 +13,10 @@ export default class Loading extends Component {
     auth().onAuthStateChanged(user => {
       // **for the purpose of directly logging in if creds entered already
       
-      // const routeToGoTo = 'home';
+      const routeToGoTo = 'home';
       // const routeToGoTo = 'detailProduct';
       // const routeToGoTo = 'addProduct';
-      const routeToGoTo = 'addCategory';
+      // const routeToGoTo = 'addCategory';
 
       // this.props.navigation.navigate(routeToGoTo)
 

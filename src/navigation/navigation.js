@@ -28,11 +28,66 @@ import Statistics from '../screens/Statistics';
 import ProductDetails from '../screens/ProductDetails';
 
 import AddCategory from '../screens/AddCategory';
+import ReviewDetails from '../screens/ReviewDetails';
+import AddReview from '../screens/AddReview';
 
 import drawerContentComponents from './drawerContentComponents'
 
 // import StackNavBar from './StackNavBar';
 
+const reviewStack = createStackNavigator(
+    {
+        Reviews: {
+            screen: Reviews,
+            navigationOptions: {
+                headerShown: false,
+            },
+            
+        },
+        datailReview: {
+            screen:AddCategory,
+            navigationOptions: {
+                title:"Add Category",
+                // headerShown: false,
+            },
+        },
+        addReview: {
+            screen:AddCategory,
+            navigationOptions: {
+                title:"Add Category",
+                // headerShown: false,
+            },
+        }
+    },
+    {
+        defaultNavigationOptions: {
+            header: ({ scene, previous, navigation }) => {
+                const { options } = scene.descriptor;
+                const title =
+                  options.headerTitle !== undefined
+                    ? options.headerTitle
+                    : options.title !== undefined
+                    ? options.title
+                    : scene.route.routeName;
+                console.log(title)
+              
+                return (<Header backgroundColor="#6600ff"
+                centerComponent={{ text: title, style: { color: '#fff', fontSize:24 } }}
+                // leftContainerStyle={{width: 400}}
+                // leftComponent={previous ? <Icon
+                //         name="clear"
+                //         color='#fff'
+                //         onPress={navigation.goBack}
+                //         iconStyle={styles.iconStyle} /> : undefined}
+                >
+              {/* <MyCustomLeftComponent />
+              <MyCustomCenterComponent />
+              <MyCustomRightComponent /> */}
+              </Header>);
+              }
+        }
+    }
+);
 
 const categoryStack = createStackNavigator(
     {
@@ -43,13 +98,6 @@ const categoryStack = createStackNavigator(
             },
             
         },
-        // detailCategory: {
-        //     screen:ProductDetails,
-        //     navigationOptions: {
-        //         title:"Details",
-        //     },
-            
-        // },
         addCategory: {
             screen:AddCategory,
             navigationOptions: {
@@ -152,9 +200,7 @@ const productStack = createStackNavigator(
 const homeDrawer = createDrawerNavigator({
     Products: productStack,
     Category: categoryStack,
-    Reviews: {
-        screen: Reviews,
-    },
+    Reviews: reviewStack,
     Live: {
         // screen: LiveStream,
         screen: Reviews,
@@ -171,8 +217,9 @@ const homeDrawer = createDrawerNavigator({
 },{
     drawerWidth:250,
     drawerType:'slide',
-    initialRouteName:'Category',
+    // initialRouteName:'Category',
     // initialRouteName:'Products',
+    initialRouteName:'Reviews',
     contentComponent: drawerContentComponents,
     
     // The drawer menu will be added throough here (thorugh component just like NavBar)

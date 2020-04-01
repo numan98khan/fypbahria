@@ -57,6 +57,22 @@ render()
   // for (i = 0; i < 4; i++) {
   //   // console.log('>>>>>>'+
   //     database()
+  //     .ref("reviews")
+  //     .push()
+  //     .set(
+  //       {
+  //         review: "This is an excellent widget with 21 features and 4 colors.",
+  //         productId: "id",
+  //         buyerId: "id",
+  //         sellerId: "id",
+  //       })
+  //     // )
+  // }  
+
+
+  // for (i = 0; i < 4; i++) {
+  //   // console.log('>>>>>>'+
+  //     database()
   //     .ref("categories")
   //     .push()
   //     .set(
