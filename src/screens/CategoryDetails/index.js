@@ -18,7 +18,7 @@ import Slideshow from 'react-native-image-slider-show';
 
 import ProductStyles from '../../common/productStyle';
 
-class ReviewDetails extends React.Component {
+class CategoryDetails extends React.Component {
 
   // static navigationOptions = {
 
@@ -44,10 +44,7 @@ class ReviewDetails extends React.Component {
       category: 'Mobiles',
       additionalInfo: '',
       categories: ['Mobiles', 'Laptops', 'Desktops', 'Others'],
-      price:'',
-      tempNameSet:'',
-      tempProductSet:'',
-      
+      price:''
     }
   }
 
@@ -58,68 +55,22 @@ class ReviewDetails extends React.Component {
   componentWillUnmount() {
     // this.backHandler.remove();
   }
-
-  getNameFromId(userId){
-    // console.log('users/'+userId)
-    var eJSON;
-    // console.log('transaction ' + this.props.products.dbh.ref('users/'+userId).transaction((FirstName) => {
-    //   // if (currentViews === null) return 1;
-    //   return FirstName.toJSON();
-    // }))
-    this.props.products.dbh.ref('users/'+userId).once('value', (e) => {
-      eJSON = e.toJSON()
-    //   console.log(eJSON.FirstName+' '+eJSON.LastName);
-    //   this.setState({tempNameSet:eJSON.FirstName+' '+eJSON.LastName});
-      this.setState({tempNameSet:eJSON.email});
-    });
-    return this.state.tempNameSet;
-  }
-
-  getProductFromId(productId){
-    // console.log('users/'+userId)
-    var eJSON;
-    // console.log('transaction ' + this.props.products.dbh.ref('users/'+userId).transaction((FirstName) => {
-    //   // if (currentViews === null) return 1;
-    //   return FirstName.toJSON();
-    // }))
-    this.props.products.dbh.ref('products/'+productId).once('value', (e) => {
-      eJSON = e.toJSON()
-    //   console.log(eJSON.name);
-      this.setState({tempProductSet:eJSON.name});
-    });
-    return this.state.tempProductSet;
-  }
-
   render() {
     const { navigation } = this.props;
 
     // this
 
-    const review = this.props.navigation.state.params.review;
+    const category = this.props.navigation.state.params.category;
 
-    // <Text style={ProductStyles.headerText}>{this.getNameFromId(review.buyerId)}</Text>
-            
     return (
         
       <View style={styles.container}>
       {/* <View > */}
       <ScrollView>
-            <Text style={ProductStyles.headerText}>{this.getNameFromId(review.buyerId)}</Text>
-            <Text style={ProductStyles.priceText}>{this.getProductFromId(review.productId)}</Text>
+            <Text style={ProductStyles.headerText}>{category.name}</Text>
             <Divider style={ProductStyles.dividerStyle} />
-            <Rating
-                imageSize={20}
-                readonly
-                startingValue={review.rating}
-                fractions="{1}"
-                />
-            <View style={{justifyContent: 'center', flexDirection:'row'}}>
-                <Text style={ProductStyles.ratingText}>{review.rating}/5</Text>
-            </View>
-            <Divider style={ProductStyles.dividerStyle} />
-            
-            <Text style={ProductStyles.descriptionHeader}>Review</Text>
-            <Text style={ProductStyles.descriptionText}>{review.review}</Text>
+            <Text style={ProductStyles.descriptionHeader}>Description</Text>
+            <Text style={ProductStyles.descriptionText}>{category.description}</Text>
         </ScrollView>
       </View>
       
@@ -173,4 +124,4 @@ const mapDispatchToProps = dispatch => (
   }, dispatch)
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReviewDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryDetails);

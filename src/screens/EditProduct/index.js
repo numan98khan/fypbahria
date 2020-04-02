@@ -183,12 +183,12 @@ class EditProduct extends React.Component {
   }
     pickImage()
     {
-    console.log("preeeee");
+    // console.log("preeeee");
         const options= {
             noData:true
         }
         ImagePicker.launchImageLibrary(options, response => {
-        console.log("response", response);
+        // console.log("response", response);
         })
     }
 

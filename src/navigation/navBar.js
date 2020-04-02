@@ -52,8 +52,11 @@ class NavBar extends React.Component {
             iconStyle={styles.iconStyle} />;
 
         let rightComp;
+
+        console.log("NAVBAR ::: " + this.props.products.currentScreen);
+
         if (this.props.products.currentScreen === 'products'){
-          console.log('debug1');
+          // console.log('debug1');
           rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             {searchIcon}  
           <Icon
@@ -69,7 +72,7 @@ class NavBar extends React.Component {
                   iconStyle={styles.iconStyle}  />
           </View>
         } else if (this.props.products.currentScreen === 'category') {
-          console.log('debug');
+          // console.log('debug');
           rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             {searchIcon}
             <Icon
@@ -77,6 +80,18 @@ class NavBar extends React.Component {
                   color='#fff'
                   // onPress={() => console.log('add enabled')} 
                   onPress={() => this.props.navigation.navigate('addCategory')} 
+                  iconStyle={styles.iconStyle}
+                  />
+          </View>
+        } else if (this.props.products.currentScreen === 'reviews') {
+          // console.log('debug');
+          rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            {searchIcon}
+            <Icon
+                  name='add'
+                  color='#fff'
+                  // onPress={() => console.log('add enabled')} 
+                  onPress={() => this.props.navigation.navigate('addReview')} 
                   iconStyle={styles.iconStyle}
                   />
           </View>

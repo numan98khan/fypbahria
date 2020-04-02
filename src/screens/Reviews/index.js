@@ -64,6 +64,7 @@ import ScreenName from '../../components/ScreenName.js'
 import { SearchBar } from 'react-native-elements';
 
 import { Card, ListItem, Button, Icon, Overlay } from 'react-native-elements'
+import { Header, ButtonGroup, Avatar, Divider, Rating, AirbnbRating } from 'react-native-elements';
 
 import NavBar from '../../navigation/navBar'
 import FilterOverlay from '../../navigation/filterOverlay'
@@ -110,8 +111,16 @@ class Reviews extends React.Component {
     super(props);
   }
 
+  state = {
+    reviews:[],
+    visible: false,
+    snackVisible: false,
+    snackMessage:'',
+    tempNameSet:'',
+  };
+
   componentDidMount() {
-    this.props.updateScreenVar({screen:'category'});
+    this.props.updateScreenVar({screen:'reviews'});
     // connect to a Firebase table
      var dbref = this.props.products.dbh.ref('products');
     // save database reference for later
@@ -125,24 +134,27 @@ class Reviews extends React.Component {
         // }
         // var ds = rows;
 
-        this.props.products.dbh.ref('categories').on('value', (e) => {
+        this.props.products.dbh.ref('reviews').on('value', (e) => {
           var rowsCat = [];
           eJSON = e.toJSON()
           for(var i in eJSON){
+            
             tempJSON = eJSON[i]
+            
             tempJSON["id"] = i;
+            // tempJSON["buyerName"] = this.getNameFromId(tempJSON.buyerId);
+            console.log(tempJSON)
             rowsCat.push(tempJSON);
           }
   
           var dsCat = rowsCat;
-          console.log('>>>>>>>>>>>')
-          // console.log(ds)
-          console.log(dsCat)
-          console.log('>>>>>>>>>>>')
-          this.props.updateCategory(
+          // console.log('>>>>>>>>>>>')
+          // // console.log(ds)
+          // console.log(dsCat)
+          // console.log('>>>>>>>>>>>')
+          this.setState(
             {
-                dataCategorySearch: dsCat,
-                dataCategoryDup: dsCat,
+                reviews: dsCat,
                 // dataSourceDup: ds,
                 //  loading: false,
               }
@@ -181,6 +193,37 @@ class Reviews extends React.Component {
   static navigationOptions = {
     // title: 'Shop',  
   };
+
+  getNameFromId(userId){
+    // console.log('users/'+userId)
+    var eJSON;
+    // console.log('transaction ' + this.props.products.dbh.ref('users/'+userId).transaction((FirstName) => {
+    //   // if (currentViews === null) return 1;
+    //   return FirstName.toJSON();
+    // }))
+    this.props.products.dbh.ref('users/'+userId).once('value', (e) => {
+      eJSON = e.toJSON()
+      // console.log(eJSON.FirstName+' '+eJSON.LastName);
+      // console.log(eJSON.email);
+      // this.setState({tempNameSet:eJSON.FirstName+' '+eJSON.LastName});
+      this.setState({tempNameSet:eJSON.email});
+    });
+    return this.state.tempNameSet;
+  }
+  getProductFromId(productId){
+    // console.log('users/'+userId)
+    var eJSON;
+    // console.log('transaction ' + this.props.products.dbh.ref('users/'+userId).transaction((FirstName) => {
+    //   // if (currentViews === null) return 1;
+    //   return FirstName.toJSON();
+    // }))
+    this.props.products.dbh.ref('products/'+productId).once('value', (e) => {
+      eJSON = e.toJSON()
+    //   console.log(eJSON.name);
+      this.setState({tempProductSet:eJSON.name});
+    });
+    return this.state.tempProductSet;
+  }
 
   render() {
 
@@ -246,15 +289,31 @@ class Reviews extends React.Component {
         <View style={{flex: 1}}>
           {
             // list.map((l, i) => (
-            this.props.products.dataCategorySearch.map((l, i) => (
+            this.state.reviews.map((l, i) => (
               <ListItem
                 // containerStyle={{height:100,width:1080}}
                 key={i}
                 // leftAvatar={{ source: { uri: l.avatar_url } }}
-                title={l.name}
-                subtitle={l.description}
+                title={this.getNameFromId(l.buyerId)}
+                // title={l.buyerName}
+                subtitle={<Rating
+                  imageSize={15}
+                  readonly
+                  startingValue={l.rating}
+                  fractions="{1}"
+                  style={{paddingTop:'2%', paddingRight:'72%',marginBottom:"0%"}}
+                  />}
+                // subtitleStyle={{marginTop:'10%'}}
                 bottomDivider
-                chevron={<MenuPopUp item={l} attachCategory={1}/>}
+                chevron={<MenuPopUp item={l} attachReview={1}/>}
+                onPress={() => {
+                  // let buildReview = l;
+                  // buildReview["productName"] = this.getProductFromId(l.productId);
+                  // buildReview["buyerName"] = this.getProductFromId(l.productId);
+                  this.props.navigation.navigate('detailReview', {
+                    review: l,
+                  });
+                }}
               />
             ))
           }

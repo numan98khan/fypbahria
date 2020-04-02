@@ -28,10 +28,12 @@ import Statistics from '../screens/Statistics';
 import ProductDetails from '../screens/ProductDetails';
 
 import AddCategory from '../screens/AddCategory';
+import detailsCategory from '../screens/CategoryDetails';
 import ReviewDetails from '../screens/ReviewDetails';
 import AddReview from '../screens/AddReview';
 
 import drawerContentComponents from './drawerContentComponents'
+import CategoryDetails from '../screens/CategoryDetails';
 
 // import StackNavBar from './StackNavBar';
 
@@ -44,17 +46,17 @@ const reviewStack = createStackNavigator(
             },
             
         },
-        datailReview: {
-            screen:AddCategory,
+        addReview: {
+            screen:AddReview,
             navigationOptions: {
-                title:"Add Category",
+                title:"Add Review",
                 // headerShown: false,
             },
         },
-        addReview: {
-            screen:AddCategory,
+        detailReview: {
+            screen:ReviewDetails,
             navigationOptions: {
-                title:"Add Category",
+                title:"Review Details",
                 // headerShown: false,
             },
         }
@@ -64,13 +66,13 @@ const reviewStack = createStackNavigator(
             header: ({ scene, previous, navigation }) => {
                 const { options } = scene.descriptor;
                 const title =
-                  options.headerTitle !== undefined
+                    options.headerTitle !== undefined
                     ? options.headerTitle
                     : options.title !== undefined
                     ? options.title
                     : scene.route.routeName;
-                console.log(title)
-              
+                // console.log(title)
+                
                 return (<Header backgroundColor="#6600ff"
                 centerComponent={{ text: title, style: { color: '#fff', fontSize:24 } }}
                 // leftContainerStyle={{width: 400}}
@@ -80,11 +82,11 @@ const reviewStack = createStackNavigator(
                 //         onPress={navigation.goBack}
                 //         iconStyle={styles.iconStyle} /> : undefined}
                 >
-              {/* <MyCustomLeftComponent />
-              <MyCustomCenterComponent />
-              <MyCustomRightComponent /> */}
-              </Header>);
-              }
+                {/* <MyCustomLeftComponent />
+                <MyCustomCenterComponent />
+                <MyCustomRightComponent /> */}
+                </Header>);
+                }
         }
     }
 );
@@ -104,6 +106,13 @@ const categoryStack = createStackNavigator(
                 title:"Add Category",
                 // headerShown: false,
             },
+        },
+        detailCategory: {
+            screen:CategoryDetails,
+            navigationOptions: {
+                title:"Category Details",
+                // headerShown: false,
+            },
         }
     },
     {
@@ -116,7 +125,7 @@ const categoryStack = createStackNavigator(
                     : options.title !== undefined
                     ? options.title
                     : scene.route.routeName;
-                console.log(title)
+                // console.log(title)
               
                 return (<Header backgroundColor="#6600ff"
                 centerComponent={{ text: title, style: { color: '#fff', fontSize:24 } }}
@@ -176,7 +185,7 @@ const productStack = createStackNavigator(
                     : options.title !== undefined
                     ? options.title
                     : scene.route.routeName;
-                console.log(title)
+                // console.log(title)
               
                 return (<Header backgroundColor="#6600ff"
                 centerComponent={{ text: title, style: { color: '#fff', fontSize:24 } }}
@@ -217,8 +226,8 @@ const homeDrawer = createDrawerNavigator({
 },{
     drawerWidth:250,
     drawerType:'slide',
-    // initialRouteName:'Category',
-    initialRouteName:'Products',
+    initialRouteName:'Category',
+    // initialRouteName:'Products',
     // initialRouteName:'Reviews',
     contentComponent: drawerContentComponents,
     

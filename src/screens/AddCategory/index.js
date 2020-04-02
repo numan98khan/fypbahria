@@ -30,12 +30,10 @@ class AddCategory extends React.Component {
   // };
 
   state = {
-    price:null,
-    itemName:'',
-    itemDescription:'',
+    categoryName:'',
+    categoryDescription:'',
     visible: false,
     snackVisible: false,
-    category:'NONE',
     snackMessage:'',
   };
 
@@ -46,7 +44,7 @@ class AddCategory extends React.Component {
   // END
 
   backAction = () => {
-    if (this.isSaveable()){
+    if (this.isSaveable(false)){
       Alert.alert("Hold on!", "Are you sure you want to go back?", [
         {
           text: "Cancel",
@@ -66,7 +64,6 @@ class AddCategory extends React.Component {
       "hardwareBackPress",
       this.backAction
     );
-    console.log('laure')
     // connect to a Firebase table
     var dbref = this.props.products.dbh.ref('products');
     // save database reference for later
@@ -114,12 +111,12 @@ class AddCategory extends React.Component {
   }
     pickImage()
     {
-    console.log("preeeee");
+    // console.log("preeeee");
         const options= {
             noData:true
         }
         ImagePicker.launchImageLibrary(options, response => {
-        console.log("response", response);
+        // console.log("response", response);
         })
     }
 
@@ -129,90 +126,79 @@ class AddCategory extends React.Component {
   _onToggleSnackBar = () => this.setState(state => ({ snackVisible: !state.snackVisible }));
   _onDismissSnackBar = () => this.setState({ snackVisible: false });
 
-  isSaveable(){
+  isSaveable(isSave){
     let dummyState = {
-      price:null,
-      itemName:'',
-      itemDescription:'',
+      categoryName:'',
+      categoryDescription:'',
       visible: false,
-      category:'NONE',
+      snackVisible: false,
+      snackMessage:'',
     };
 
     let isBool = true;
 
-    if (this.state.price === null) {
+    if (this.state.categoryName === '') {
       isBool = false;
     }
-    if (this.state.itemName === '') {
-      isBool = false;
-    }
-    if (this.state.itemDescription === '') {
-      isBool = false;
-    }
-    if (this.state.category === 'NONE') {
+    if (this.state.categoryDescription === '') {
       isBool = false;
     }
 
-    if (isBool){
-      database()
-      .ref("categories")
-      .push()
-      .set(
-        {
-          brand: "Acme",
-          logo: "http://www.example.com/logo.png",
-          name: this.state.itemName,
-          category: this.state.category,
-          image: "http://www.example.com/image.jpg",
-          description: this.state.itemDescription,
-          aggregateRating: {
-            type: "aggregateRating",
-            ratingValue: "5",
-            reviewCount: "21"
-          }
+    if (isSave){
+      if (isBool){
+        console.log("Ok Boomer!");
+        database()
+        .ref("categories")
+        .push()
+        .set(
+          {
+            userId: this.props.products.userObj.uid,
+            name: this.state.categoryName,
+            description: this.state.categoryDescription,
+          })
+        this.setState({ snackMessage: "Category added successfully." })
+        this._onToggleSnackBar()
+        this.setState({
+          categoryName:'',
+          categoryDescription:'',
+          visible: false,
+          snackVisible: false,
+          snackMessage:'',
         })
-      this.setState({ snackMessage: "Product added successfully." })
-      this._onToggleSnackBar()
-      this.setState({
-        price:null,
-        itemName:'',
-        itemDescription:'',
-        visible: false,
-        category:'NONE',
-      })
 
-    } else {
-      this.setState({ snackMessage: "Please fill all the fields." })
-      // if (this.state.category === 'NONE') {
-      //   this.setState({ snackMessage: "Please choose a category." })
-      // }
-      this._onToggleSnackBar()
+      } else {
+        this.setState({ snackMessage: "Please fill all the fields." })
+        // if (this.state.category === 'NONE') {
+        //   this.setState({ snackMessage: "Please choose a category." })
+        // }
+        this._onToggleSnackBar()
+      }
     }
 
     return isBool;
   }
 
-  checkAndSet(price){
-    if (isNaN(parseInt(price))){
-      console.log('not int');
-      this.setState({ snackMessage: "Please enter a numerical value" })
-      this._onToggleSnackBar()
-    } else {
-      this.setState({ price })
-    }
-  }
+  // checkAndSet(price){
+  //   if (isNaN(parseInt(price))){
+  //     console.log('not int');
+  //     this.setState({ snackMessage: "Please enter a numerical value" })
+  //     this._onToggleSnackBar()
+  //   } else {
+  //     this.setState({ price })
+  //   }
+  // }
 
   render() {
-    const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
+    // const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
     // const [value, onChangeText] = React.useState('Useless Placeholder');
-    const BackIcon = <Icon
-                name='clear'
-                color='#fff'
-                type='material'
-                onPress={() => this.props.navigation.navigate('home')} />
-    const TitleView = <View style={{ flexDirection: 'row', justifyContent: 'space-between', width:100 }}>
-                          <Text>Add Product</Text>
-                      </View>
+    // const BackIcon = <Icon
+    //             name='clear'
+    //             color='#fff'
+    //             type='material'
+    //             onPress={() => this.props.navigation.navigate('home')} />
+    // const TitleView = <View style={{ flexDirection: 'row', justifyContent: 'space-between', width:100 }}>
+    //                       <Text>Add Product</Text>
+    //                   </View>
     return (
       <View style={styles.container}>
       {/* <View > */}
@@ -235,8 +221,8 @@ class AddCategory extends React.Component {
               selectionColor='#6600ff'
               // mode='outlined'
               label='Category Name'
-              value={this.state.itemName}
-              onChangeText={itemName => this.setState({ itemName })}
+              value={this.state.categoryName}
+              onChangeText={categoryName => this.setState({ categoryName })}
               style={{marginVertical:'2%'}}
             />
             
@@ -246,8 +232,8 @@ class AddCategory extends React.Component {
               mode='outlined'
               multiline={true}
               label='Description'
-              value={this.state.itemDescription}
-              onChangeText={itemDescription => this.setState({ itemDescription })}
+              value={this.state.categoryDescription}
+              onChangeText={categoryDescription => this.setState({ categoryDescription })}
               style={{marginBottom:'10%'}}
             />
 
@@ -265,7 +251,7 @@ class AddCategory extends React.Component {
                 mode="contained"
                 color="#6600ff"
                 style={{marginVertical:'3%', marginHorizontal:'2%', width:'40%'}} 
-                onPress={() => this.isSaveable()}>
+                onPress={() => this.isSaveable(true)}>
                   Add              
               </Button>
             </View>
@@ -313,6 +299,8 @@ const styles = StyleSheet.create({
     })
   }
 });
+
+
 const mapStateToProps = (state) => {
   const { products } = state
   return { products }

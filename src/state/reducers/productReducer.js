@@ -17,10 +17,16 @@ const INITIAL_STATE = {
     isFilterVisible: false,
     currentScreen:'',
     isSearchBar:false,
+    userObj:null,
 };
 
 const productReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case types.UPDATE_USEROBJ:
+        console.log('user reducer > '+ action.payload.userObj.uid);
+        return Object.assign({}, state, {
+            userObj: action.payload.userObj,
+        });
     case types.INITIATE_PRODUCTS:
 
         return Object.assign({}, state, {

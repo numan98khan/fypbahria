@@ -108,10 +108,10 @@ class Category extends React.Component {
           }
   
           var dsCat = rowsCat;
-          console.log('>>>>>>>>>>>')
-          // console.log(ds)
-          console.log(dsCat)
-          console.log('>>>>>>>>>>>')
+          // console.log('>>>>>>>>>>>')
+          // // console.log(ds)
+          // console.log(dsCat)
+          // console.log('>>>>>>>>>>>')
           this.props.updateCategory(
             {
                 dataCategorySearch: dsCat,
@@ -154,6 +154,23 @@ class Category extends React.Component {
   static navigationOptions = {
     // title: 'Shop',  
   };
+
+  getTruncText(textObj){
+    var match = /\r|\n/.exec(textObj);
+    var textLimit = 40;
+
+    if (match) {
+        // Found one, look at `match` for details, in particular `match.index`
+      console.log('has newline');  
+      console.log(textObj.match(/([^\n]+)/g))
+      textObj = textObj.match(/([^\n]+)/g)[0]
+    }
+    if (textObj.length > textLimit){
+      textObj = textObj.slice(0, textLimit)+"...";
+    } 
+    return textObj;
+    
+  }
 
   render() {
 
@@ -225,9 +242,14 @@ class Category extends React.Component {
                 key={i}
                 // leftAvatar={{ source: { uri: l.avatar_url } }}
                 title={l.name}
-                subtitle={l.description}
+                subtitle={this.getTruncText(l.description)}
                 bottomDivider
                 chevron={<MenuPopUp item={l} attachCategory={1}/>}
+                onPress={() => {
+                  this.props.navigation.navigate('detailCategory', {
+                    category: l,
+                  });
+                }}
               />
             ))
           }

@@ -6,6 +6,7 @@ import Home from './src/navigation/navigation'
 // create our app's navigation stack
 
 import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
 
 // database().ref("products").push().getKey()//set({name:"dallu"})
 // database().getReference("quiz").push().getKey();
@@ -50,7 +51,16 @@ export default class App extends React.Component{
 render()
 {
 
+  // console.log(auth().getUserNyEmail("noma@gmail.com"))
   
+  // database().ref('/').child('users').orderByChild('email').equalTo('noma@gmail.com').once("value", function(snapshot) {
+  //     // console.log(snapshot.val().key();
+
+  //     snapshot.forEach(function(data) {
+  //         console.log(data.key);
+  //     });
+  // });
+
   // // *** Product addition code
   // var i;
 

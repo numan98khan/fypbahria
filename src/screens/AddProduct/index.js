@@ -121,7 +121,7 @@ class AddProduct extends React.Component {
     // datasource.push({url:'http://placeimg.com/640/480/any'})
     // datasource.push({url:'http://placeimg.com/640/480/any'})
       // return datasource;
-      console.log(this.state.itemImages);
+      // console.log(this.state.itemImages);
       return this.state.itemImages;
   }
 
@@ -130,7 +130,6 @@ class AddProduct extends React.Component {
       "hardwareBackPress",
       this.backAction
     );
-    console.log('laure')
     // connect to a Firebase table
     var dbref = this.props.products.dbh.ref('products');
     // save database reference for later
@@ -178,12 +177,12 @@ class AddProduct extends React.Component {
   }
     pickImage()
     {
-    console.log("preeeee");
+    // console.log("preeeee");
         const options= {
             noData:true
         }
         ImagePicker.launchImageLibrary(options, response => {
-        console.log("response", response);
+        // console.log("response", response);
         })
     }
 

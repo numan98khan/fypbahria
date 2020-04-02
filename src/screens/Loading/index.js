@@ -7,16 +7,21 @@ import { DrawerActions } from 'react-navigation-drawer';
 
 import database from '@react-native-firebase/database';
 
-export default class Loading extends Component {
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import {toggleImageFilter, initiateProducts, updateUserobj} from '../../state/actions';
+
+class Loading extends Component {
   
   componentDidMount() {
     auth().onAuthStateChanged(user => {
       // **for the purpose of directly logging in if creds entered already
       
-      // const routeToGoTo = 'home';
+      const routeToGoTo = 'home';
       // const routeToGoTo = 'detailProduct';
-      const routeToGoTo = 'addProduct';
+      // const routeToGoTo = 'addProduct';
       // const routeToGoTo = 'addCategory';
+      // const routeToGoTo = 'addReview';
 
       // this.props.navigation.navigate(routeToGoTo)
 
@@ -48,6 +53,10 @@ export default class Loading extends Component {
       console.log("USERS: ");
       console.log(user);
 
+      this.props.updateUserobj( { userObj: user } );
+
+      console.log(this.props.products.userObj);
+
       // this.props.navigation.dispatch(DrawerActions.openDrawer());
     })
   }
@@ -69,3 +78,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   }
 });
+
+const mapStateToProps = (state) => {
+  const { products } = state
+  return { products }
+};
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    toggleImageFilter,
+    initiateProducts,
+    updateUserobj,
+  }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Loading);

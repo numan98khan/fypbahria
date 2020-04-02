@@ -95,7 +95,7 @@ class ProductDetails extends React.Component {
   }
     pickImage()
     {
-    console.log("preeeee");
+      ("preeeee");
         const options= {
             noData:true
         }

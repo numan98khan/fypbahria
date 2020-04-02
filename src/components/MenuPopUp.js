@@ -17,7 +17,7 @@ import {
 class MyMenu extends React.Component {
 
     deleteItemDB(dbRef, itemId){
-        console.log();
+        // console.log();
         database().ref(dbRef+'/'+itemId)
             .remove(() => {
                 console.log('Operation Complete');
@@ -37,6 +37,8 @@ class MyMenu extends React.Component {
         removeRef = 'products'
     } else if (this.props.attachCategory !== undefined) {
         removeRef = 'categories'
+    } else if (this.props.attachReview !== undefined) {
+        removeRef = 'reviews'
     }
 
 
@@ -44,6 +46,8 @@ class MyMenu extends React.Component {
     if (removeRef === 'products') {
         firstOpt = <MenuOption onSelect={() => this.props.navigation.navigate('editProduct', {item:this.props.item})} text='Edit' />;    
     } else if (removeRef === 'categories') {
+        firstOpt = null;
+    } else if (removeRef === 'reviews') {
         firstOpt = null;
     }
 

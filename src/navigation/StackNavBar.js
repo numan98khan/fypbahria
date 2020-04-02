@@ -35,7 +35,7 @@ class StackNavBar extends React.Component {
           : options.title !== undefined
           ? options.title
           : scene.route.routeName;
-      console.log(title)
+      // console.log(title)
 
         const MenuIcon = <Icon
                 name='menu'
