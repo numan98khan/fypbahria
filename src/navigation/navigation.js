@@ -218,8 +218,8 @@ const homeDrawer = createDrawerNavigator({
     drawerWidth:250,
     drawerType:'slide',
     // initialRouteName:'Category',
-    // initialRouteName:'Products',
-    initialRouteName:'Reviews',
+    initialRouteName:'Products',
+    // initialRouteName:'Reviews',
     contentComponent: drawerContentComponents,
     
     // The drawer menu will be added throough here (thorugh component just like NavBar)

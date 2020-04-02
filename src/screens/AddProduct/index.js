@@ -37,6 +37,7 @@ class AddProduct extends React.Component {
     snackVisible: false,
     category:'NONE',
     snackMessage:'',
+    itemImages:[],
   };
 
   // START
@@ -64,6 +65,7 @@ class AddProduct extends React.Component {
     //   itemDescription:''
     // }
   }
+
 
   handleSubmit = () => {
     let {
@@ -113,12 +115,14 @@ class AddProduct extends React.Component {
   };
 
   getImages() {
-    let datasource = [];
+    // let datasource = [];
   //   console.log(imgObj)
     // datasource.push({url: imgObj})
-    datasource.push({url:'http://placeimg.com/640/480/any'})
-    datasource.push({url:'http://placeimg.com/640/480/any'})
-      return datasource;
+    // datasource.push({url:'http://placeimg.com/640/480/any'})
+    // datasource.push({url:'http://placeimg.com/640/480/any'})
+      // return datasource;
+      console.log(this.state.itemImages);
+      return this.state.itemImages;
   }
 
   componentDidMount() {
@@ -262,7 +266,52 @@ class AddProduct extends React.Component {
     }
   }
 
+  uploadImages(){
+    // More info on all the options is below in the API Reference... just some common use cases shown here
+    const options = {
+      title: 'Select Images',
+      customButtons: [{ name: 'clear', title: 'Clear images from cache' }],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+
+    /**
+     * The first arg is the options object for customization (it can also be null or omitted for default options),
+     * The second arg is the callback which sends object: response (more info in the API Reference)
+     */
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+        this.setState({
+          itemImages: [],
+        });
+      } else {
+        let tempsource = this.state.itemImages// { uri: response.uri };
+        tempsource.push( {url: response.uri} )
+
+        const source = tempsource;
+        // You can also display the image using data:
+        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+        this.setState({
+          itemImages: source,
+        });
+      }
+    });
+  }
+
   render() {
+
+    
+
     const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
     // const [value, onChangeText] = React.useState('Useless Placeholder');
     const BackIcon = <Icon
@@ -295,6 +344,18 @@ class AddProduct extends React.Component {
             
             <Slideshow 
             dataSource={this.getImages()}/>
+            
+
+            <View style={{justifyContent: 'center', flexDirection:'row'}}>
+              <Button 
+                // icon="plus" 
+                mode="contained"
+                color="#6600ff"
+                style={{marginVertical:'3%', marginTop:'5%', width:'100%'}} 
+                onPress={() => this.uploadImages()}>
+                  Add Images              
+              </Button>  
+            </View>
             
             <TextInput
               selectionColor='#6600ff'
