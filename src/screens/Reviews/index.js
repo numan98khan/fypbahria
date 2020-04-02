@@ -119,8 +119,23 @@ class Reviews extends React.Component {
     tempNameSet:'',
   };
 
-  componentDidMount() {
+  onFocusFunction = () => {
+    // do some stuff on every screen focus
     this.props.updateScreenVar({screen:'reviews'});
+    console.log("reviews focused");
+  }
+
+  // and don't forget to remove the listener
+  componentWillUnmount () {
+    this.focusListener.remove()
+  }
+
+  componentDidMount() {
+    // this.props.updateScreenVar({screen:'reviews'});
+
+    this.focusListener = this.props.navigation.addListener('didFocus', () => {
+      this.onFocusFunction()
+    })
     // connect to a Firebase table
      var dbref = this.props.products.dbh.ref('products');
     // save database reference for later
@@ -267,24 +282,7 @@ class Reviews extends React.Component {
       <View>
         <NavBar/>
         <FilterOverlay/>
-        
-        <SearchBar
-          placeholder="Type Here..."
-          onChangeText={this.updateSearch}
-          value={search}
-          platform="android"
-          containerStyle={StyleSheet.create({
-            container: {
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-            },
-          })}
-          // searchIcon={customIcon}
-          // searchIcon={mySearchIcon}
-          // cancelIcon={myCancelIcon}
-        />
-
+    
         { <ScrollView>
         <View style={{flex: 1}}>
           {

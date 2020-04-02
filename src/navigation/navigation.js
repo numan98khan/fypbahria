@@ -226,8 +226,8 @@ const homeDrawer = createDrawerNavigator({
 },{
     drawerWidth:250,
     drawerType:'slide',
-    initialRouteName:'Category',
-    // initialRouteName:'Products',
+    // initialRouteName:'Category',
+    initialRouteName:'Products',
     // initialRouteName:'Reviews',
     contentComponent: drawerContentComponents,
     

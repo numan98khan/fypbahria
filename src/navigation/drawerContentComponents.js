@@ -10,7 +10,13 @@ import ToggleSwitch from 'toggle-switch-react-native';
 
 import mainColor from '../components/colors';
 
-export default class drawerContentComponents extends Component {
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { updateProducts, initiateProducts, 
+        toggleFilter, updateScreenVar,
+      toggleSearch  } from '../state/actions';
+
+class drawerContentComponents extends Component {
 
     navigateToScreen = ( route ) =>(
         () => {
@@ -43,7 +49,8 @@ export default class drawerContentComponents extends Component {
             <View style={styles.screenContainer}>
                 <View style={[styles.screenStyle, (this.props.activeItemKey=='Products') ? styles.activeBackgroundColor : null]}>
                     <Text style={[styles.screenTextStyle, (this.props.activeItemKey=='Products') ? styles.selectedTextStyle : null]} 
-                    onPress={this.navigateToScreen('Products')}>Products</Text>
+                    onPress={
+                        this.navigateToScreen('Products')}>Products</Text>
                 </View>
                 <View style={[styles.screenStyle, (this.props.activeItemKey=='Category') ? styles.activeBackgroundColor : null]}>
                     <Text style={[styles.screenTextStyle, (this.props.activeItemKey=='Category') ? styles.selectedTextStyle : null]} 
@@ -140,3 +147,21 @@ const styles = StyleSheet.create({
         // backgroundColor: 'grey'
     }
 });
+
+const mapStateToProps = (state) => {
+    const { products } = state
+    return { products }
+  };
+  
+  const mapDispatchToProps = dispatch => (
+    bindActionCreators({
+      updateProducts,
+      initiateProducts,
+      toggleFilter,
+      updateScreenVar,
+      toggleSearch,
+    }, dispatch)
+  );
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(drawerContentComponents);
+  

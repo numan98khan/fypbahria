@@ -4,6 +4,8 @@ import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
 import { Header, Icon, ButtonGroup } from 'react-native-elements';
 import { withNavigation} from 'react-navigation';
 
+import { Searchbar } from 'react-native-paper';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updateProducts, initiateProducts, toggleFilter, toggleSearch } from '../state/actions';
@@ -39,6 +41,23 @@ class NavBar extends React.Component {
         //         color='#fff'
         //         onPress={() => console.log('filters enabled')} />
 
+        let MySearchComp = <Searchbar
+                  placeholder="Type Here..."
+                    onChangeText={this.updateSearch}
+                    // value={search}
+                    // platform="android"
+                    // showLoading={true}
+                    containerStyle={StyleSheet.create({
+                      container: {
+                        flex: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        position:'absolute',
+                        
+                      },
+                    })}
+              />
+
         let searchIconName;
         if (this.props.products.isSearchBar){
           searchIconName = 'close';
@@ -58,7 +77,7 @@ class NavBar extends React.Component {
         if (this.props.products.currentScreen === 'products'){
           // console.log('debug1');
           rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            {searchIcon}  
+            {/*searchIcon*/}  
           <Icon
                   name='add'
                   color='#fff'
@@ -74,7 +93,7 @@ class NavBar extends React.Component {
         } else if (this.props.products.currentScreen === 'category') {
           // console.log('debug');
           rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            {searchIcon}
+            {/*searchIcon*/}
             <Icon
                   name='add'
                   color='#fff'
@@ -86,7 +105,7 @@ class NavBar extends React.Component {
         } else if (this.props.products.currentScreen === 'reviews') {
           // console.log('debug');
           rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            {searchIcon}
+            {/*searchIcon*/}
             <Icon
                   name='add'
                   color='#fff'

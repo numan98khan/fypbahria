@@ -2,7 +2,8 @@ import React from 'react';
 import { View, StyleSheet, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 
 import ScreenName from '../../components/ScreenName.js'
-import { SearchBar } from 'react-native-elements';
+// import { SearchBar } from 'react-native-elements';
+import { Searchbar } from 'react-native-paper';
 
 import { Card, ListItem, Button, Icon, Overlay } from 'react-native-elements'
 
@@ -36,9 +37,22 @@ class ScreenOne extends React.Component {
     search: '',
   };
 
-  componentDidMount() {
+  onFocusFunction = () => {
+    // do some stuff on every screen focus
     this.props.updateScreenVar({screen:'products'});
-    
+    console.log("producst focused");
+  }
+
+  // and don't forget to remove the listener
+  componentWillUnmount () {
+    this.focusListener.remove()
+  }
+
+  componentDidMount() {
+    // this.props.updateScreenVar({screen:'products'});
+    this.focusListener = this.props.navigation.addListener('didFocus', () => {
+      this.onFocusFunction()
+    })
     // this.props.updateScreenVar({screen:'category'});
     
     // connect to a Firebase table
@@ -88,6 +102,7 @@ class ScreenOne extends React.Component {
 
   componentDidUnMount() {
     this.props.products.dbulref.off('value');
+    console.log("unmountedddddddd");
   } 
 
   // deleteProduct(){}
@@ -139,32 +154,36 @@ class ScreenOne extends React.Component {
 
     let MySearchComp;
 
-    if (this.props.products.isSearchBar){
-        MySearchComp = <SearchBar
+    // if (this.props.products.isSearchBar){
+        MySearchComp = <Searchbar
                   placeholder="Type Here..."
                     onChangeText={this.updateSearch}
                     value={search}
-                    platform="android"
+                    // platform="android"
+                    // showLoading={true}
                     containerStyle={StyleSheet.create({
                       container: {
                         flex: 1,
                         alignItems: 'center',
                         justifyContent: 'center',
+                        position:'absolute',
+                        
                       },
                     })}
               />
-    } else {
-      MySearchComp = null;
-    }
+    // } else {
+      // MySearchComp = null;
+    // }
     return (
       <View>
         <NavBar/>
         <FilterOverlay/>
         
         {MySearchComp}
+          
 
         { <ScrollView>
-        <View style={{flex: 1}}>
+          <View style={{flex: 1}}>
           {
             // list.map((l, i) => (
             this.props.products.dataSourceSearch.map((l, i) => (

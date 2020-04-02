@@ -83,8 +83,24 @@ class Category extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
+  onFocusFunction = () => {
+    // do some stuff on every screen focus
     this.props.updateScreenVar({screen:'category'});
+    console.log("category focused");
+  }
+
+  // and don't forget to remove the listener
+  componentWillUnmount () {
+    this.focusListener.remove()
+  }
+
+  componentDidMount() {
+    // this.props.updateScreenVar({screen:'category'});
+
+    this.focusListener = this.props.navigation.addListener('didFocus', () => {
+      this.onFocusFunction()
+    })
+
     // connect to a Firebase table
      var dbref = this.props.products.dbh.ref('products');
     // save database reference for later
@@ -214,23 +230,6 @@ class Category extends React.Component {
       <View>
         <NavBar/>
         <FilterOverlay/>
-        
-        <SearchBar
-          placeholder="Type Here..."
-          onChangeText={this.updateSearch}
-          value={search}
-          platform="android"
-          containerStyle={StyleSheet.create({
-            container: {
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-            },
-          })}
-          // searchIcon={customIcon}
-          // searchIcon={mySearchIcon}
-          // cancelIcon={myCancelIcon}
-        />
 
         { <ScrollView>
         <View style={{flex: 1}}>

@@ -51,6 +51,8 @@ export default class App extends React.Component{
 render()
 {
 
+  /////// USE SENDGRID.COM
+
   // console.log(auth().getUserNyEmail("noma@gmail.com"))
   
   // database().ref('/').child('users').orderByChild('email').equalTo('noma@gmail.com').once("value", function(snapshot) {
