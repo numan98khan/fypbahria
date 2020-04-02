@@ -6,13 +6,13 @@ import {Snackbar, TextInput, Card, Avatar, Button, Dialog, Portal, Title,List, C
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {toggleImageFilter, initiateProducts } from '../../state/actions';
+import {toggleImageFilter, initiateProducts } from '../../../state/actions';
 
-import ScreenName from '../../components/ScreenName.js'
+import ScreenName from '../../../components/ScreenName.js'
 // import NavBar from '../../navigation/navBar'
 import database from '@react-native-firebase/database';
 
-import ImgDetailOverlay from '../../components/imageDetailOverlay'
+import ImgDetailOverlay from '../../../components/imageDetailOverlay'
 import ImagePicker from 'react-native-image-picker';
 // import PhotoUpload from 'react-native-photo-upload'
 
@@ -21,9 +21,9 @@ import { Header, Icon, ButtonGroup, Divider, Rating, AirbnbRating } from 'react-
 
 import Slideshow from 'react-native-image-slider-show';
 
-import ProductStyles from '../../common/productStyle';
+import ProductStyles from '../../../common/productStyle';
 
-class AddProduct extends React.Component {
+class EditProduct extends React.Component {
 
   // static navigationOptions = {
 
@@ -31,13 +31,14 @@ class AddProduct extends React.Component {
 
   state = {
     price:null,
+    itemId:'',
     itemName:'',
     itemDescription:'',
     visible: false,
     snackVisible: false,
     category:'NONE',
     snackMessage:'',
-    itemImages:[],
+    itemImages:[]
   };
 
   // START
@@ -65,7 +66,6 @@ class AddProduct extends React.Component {
     //   itemDescription:''
     // }
   }
-
 
   handleSubmit = () => {
     let {
@@ -96,10 +96,8 @@ class AddProduct extends React.Component {
     return this.state.categories.map(c => <Picker.Item key={c} label={c} value={c} />)
   }
 
-  // END
-
   backAction = () => {
-    if (this.isSaveable()){
+    if (this.isSaveable(false)){
       Alert.alert("Hold on!", "Are you sure you want to go back?", [
         {
           text: "Cancel",
@@ -121,7 +119,7 @@ class AddProduct extends React.Component {
     // datasource.push({url:'http://placeimg.com/640/480/any'})
     // datasource.push({url:'http://placeimg.com/640/480/any'})
       // return datasource;
-      // console.log(this.state.itemImages);
+      console.log(this.state.itemImages);
       return this.state.itemImages;
   }
 
@@ -130,6 +128,14 @@ class AddProduct extends React.Component {
       "hardwareBackPress",
       this.backAction
     );
+    
+    // Set the state with the incoming item
+    this.setState({itemName:this.props.navigation.state.params.item.name,
+      itemDescription:this.props.navigation.state.params.item.description,
+      price:'69',
+      itemId:this.props.navigation.state.params.item.id,
+      category:this.props.navigation.state.params.item.category});
+
     // connect to a Firebase table
     var dbref = this.props.products.dbh.ref('products');
     // save database reference for later
@@ -192,14 +198,15 @@ class AddProduct extends React.Component {
   _onToggleSnackBar = () => this.setState(state => ({ snackVisible: !state.snackVisible }));
   _onDismissSnackBar = () => this.setState({ snackVisible: false });
 
-  isSaveable(){
-    let dummyState = {
-      price:null,
-      itemName:'',
-      itemDescription:'',
-      visible: false,
-      category:'NONE',
-    };
+  isSaveable(isSave){
+    // let dummyState = {
+    //   price:null,
+    //   itemName:'',
+    //   itemId:'',
+    //   itemDescription:'',
+    //   visible: false,
+    //   category:'NONE',
+    // };
 
     let isBool = true;
 
@@ -216,40 +223,40 @@ class AddProduct extends React.Component {
       isBool = false;
     }
 
-    if (isBool){
-      database()
-      .ref("products")
-      .push()
-      .set(
-        {
-          brand: "Acme",
-          logo: "http://www.example.com/logo.png",
-          name: this.state.itemName,
-          category: this.state.category,
-          image: "http://www.example.com/image.jpg",
-          description: this.state.itemDescription,
-          aggregateRating: {
-            type: "aggregateRating",
-            ratingValue: "5",
-            reviewCount: "21"
-          }
-        })
-      this.setState({ snackMessage: "Product added successfully." })
-      this._onToggleSnackBar()
-      this.setState({
-        price:null,
-        itemName:'',
-        itemDescription:'',
-        visible: false,
-        category:'NONE',
-      })
+    if (isSave){
+      if (isBool){
+        database().ref('products'+'/'+this.state.itemId)
+        .set(
+          {
+            brand: "Acme",
+            logo: "http://www.example.com/logo.png",
+            name: this.state.itemName,
+            category: this.state.category,
+            image: "http://www.example.com/image.jpg",
+            description: this.state.itemDescription,
+            aggregateRating: {
+              type: "aggregateRating",
+              ratingValue: "5",
+              reviewCount: "21"
+            }
+          })
+        this.setState({ snackMessage: "Product saved successfully." })
+        this._onToggleSnackBar()
+        // this.setState({
+        //   price:null,
+        //   itemName:'',
+        //   itemDescription:'',
+        //   visible: false,
+        //   category:'NONE',
+        // })
 
-    } else {
-      this.setState({ snackMessage: "Please fill all the fields." })
-      // if (this.state.category === 'NONE') {
-      //   this.setState({ snackMessage: "Please choose a category." })
-      // }
-      this._onToggleSnackBar()
+      } else {
+        this.setState({ snackMessage: "Please fill all the fields." })
+        // if (this.state.category === 'NONE') {
+        //   this.setState({ snackMessage: "Please choose a category." })
+        // }
+        this._onToggleSnackBar()
+      }
     }
 
     return isBool;
@@ -307,10 +314,8 @@ class AddProduct extends React.Component {
     });
   }
 
+
   render() {
-
-    
-
     const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
     // const [value, onChangeText] = React.useState('Useless Placeholder');
     const BackIcon = <Icon
@@ -343,7 +348,6 @@ class AddProduct extends React.Component {
             
             <Slideshow 
             dataSource={this.getImages()}/>
-            
 
             <View style={{justifyContent: 'center', flexDirection:'row'}}>
               <Button 
@@ -352,8 +356,8 @@ class AddProduct extends React.Component {
                 color="#6600ff"
                 style={{marginVertical:'3%', marginTop:'5%', width:'100%'}} 
                 onPress={() => this.uploadImages()}>
-                  Add Images              
-              </Button>  
+                  Edit Images              
+              </Button>
             </View>
             
             <TextInput
@@ -417,8 +421,8 @@ class AddProduct extends React.Component {
                 mode="contained"
                 color="#6600ff"
                 style={{marginVertical:'3%', marginHorizontal:'2%', width:'40%'}} 
-                onPress={() => this.isSaveable()}>
-                  Add              
+                onPress={() => this.isSaveable(true)}> {/* isSave is true here */}
+                  Save              
               </Button>
             </View>
           </ScrollView>
@@ -482,4 +486,4 @@ const mapDispatchToProps = dispatch => (
   }, dispatch)
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddProduct);
+export default connect(mapStateToProps, mapDispatchToProps)(EditProduct);

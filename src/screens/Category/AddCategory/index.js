@@ -6,13 +6,13 @@ import {Snackbar, TextInput, Card, Avatar, Button, Dialog, Portal, Title,List, C
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {toggleImageFilter, initiateProducts } from '../../state/actions';
+import {toggleImageFilter, initiateProducts } from '../../../state/actions';
 
-import ScreenName from '../../components/ScreenName.js'
+import ScreenName from '../../../components/ScreenName.js'
 // import NavBar from '../../navigation/navBar'
 import database from '@react-native-firebase/database';
 
-import ImgDetailOverlay from '../../components/imageDetailOverlay'
+import ImgDetailOverlay from '../../../components/imageDetailOverlay'
 import ImagePicker from 'react-native-image-picker';
 // import PhotoUpload from 'react-native-photo-upload'
 
@@ -21,7 +21,7 @@ import { Header, Icon, ButtonGroup, Divider, Rating, AirbnbRating } from 'react-
 
 import Slideshow from 'react-native-image-slider-show';
 
-import ProductStyles from '../../common/productStyle';
+import ProductStyles from '../../../common/productStyle';
 
 class AddCategory extends React.Component {
 

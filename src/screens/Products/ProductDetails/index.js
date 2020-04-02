@@ -3,20 +3,20 @@ import { View, StyleSheet, Button, BackHandler, Alert, Text } from 'react-native
 import { TextInput, Picker, Platform ,ScrollView} from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {toggleImageFilter } from '../../state/actions';
+import {toggleImageFilter } from '../../../state/actions';
 
-import ScreenName from '../../components/ScreenName.js'
+import ScreenName from '../../../components/ScreenName.js'
 // import NavBar from '../../navigation/navBar'
 
 import { Header, Icon, ButtonGroup, Avatar, Divider, Rating, AirbnbRating } from 'react-native-elements';
 // import { withNavigation} from 'react-navigation';
-import ImgDetailOverlay from '../../components/imageDetailOverlay'
+import ImgDetailOverlay from '../../../components/imageDetailOverlay'
 import ImagePicker from 'react-native-image-picker';
 // import PhotoUpload from 'react-native-photo-upload'
 
 import Slideshow from 'react-native-image-slider-show';
 
-import ProductStyles from '../../common/productStyle';
+import ProductStyles from '../../../common/productStyle';
 
 class ProductDetails extends React.Component {
 
