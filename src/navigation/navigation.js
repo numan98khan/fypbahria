@@ -32,6 +32,9 @@ import detailsCategory from '../screens/CategoryDetails';
 import ReviewDetails from '../screens/ReviewDetails';
 import AddReview from '../screens/AddReview';
 
+import HireDetails from '../screens/Hire/HireDetails';
+import AddHire from '../screens/Hire/AddHire';
+
 import drawerContentComponents from './drawerContentComponents'
 import CategoryDetails from '../screens/CategoryDetails';
 
@@ -57,6 +60,60 @@ const reviewStack = createStackNavigator(
             screen:ReviewDetails,
             navigationOptions: {
                 title:"Review Details",
+                // headerShown: false,
+            },
+        }
+    },
+    {
+        defaultNavigationOptions: {
+            header: ({ scene, previous, navigation }) => {
+                const { options } = scene.descriptor;
+                const title =
+                    options.headerTitle !== undefined
+                    ? options.headerTitle
+                    : options.title !== undefined
+                    ? options.title
+                    : scene.route.routeName;
+                // console.log(title)
+                
+                return (<Header backgroundColor="#6600ff"
+                centerComponent={{ text: title, style: { color: '#fff', fontSize:24 } }}
+                // leftContainerStyle={{width: 400}}
+                // leftComponent={previous ? <Icon
+                //         name="clear"
+                //         color='#fff'
+                //         onPress={navigation.goBack}
+                //         iconStyle={styles.iconStyle} /> : undefined}
+                >
+                {/* <MyCustomLeftComponent />
+                <MyCustomCenterComponent />
+                <MyCustomRightComponent /> */}
+                </Header>);
+                }
+        }
+    }
+);
+
+const hireStack = createStackNavigator(
+    {
+        Hire: {
+            screen: Hire,
+            navigationOptions: {
+                headerShown: false,
+            },
+            
+        },
+        addHire: {
+            screen:AddHire,
+            navigationOptions: {
+                title:"Hire",
+                // headerShown: false,
+            },
+        },
+        detailHire: {
+            screen:HireDetails,
+            navigationOptions: {
+                title:"Hiring Status",
                 // headerShown: false,
             },
         }
@@ -217,9 +274,7 @@ const homeDrawer = createDrawerNavigator({
     Statistics: {
         screen: Statistics,
     },
-    Hire: {
-        screen: Hire,
-    },
+    Hire: hireStack,
     Credit: {
         screen: Credit,
     },
@@ -227,8 +282,9 @@ const homeDrawer = createDrawerNavigator({
     drawerWidth:250,
     drawerType:'slide',
     // initialRouteName:'Category',
-    initialRouteName:'Products',
+    // initialRouteName:'Products',
     // initialRouteName:'Reviews',
+    initialRouteName:'Hire',
     contentComponent: drawerContentComponents,
     
     // The drawer menu will be added throough here (thorugh component just like NavBar)

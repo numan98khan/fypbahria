@@ -39,7 +39,9 @@ class MyMenu extends React.Component {
         removeRef = 'categories'
     } else if (this.props.attachReview !== undefined) {
         removeRef = 'reviews'
-    }
+    } else if (this.props.attachHire !== undefined) {
+        removeRef = 'hire'
+    } 
 
 
     let firstOpt;// = <MenuOption onSelect={() => this.props.navigation.navigate('editor')} text='Edit' />;

@@ -5,6 +5,46 @@ export default StyleSheet.create({
     // container: {
     //   flex: 1,
     // },
+    largeREQText:{
+      fontSize:20,
+      fontWeight:'bold',
+      color:'#0000ff'
+    },
+    largeREJText:{
+      fontSize:20,
+      fontWeight:'bold',
+      color:'#ff3300'
+    },
+    largeACCText:{
+      fontSize:20,
+      fontWeight:'bold',
+      color:'#00ff00'
+    },
+    largeDISText:{
+      fontSize:20,
+      fontWeight:'bold',
+      // color:'#6600ff'
+    },
+    smallREQText:{
+      fontSize:12,
+      fontWeight:'bold',
+      color:'#0000ff'
+    },
+    smallREJText:{
+      fontSize:12,
+      fontWeight:'bold',
+      color:'#ff3300'
+    },
+    smallACCText:{
+      fontSize:12,
+      fontWeight:'bold',
+      color:'#00ff00'
+    },
+    smallDISText:{
+      fontSize:12,
+      fontWeight:'bold',
+      // color:'#6600ff'
+    },
     categoryText:{
         fontSize:12,
         fontWeight:'bold',

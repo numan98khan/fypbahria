@@ -114,6 +114,18 @@ class NavBar extends React.Component {
                   iconStyle={styles.iconStyle}
                   />
           </View>
+        } else if (this.props.products.currentScreen === 'hire') {
+          // console.log('debug');
+          rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            {/*searchIcon*/}
+            <Icon
+                  name='add'
+                  color='#fff'
+                  // onPress={() => console.log('add enabled')} 
+                  onPress={() => this.props.navigation.navigate('addHire')} 
+                  iconStyle={styles.iconStyle}
+                  />
+          </View>
         }
         return(
       <View>
