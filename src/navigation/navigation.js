@@ -18,25 +18,25 @@ import ScreenOne from '../screens/Products';
 import ScreenTwo from '../screens/Cart';
 // import BottomTabNavigator from './BottomTabNavigator';
 import Category from '../screens/Category';
-import AddProduct from '../screens/AddProduct';
+import AddProduct from '../screens/Products/AddProduct';
 import LiveStream from '../screens/LiveStream';
 import Credit from '../screens/Credit';
 import Hire from '../screens/Hire';
 import Reviews from '../screens/Reviews';
-import EditProduct from '../screens/EditProduct';
+import EditProduct from '../screens/Products/EditProduct';
 import Statistics from '../screens/Statistics';
-import ProductDetails from '../screens/ProductDetails';
+import ProductDetails from '../screens/Products/ProductDetails';
 
-import AddCategory from '../screens/AddCategory';
-import detailsCategory from '../screens/CategoryDetails';
-import ReviewDetails from '../screens/ReviewDetails';
-import AddReview from '../screens/AddReview';
+import AddCategory from '../screens/Category/AddCategory';
+import detailsCategory from '../screens/Category/CategoryDetails';
+import ReviewDetails from '../screens/Reviews/ReviewDetails';
+import AddReview from '../screens/Reviews/AddReview';
 
 import HireDetails from '../screens/Hire/HireDetails';
 import AddHire from '../screens/Hire/AddHire';
 
 import drawerContentComponents from './drawerContentComponents'
-import CategoryDetails from '../screens/CategoryDetails';
+import CategoryDetails from '../screens/Category/CategoryDetails';
 
 // import StackNavBar from './StackNavBar';
 
@@ -284,7 +284,8 @@ const homeDrawer = createDrawerNavigator({
     // initialRouteName:'Category',
     // initialRouteName:'Products',
     // initialRouteName:'Reviews',
-    initialRouteName:'Hire',
+    // initialRouteName:'Hire',
+    initialRouteName:'Statistics',
     contentComponent: drawerContentComponents,
     
     // The drawer menu will be added throough here (thorugh component just like NavBar)

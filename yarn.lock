@@ -1077,6 +1077,13 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.7.tgz#a65ce0702f55cb67fd777995de6fc7b3e5781903"
   integrity sha512-9KbP7LTLFz9dx1heURJbO6nuVMdSjDez8znlrUzaB1nUwKVsTTwlKRuHxGUYIIkReLWrJQeCv9tidy+84z2eCw==
 
+"@react-native-community/push-notification-ios@^1.0.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.1.1.tgz#80d5684d05d211a832f88d78720d63e53119a027"
+  integrity sha512-kgm8BKlru5OjwxxynReC1MM/JXwXZ/zOSGYORhbmnrBC8LTlogYA1ZMJ9HY9ltEpw6gDndQEsfFOkXHYeAPSCw==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native-firebase/app-types@6.3.4":
   version "6.3.4"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/app-types/-/app-types-6.3.4.tgz#e54a3de33455417db63a7b1de2b7795af1c25cae"
@@ -1100,6 +1107,11 @@
   version "6.3.4"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/database/-/database-6.3.4.tgz#76dc4679d00f33ee2c3157ed5ac95fa5af5f1b2f"
   integrity sha512-ytr3VyZ/CRCbYl1a28LCB8znv3l9ftxqkC7RJ0k0GZ+zfmMwjFy1GBYxz7F9XDHdUkpEXJSsXd4FiVwbNX1YSQ==
+
+"@react-native-firebase/messaging@^6.3.4":
+  version "6.3.4"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-6.3.4.tgz#6a9154957e32f5e4a10cca29ed5d95a72ef1a2e7"
+  integrity sha512-75TJr98RuWDH//svGSOovdU6exs8MUFjsIbb9WwqyQZQFaChjr0Nnh0pX7tgBObLyP5+U70b1xUODz/REEthFw==
 
 "@react-navigation/core@^3.7.1":
   version "3.7.1"
@@ -6207,6 +6219,13 @@ react-native-popup-menu@^0.15.7:
   version "0.15.7"
   resolved "https://registry.yarnpkg.com/react-native-popup-menu/-/react-native-popup-menu-0.15.7.tgz#ddffa8aa6e5d7d11533947921e9bdf94cd7fc7d0"
   integrity sha512-TgPVGQdsHPgynn+mMpTX51QKKhavDXI3tA879zylRUBMrxfNiR3gAWNanI1Sd5X4Sv0tZ1/A33k/gNTwciMDDg==
+
+react-native-push-notification@^3.1.9:
+  version "3.1.9"
+  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-3.1.9.tgz#760ee06e743fef74fc9fcb672dac40794fdc4c47"
+  integrity sha512-YpEg9AYBjNgJtHRgHKR0xPB7kk3Gj0uSjUxd0feOIvd7wrfR+zeiBM4NZonGmjlAG6thaE37dfAG5qcsONFM7w==
+  dependencies:
+    "@react-native-community/push-notification-ios" "^1.0.1"
 
 react-native-ratings@^6.3.0:
   version "6.5.0"

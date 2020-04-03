@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react'
-import { StyleSheet, Platform, Image, Text, View } from 'react-native'
+import { StyleSheet, Platform, Image, Button,  Text, View } from 'react-native'
 // import the different screens
 import Home from './src/navigation/navigation'
 // create our app's navigation stack
@@ -44,6 +44,13 @@ import store from './src/state/store'
 
 import { MenuProvider } from 'react-native-popup-menu';
 import {Provider as PaperProvider} from 'react-native-paper';
+
+import { LocalNotification } from './src/services/LocalPushController'
+// after other import statements
+import RemotePushController from './src/services/RemotePushController'
+
+import messaging from '@react-native-firebase/messaging';
+
 
 console.disableYellowBox = true;
 
@@ -148,6 +155,10 @@ render()
   //         }
   //       })
   // }
+  const handleButtonPress = () => {
+    LocalNotification()
+    // RemotePushController()
+  }
 
   return <PaperProvider> 
       <MenuProvider>
@@ -156,5 +167,31 @@ render()
          </Provider>
        </MenuProvider>
        </PaperProvider>;
+
+  // return (
+  //   <View style={styles.container}>
+  //     <Text>Press a button to trigger the notification</Text>
+  //     <View style={{ marginTop: 20 }}>
+  //       <Button title={'Local Push Notification'} onPress={handleButtonPress} />
+  //     </View>
+  //     <View>
+  //       <RemotePushController />
+  //     </View>
+  //   </View>
+    // before the ending 
+    
+  // )
+
 }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonContainer: {
+    marginTop: 20
+  }
+})
