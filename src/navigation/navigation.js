@@ -268,8 +268,8 @@ const homeDrawer = createDrawerNavigator({
     Category: categoryStack,
     Reviews: reviewStack,
     Live: {
-        // screen: LiveStream,
-        screen: Reviews,
+        screen: LiveStream,
+        // screen: Reviews,
     },
     Statistics: {
         screen: Statistics,
@@ -285,7 +285,8 @@ const homeDrawer = createDrawerNavigator({
     // initialRouteName:'Products',
     // initialRouteName:'Reviews',
     // initialRouteName:'Hire',
-    initialRouteName:'Statistics',
+    // initialRouteName:'Statistics',
+    initialRouteName:'Live',
     contentComponent: drawerContentComponents,
     
     // The drawer menu will be added throough here (thorugh component just like NavBar)

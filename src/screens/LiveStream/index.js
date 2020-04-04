@@ -141,7 +141,8 @@ export default class LiveStreamScreen extends Component {
   };
 
   onFinishLiveStream = () => {
-    this.setState({liveStatus: LiveStatus.FINISH});
+    // this.setState({liveStatus: LiveStatus.FINISH});
+    this.setState({liveStatus: LiveStatus.REGISTER});
     SocketUtils.emitFinishLiveStream(Utils.getRoomName(), Utils.getUserId());
     this.vbCamera.stop();
   };
@@ -607,6 +608,7 @@ export default class LiveStreamScreen extends Component {
       </View>
     );
   };
+
   renderStreamerUI = () => {
     const {liveStatus, countViewer, countHeart} = this.state;
     return (
@@ -642,7 +644,6 @@ export default class LiveStreamScreen extends Component {
           style={styles.viewDismissKeyboard}>
           <View style={styles.container}>
             {this.renderCancelStreamerButton()}
-            {this.renderLiveText()}
             <View style={styles.wrapIconView}>
               <Image
                 source={require('../../assets/ico_view.png')}
@@ -656,17 +657,24 @@ export default class LiveStreamScreen extends Component {
             <FloatingHearts count={countHeart} style={styles.wrapGroupHeart} />
             {liveStatus === LiveStatus.REGISTER && (
               <TouchableOpacity
-                style={styles.beginLiveStreamButton}
+                style={styles.finishLiveStreamButton}
                 onPress={this.onBeginLiveStream}>
-                <Text style={styles.beginLiveStreamText}>Begin Live</Text>
+                <Text style={styles.beginLiveStreamText}>Go Live</Text>
               </TouchableOpacity>
             )}
             {liveStatus === LiveStatus.ON_LIVE && (
+              
               <TouchableOpacity
-                style={styles.finishLiveStreamButton}
+                style={styles.beginLiveStreamButton}
                 onPress={this.onFinishLiveStream}>
-                <Text style={styles.beginLiveStreamText}>Finish</Text>
+                <View style={{justifyContent: 'center', flexDirection:'row'}}>
+                  <View style={styles.CircleShapeView}></View>
+                  
+                  <Text style={styles.beginLiveStreamText}>LIVE</Text>
+                </View>
               </TouchableOpacity>
+
+              
             )}
           </View>
         </TouchableWithoutFeedback>

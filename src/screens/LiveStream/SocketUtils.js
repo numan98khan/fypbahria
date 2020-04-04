@@ -13,7 +13,7 @@ const getSocket = () => {
 const connect = () => {
   console.log("connecting BIAATch")
   socket = io.connect(Utils.getSocketIOIP(), {transports: ['websocket']});
-  console.log(socket)
+  // console.log(socket)
 };
 
 const handleOnConnect = () => {
