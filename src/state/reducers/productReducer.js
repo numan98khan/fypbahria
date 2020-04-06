@@ -18,10 +18,22 @@ const INITIAL_STATE = {
     currentScreen:'',
     isSearchBar:false,
     userObj:null,
+    appMode: 'buyer'
 };
 
 const productReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case types.TOGGLE_MODE:
+        console.log('TOGGLE_MODE reducer > ' + state.appMode);
+        var modeSend;
+        if (state.appMode === 'seller') {
+            modeSend = 'buyer'
+        } else {
+            modeSend = 'seller'
+        }
+        return Object.assign({}, state, {
+            appMode: modeSend,
+        });
     case types.UPDATE_USEROBJ:
         console.log('user reducer > '+ action.payload.userObj.uid);
         return Object.assign({}, state, {

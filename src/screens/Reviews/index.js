@@ -210,7 +210,7 @@ class Reviews extends React.Component {
   };
 
   getNameFromId(userId){
-    // console.log('users/'+userId)
+    console.log('users/'+userId)
     var eJSON;
     // console.log('transaction ' + this.props.products.dbh.ref('users/'+userId).transaction((FirstName) => {
     //   // if (currentViews === null) return 1;
@@ -218,6 +218,7 @@ class Reviews extends React.Component {
     // }))
     this.props.products.dbh.ref('users/'+userId).once('value', (e) => {
       eJSON = e.toJSON()
+      // console.log(eJSON);
       // console.log(eJSON.FirstName+' '+eJSON.LastName);
       // console.log(eJSON.email);
       // this.setState({tempNameSet:eJSON.FirstName+' '+eJSON.LastName});
@@ -292,8 +293,8 @@ class Reviews extends React.Component {
                 // containerStyle={{height:100,width:1080}}
                 key={i}
                 // leftAvatar={{ source: { uri: l.avatar_url } }}
-                title={this.getNameFromId(l.buyerId)}
-                // title={l.buyerName}
+                // title={this.getNameFromId(l.buyerId)}
+                title={l.buyerEmail}
                 subtitle={<Rating
                   imageSize={15}
                   readonly

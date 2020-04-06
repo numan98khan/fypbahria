@@ -162,6 +162,7 @@ class AddReview extends React.Component {
         .set(
           {
             buyerId: this.state.buyerId,
+            buyerEmail: this.state.buyerEmail,
             productId: this.state.productID,
             rating: this.state.rating,
             review: this.state.review,

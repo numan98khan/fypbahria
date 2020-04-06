@@ -68,7 +68,8 @@ class ReviewDetails extends React.Component {
     // }))
     this.props.products.dbh.ref('users/'+userId).once('value', (e) => {
       eJSON = e.toJSON()
-    //   console.log(eJSON.FirstName+' '+eJSON.LastName);
+      console.log(eJSON);
+      // console.log(eJSON.FirstName+' '+eJSON.LastName);
     //   this.setState({tempNameSet:eJSON.FirstName+' '+eJSON.LastName});
       this.setState({tempNameSet:eJSON.email});
     });
@@ -84,7 +85,7 @@ class ReviewDetails extends React.Component {
     // }))
     this.props.products.dbh.ref('products/'+productId).once('value', (e) => {
       eJSON = e.toJSON()
-    //   console.log(eJSON.name);
+      console.log(eJSON.name);
       this.setState({tempProductSet:eJSON.name});
     });
     return this.state.tempProductSet;
@@ -104,8 +105,8 @@ class ReviewDetails extends React.Component {
       <View style={styles.container}>
       {/* <View > */}
       <ScrollView>
-            <Text style={ProductStyles.headerText}>{this.getNameFromId(review.buyerId)}</Text>
-            <Text style={ProductStyles.priceText}>{this.getProductFromId(review.productId)}</Text>
+            <Text style={ProductStyles.headerText}>{review.buyerEmail}</Text>
+            <Text style={ProductStyles.priceText}>{review.productId}</Text>
             <Divider style={ProductStyles.dividerStyle} />
             <Rating
                 imageSize={20}

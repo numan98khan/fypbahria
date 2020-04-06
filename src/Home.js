@@ -2,7 +2,8 @@ import 'react-native-gesture-handler';
 import React from 'react'
 import { StyleSheet, Platform, Image, Button,  Text, View } from 'react-native'
 // import the different screens
-import Home from './src/navigation/navigation'
+import BuyerNav from './navigation/BuyerNav';
+import SellerNav from './navigation/navigation';
 // create our app's navigation stack
 
 import database from '@react-native-firebase/database';
@@ -40,21 +41,26 @@ import auth from '@react-native-firebase/auth';
 
 
 import { Provider } from 'react-redux'
-import store from './src/state/store'
+import store from './state/store'
 
 import { MenuProvider } from 'react-native-popup-menu';
 import {Provider as PaperProvider} from 'react-native-paper';
 
-import { LocalNotification } from './src/services/LocalPushController'
+import { LocalNotification } from './services/LocalPushController'
 // after other import statements
-import RemotePushController from './src/services/RemotePushController'
+import RemotePushController from './services/RemotePushController'
 
 import messaging from '@react-native-firebase/messaging';
-import BaseApp from './src/Home';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { updateProducts, initiateProducts, 
+        toggleFilter, updateScreenVar,
+      toggleSearch  } from './state/actions';
+
 
 console.disableYellowBox = true;
 
-export default class App extends React.Component{
+class BaseApp extends React.Component{
 render()
 {
 
@@ -65,28 +71,51 @@ render()
     // RemotePushController()
   }
 
-  return <PaperProvider> 
-      <MenuProvider>
-        <Provider store={store}>
-          <BaseApp />
-         </Provider>
-       </MenuProvider>
-       </PaperProvider>;
+  var AppMode;
+  if (this.props.products.appMode === 'seller') {
+    AppMode = <SellerNav />
+  } else {
+    console.log('XXXXXXXXXXXXXXXXXXXXXXXXXX')
+    AppMode = <BuyerNav />
+  }
+
+  console.log('AppMode : '+this.props.products.appMode);
+
+  return AppMode;
+    // return <BuyerNav/>
 
 }
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center'
-//   },
-//   buttonContainer: {
-//     marginTop: 20
-//   }
-// })
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonContainer: {
+    marginTop: 20
+  }
+})
 
+
+const mapStateToProps = (state) => {
+    const { products } = state
+    return { products }
+  };
+  
+  const mapDispatchToProps = dispatch => (
+    bindActionCreators({
+      updateProducts,
+      initiateProducts,
+      toggleFilter,
+      updateScreenVar,
+      toggleSearch,
+    }, dispatch)
+  );
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(BaseApp);
+  
 
 /////// USE SENDGRID.COM
 

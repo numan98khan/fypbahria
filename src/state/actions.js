@@ -1,7 +1,8 @@
 import {INITIATE_PRODUCTS, UPDATE_PRODUCTS, 
   TOGGLE_FILTER_OVERLAY, TOGGLE_IMAGE_OVERLAY, 
   UPDATE_CATEGORY, UPDATE_SCREEN_VAR,
-  TOGGLE_SEARCH_BAR, UPDATE_USEROBJ} from './TYPES'
+  TOGGLE_SEARCH_BAR, UPDATE_USEROBJ,
+  TOGGLE_MODE} from './TYPES'
 
 // Responsible for first get from db
 export const initiateProducts = productsSettings => (
@@ -17,6 +18,12 @@ export const initiateProducts = productsSettings => (
      payload: productsSettings,
    }
  );
+
+ export const toggleMode = productsSettings => (
+  {
+    type: TOGGLE_MODE,
+    payload: productsSettings,
+  });
 
  export const toggleFilter = productsSettings => (
   {

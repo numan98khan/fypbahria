@@ -42,9 +42,6 @@ import CategoryDetails from '../screens/Category/CategoryDetails';
 
 import { reviewStack, hireStack, categoryStack, productStack } from './SellerStacks';
 
-// import StackNavBar from './StackNavBar';
-
-// The main drawer
 const buyerDrawer = createDrawerNavigator({
     Products: productStack,
     Category: categoryStack,
@@ -56,7 +53,7 @@ const buyerDrawer = createDrawerNavigator({
     Statistics: {
         screen: Statistics,
     },
-    Hire: hireStack,
+    // Hire: hireStack,
     Credit: {
         screen: Credit,
     },
@@ -98,59 +95,6 @@ const Buyer = createSwitchNavigator(
     }
 );
 
-
-const sellerDrawer = createDrawerNavigator({
-    Products: productStack,
-    Category: categoryStack,
-    Reviews: reviewStack,
-    Live: {
-        screen: LiveStream,
-        // screen: Reviews,
-    },
-    Statistics: {
-        screen: Statistics,
-    },
-    Credit: {
-        screen: Credit,
-    },
-},{
-    drawerWidth:250,
-    drawerType:'slide',
-    // initialRouteName:'Category',
-    initialRouteName:'Products',
-    // initialRouteName:'Reviews',
-    // initialRouteName:'Hire',
-    // initialRouteName:'Statistics',
-    // initialRouteName:'Live',
-    contentComponent: drawerContentComponents,
-    
-    // The drawer menu will be added throough here (thorugh component just like NavBar)
-    // https://medium.com/@arunkmoury/customize-drawer-of-react-navigation-like-champ-9b42df489d42
-    // contentComponent : DrawerMenu
-
-});
-
-const Seller = createSwitchNavigator(
-    {
-        loading: Loading,
-        signup: SignUp,
-        login: Login,
-        home: sellerDrawer,
-        // editor: EditProduct,
-    },
-    {
-        initialRouteName:'loading'
-    },
-    {
-        navigationOptions: {
-            headerTintColor: '#fff',
-            headerStyle: {
-                backgroundColor: '#000',
-            },
-        },
-    }
-);
-
 // var Home;
 // if ( this.props.products.appMode === 'Seller' ) {
 //     Home = Seller;
@@ -163,9 +107,5 @@ const Seller = createSwitchNavigator(
 
 // export default connect(mapStateToProps, mapDispatchToProps)(createAppContainer(Home));
 
-
-// export const BuyerNav = createAppContainer(Buyer);
-const container = createAppContainer(Seller);
+const container = createAppContainer(Buyer);
 export default container;
-
-

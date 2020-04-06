@@ -21,12 +21,51 @@ import {Snackbar, TextInput, Card, Avatar, Button, Dialog, Portal, Title,List, C
 import { Header, Icon, ButtonGroup, Divider, Rating, AirbnbRating, ListItem } from 'react-native-elements';
 import ProductStyles from '../../common/productStyle';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { updateProducts, initiateProducts,
+  toggleFilter, updateCategory, updateScreenVar } from '../../state/actions';
+
 import NavBar from '../../navigation/navBar'
 
-export default class Statistics extends React.Component {
+class Statistics extends React.Component {
   state = { 
     currentUser: null,
     totalSession: 163  
+  }
+
+  onFocusFunction = () => {
+    // do some stuff on every screen focus
+    this.props.updateScreenVar({screen:'statistics'});
+    console.log("statistics focused");
+  }
+
+  // and don't forget to remove the listener
+  componentWillUnmount () {
+    this.focusListener.remove()
+  }
+
+  componentDidMount() {
+    // this.props.updateScreenVar({screen:'reviews'});
+
+    this.focusListener = this.props.navigation.addListener('didFocus', () => {
+      this.onFocusFunction()
+    })
+    // connect to a Firebase table
+    //  var dbref = this.props.products.dbh.ref('products');
+    // save database reference for later
+    //  this.props.products.setState ( {dbulref: dbref});
+    // meat: this is where it all happens
+    //  dbref.on('value', (e) => {
+        // var rows = [];
+        // eJSON = e.toJSON()
+        // for(var i in eJSON){
+        //   rows.push(eJSON[i]);
+        // }
+        // var ds = rows;
+
+    //  });
+
   }
 
   getPercentage(count){
@@ -178,3 +217,20 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   }
 })
+
+const mapStateToProps = (state) => {
+  const { products } = state
+  return { products }
+};
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    updateProducts,
+    initiateProducts,
+    toggleFilter,
+    updateCategory,
+    updateScreenVar,
+  }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Statistics);

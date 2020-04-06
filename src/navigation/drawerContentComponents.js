@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updateProducts, initiateProducts, 
         toggleFilter, updateScreenVar,
-      toggleSearch  } from '../state/actions';
+      toggleMode  } from '../state/actions';
 
 class drawerContentComponents extends Component {
 
@@ -85,11 +85,11 @@ class drawerContentComponents extends Component {
             <View style={styles.toggleButtonStyle}>
             
                 {<ToggleSwitch
-                    isOn={true}
+                    isOn={this.props.products.appMode == 'seller' ? true : false}
                     onColor="#6600ff"
                     offColor="gray"
                     size="small"
-                    onToggle={isOn => console.log("changed to : ", isOn)}
+                    onToggle={isOn => this.props.toggleMode() }
                 />}
             </View>
         </View>
@@ -97,6 +97,8 @@ class drawerContentComponents extends Component {
     )
   }
 }
+
+// console.log("changed to : ", isOn)
 
 const styles = StyleSheet.create({
     container: {
@@ -159,7 +161,7 @@ const mapStateToProps = (state) => {
       initiateProducts,
       toggleFilter,
       updateScreenVar,
-      toggleSearch,
+      toggleMode,
     }, dispatch)
   );
   
