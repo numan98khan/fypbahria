@@ -18,7 +18,9 @@ const INITIAL_STATE = {
     currentScreen:'',
     isSearchBar:false,
     userObj:null,
-    appMode: 'buyer'
+    appMode: 'buyer',
+    specials: ds,
+    currentCart:[],
 };
 
 const productReducer = (state = INITIAL_STATE, action) => {
@@ -38,6 +40,11 @@ const productReducer = (state = INITIAL_STATE, action) => {
         console.log('user reducer > '+ action.payload.userObj.uid);
         return Object.assign({}, state, {
             userObj: action.payload.userObj,
+        });
+    case types.INITIATE_SPECIALS:
+
+        return Object.assign({}, state, {
+            specials: action.payload.specials,
         });
     case types.INITIATE_PRODUCTS:
 
@@ -85,6 +92,38 @@ const productReducer = (state = INITIAL_STATE, action) => {
             return Object.assign({}, state, {
                 isFilterVisible: boolSet,
             });
+    case types.CART_FUNCTION:
+        var updateSend;
+        var newCart = state.currentCart
+
+        if (action.payload.add !== undefined) {
+            // updateSend = Object.assign({}, state, {
+            //     dataCategoryDup: action.payload.dataCategoryDup,
+            //     dataCategorySearch: action.payload.dataCategorySearch,
+            // });
+            newCart.push(action.payload.product)
+            console.log('item added to cart');
+            // console.log(action.payload.dataCategoryDup)
+        } else if (action.payload.remove !== undefined){ //if (action.payload.dataCategorySearch !== undefined) {
+            // updateSend = Object.assign({}, state, {
+            //     dataCategorySearch: action.payload.dataCategorySearch,
+            
+            // });
+            console.log('category list updated');
+        } else if (action.payload.flush !== undefined) {
+            // updateSend = Object.assign({}, state, {
+            //     dataCategoryDup: action.payload.dataCategoryDup,
+            //     dataCategorySearch: action.payload.dataCategorySearch,
+            // });
+            // newCart.push(action.payload.product)
+            newCart = [];
+            console.log('cart emptied');
+            // console.log(action.payload.dataCategoryDup)
+        } 
+
+        return Object.assign({}, state, {
+            currentCart: newCart,
+        });
     case types.UPDATE_CATEGORY:
         var updateSend;
 

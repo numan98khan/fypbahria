@@ -21,7 +21,7 @@ class Loading extends Component {
       // const routeToGoTo = 'detailProduct';
       // const routeToGoTo = 'addProduct';
       // const routeToGoTo = 'addCategory';
-      // const routeToGoTo = 'addReview';
+      // const routeToGoTo = 'addProductReview';
 
       // this.props.navigation.navigate(routeToGoTo)
 

@@ -15,7 +15,7 @@ import Loading from '../screens/Loading';
 // import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import ScreenOne from '../screens/Products';
-import ScreenTwo from '../screens/Cart';
+// import ScreenTwo from '../screens/Cart';
 // import BottomTabNavigator from './BottomTabNavigator';
 import Category from '../screens/Category';
 import AddProduct from '../screens/Products/AddProduct';

@@ -7,6 +7,12 @@ import database from '@react-native-firebase/database';
 
 import { withNavigation} from 'react-navigation';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { updateProducts, initiateProducts, 
+        toggleFilter, updateScreenVar,
+      toggleSearch , cartFunction } from '../state/actions';
+
 import {
     Menu,
     MenuOptions,
@@ -41,6 +47,8 @@ class MyMenu extends React.Component {
         removeRef = 'reviews'
     } else if (this.props.attachHire !== undefined) {
         removeRef = 'hire'
+    } else if (this.props.attachCart !== undefined) {
+        removeRef = 'cart'
     } 
 
 
@@ -53,6 +61,35 @@ class MyMenu extends React.Component {
         firstOpt = null;
     }
 
+    let secondOpt;
+    if (removeRef === 'cart'){
+        secondOpt = <MenuOption onSelect={(optionValue) => Alert.alert(
+                        'Alert!',
+                        'Are you sure you want to delete ' + this.props.item.name + '?',// + optionValue,
+                        [
+                        {text: 'Cancel', style: 'cancel'},
+                        // {text: 'Yes', onPress: () => console.log('OK Pressed')},
+                        {text: 'Yes', onPress: () => console.log('DELEEEEEETE')},
+                        ],
+                        { cancelable: false }
+                    )} >
+                <Text style={{color: 'red'}}>Delete</Text>
+                </MenuOption>
+    } else {
+        secondOpt = <MenuOption onSelect={(optionValue) => Alert.alert(
+            'Alert!',
+            'Are you sure you want to delete ' + this.props.item.name + '?',// + optionValue,
+            [
+            {text: 'Cancel', style: 'cancel'},
+            // {text: 'Yes', onPress: () => console.log('OK Pressed')},
+            {text: 'Yes', onPress: () => this.deleteItemDB(removeRef, this.props.item.id)},
+            ],
+            { cancelable: false }
+        )} >
+    <Text style={{color: 'red'}}>Delete</Text>
+    </MenuOption>
+    }
+
     return (
         // <Menu>
         // <MenuTrigger children={customIcon} />
@@ -62,21 +99,29 @@ class MyMenu extends React.Component {
         <MenuTrigger children={customIcon} />
         <MenuOptions>
             {firstOpt}
-            <MenuOption onSelect={(optionValue) => Alert.alert(
-                    'Alert!',
-                    'Are you sure you want to delete ' + this.props.item.name + '?',// + optionValue,
-                    [
-                    {text: 'Cancel', style: 'cancel'},
-                    // {text: 'Yes', onPress: () => console.log('OK Pressed')},
-                    {text: 'Yes', onPress: () => this.deleteItemDB(removeRef, this.props.item.id)},
-                    ],
-                    { cancelable: false }
-                )} >
-            <Text style={{color: 'red'}}>Delete</Text>
-            </MenuOption>
+            {secondOpt}
         </MenuOptions></Menu>
       );
     }
   }
 
-export default withNavigation(MyMenu)
+  const mapStateToProps = (state) => {
+    const { products } = state
+    return { products }
+  };
+  
+  const mapDispatchToProps = dispatch => (
+    bindActionCreators({
+      updateProducts,
+      initiateProducts,
+      toggleFilter,
+      updateScreenVar,
+      toggleSearch,
+      cartFunction,
+    }, dispatch)
+  );
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(MyMenu));
+  
+
+// export default withNavigation(MyMenu)

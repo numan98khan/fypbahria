@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import {createStackNavigator, createSwitchNavigator} from 'react-navigation-stack';
 
 import ScreenOne from '../screens/Home';
-import ScreenTwo from '../screens/Cart';
+// import ScreenTwo from '../screens/Cart';
 
 import SignUp from '../screens/SignUp'
 import Login from '../screens/Login'

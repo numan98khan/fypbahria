@@ -58,6 +58,23 @@ export default class App extends React.Component{
 render()
 {
 
+  // var i;
+
+  // for (i = 0; i < 4; i++) {
+    // console.log('>>>>>>'+
+      // database()
+      // .ref("ads")
+      // .push()
+      // .set(
+      //   {
+      //     description: "This is an excellent AD.",
+      //     name: "AD",
+      //     buyerId: "id",
+      //     sellerId: "id",
+      //   })
+      // )
+  // }  
+
   console.log("total angst: " + this.props.products);
   
   const handleButtonPress = () => {

@@ -25,7 +25,14 @@ import FloatingHearts from './FloatingHearts';
 import Draggable from './Draggable';
 import styles from './styles';
 
-export default class LiveStreamScreen extends Component {
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { updateProducts, initiateProducts, 
+        toggleFilter, updateScreenVar,
+      toggleSearch , initiatespecials } from '../../state/actions';
+
+
+class LiveStreamScreen extends Component {
   static navigationOptions = ({navigation}) => ({
     header: null,
   });
@@ -749,7 +756,7 @@ export default class LiveStreamScreen extends Component {
           {liveStatus === LiveStatus.ON_LIVE ? (
             <View style={styles.container}>
               {this.renderCancelViewerButton()}
-              {this.renderLiveText()}
+              {/*this.renderLiveText()*/}
               <View style={styles.wrapIconView}>
                 <Image
                   source={require('../../assets/ico_view.png')}
@@ -830,72 +837,47 @@ export default class LiveStreamScreen extends Component {
     );
   };
 
-  renderReplayUI = () => {
-    const {countViewer} = this.state;
-    return (
-      <View style={styles.container}>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            Keyboard.dismiss();
-            this.setState({visibleListMessages: true});
-          }}
-          accessible={false}>
-          <View style={styles.container}>
-            <NodePlayerView
-              style={styles.streamerCameraView}
-              ref={vb => {
-                this.vbReplay = vb;
-              }}
-              inputUrl={
-                Utils.getRtmpPath() +
-                Utils.getRoomName() +
-                '/replayfor' +
-                Utils.getUserId()
-              }
-              // inputUrl={
-              //   'rtmp://192.168.1.2/live/' +
-              //   Utils.getRoomName() +
-              //   '/replayfor' +
-              //   Utils.getUserId()
-              // }
-              scaleMode="ScaleAspectFit"
-              bufferTime={300}
-              maxBufferTime={1000}
-              autoplay
-            />
-            {this.renderCancelReplayButton()}
-            {this.renderLiveText()}
-            <View style={styles.wrapIconView}>
-              <Image
-                source={require('../../assets/ico_view.png')}
-                style={styles.iconView}
-              />
-              <View style={styles.wrapTextViewer}>
-                <Text style={styles.textViewer}>{countViewer}</Text>
-              </View>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-        {this.renderListMessages()}
-      </View>
-    );
-  };
-
   render() {
     // const type = Utils.getUserType();
+    const typo = this.props.products.appMode;
+    console.log(typo);
+
+    var type = 'STREAMER';
+    
+    if (typo === 'buyer'){
+      type = 'VIEWER';
+    }
 
     // ****** NEEDS FRONT CAMERA SWITCH
 
+
     SocketUtils.connect()
 
-    const type = 'STREAMER'
     console.log(type);
     if (type === 'STREAMER') {
       return this.renderStreamerUI();
     } else if (type === 'VIEWER') {
       return this.renderViewerUI();
-    } else {
-      return this.renderReplayUI();
     }
   }
 }
+
+const mapStateToProps = (state) => {
+  const { products } = state
+  return { products }
+};
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    updateProducts,
+    initiateProducts,
+    toggleFilter,
+    updateScreenVar,
+    toggleSearch,
+    initiatespecials
+  }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(LiveStreamScreen);
+
+// export default LiveStreamScreen

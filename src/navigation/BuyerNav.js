@@ -14,55 +14,46 @@ import Main from '../screens/Products'
 import Loading from '../screens/Loading';
 // import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-import ScreenOne from '../screens/Products';
-import ScreenTwo from '../screens/Cart';
+// import ScreenTwo from '../screens/Cart';
 // import BottomTabNavigator from './BottomTabNavigator';
-import Category from '../screens/Category';
-import AddProduct from '../screens/Products/AddProduct';
 import LiveStream from '../screens/LiveStream';
 import Credit from '../screens/Credit';
-import Hire from '../screens/Hire';
-import Reviews from '../screens/Reviews';
-import EditProduct from '../screens/Products/EditProduct';
 import Statistics from '../screens/Statistics';
-import ProductDetails from '../screens/Products/ProductDetails';
 
-import AddCategory from '../screens/Category/AddCategory';
-import detailsCategory from '../screens/Category/CategoryDetails';
-import ReviewDetails from '../screens/Reviews/ReviewDetails';
-import AddReview from '../screens/Reviews/AddReview';
-
-import HireDetails from '../screens/Hire/HireDetails';
-import AddHire from '../screens/Hire/AddHire';
 
 import drawerContentComponents from './drawerContentComponents'
 import CategoryDetails from '../screens/Category/CategoryDetails';
 
 
 
-import { reviewStack, hireStack, categoryStack, productStack } from './SellerStacks';
+import { reviewStack, cartStack, categoryStack, 
+    productStack, offerStack, liveStack } from './BuyerStacks';
+
+// console.log('SEXXXXXXXXXXXXXXXXX');
 
 const buyerDrawer = createDrawerNavigator({
     Products: productStack,
-    Category: categoryStack,
+    Cart: cartStack,
+    // Cart: {
+    //     screen: Credit,
+    // },
+    Offers: offerStack,
     Reviews: reviewStack,
-    Live: {
-        screen: LiveStream,
-        // screen: Reviews,
-    },
+    Live: liveStack,
     Statistics: {
         screen: Statistics,
     },
     // Hire: hireStack,
-    Credit: {
-        screen: Credit,
-    },
+    // Credit: {
+    //     screen: Credit,
+    // },
 },{
     drawerWidth:250,
     drawerType:'slide',
-    // initialRouteName:'Category',
-    // initialRouteName:'Products',
-    initialRouteName:'Reviews',
+    // initialRouteName:'Offers',
+    // initialRouteName:'Cart',
+    initialRouteName:'Products',
+    // initialRouteName:'Reviews',
     // initialRouteName:'Hire',
     // initialRouteName:'Statistics',
     // initialRouteName:'Live',

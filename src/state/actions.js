@@ -2,7 +2,15 @@ import {INITIATE_PRODUCTS, UPDATE_PRODUCTS,
   TOGGLE_FILTER_OVERLAY, TOGGLE_IMAGE_OVERLAY, 
   UPDATE_CATEGORY, UPDATE_SCREEN_VAR,
   TOGGLE_SEARCH_BAR, UPDATE_USEROBJ,
-  TOGGLE_MODE} from './TYPES'
+  TOGGLE_MODE, INITIATE_SPECIALS, 
+  CART_FUNCTION} from './TYPES'
+
+export const cartFunction = productsSettings => (
+  {
+    type: CART_FUNCTION,
+    payload: productsSettings,
+  }
+);
 
 // Responsible for first get from db
 export const initiateProducts = productsSettings => (
@@ -11,6 +19,13 @@ export const initiateProducts = productsSettings => (
      payload: productsSettings,
    }
  );
+
+ export const initiatespecials = productsSettings => (
+  {
+    type: INITIATE_SPECIALS,
+    payload: productsSettings,
+  }
+);
 
  export const updateProducts = productsSettings => (
    {
