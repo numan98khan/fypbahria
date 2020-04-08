@@ -1,4 +1,6 @@
 import database from '@react-native-firebase/database';
+import storage from '@react-native-firebase/storage';
+
 import * as types from '../TYPES'
 import { act } from 'react-test-renderer';
 
@@ -6,6 +8,7 @@ const ds = [];
 const INITIAL_STATE = {
     loading: true, 
     dbh: database(),
+    bucket: storage().ref().bucket,
     dataSourceSearch: ds,
     dataSourceFilter: ds,
     dataSourceDup: ds,

@@ -39,8 +39,7 @@ import drawerContentComponents from './drawerContentComponents'
 import CategoryDetails from '../screens/Category/CategoryDetails';
 
 
-
-import { reviewStack, hireStack, categoryStack, productStack } from './SellerStacks';
+import { reviewStack, hireStack, categoryStack, productStack, liveStack } from './SellerStacks';
 
 // import StackNavBar from './StackNavBar';
 
@@ -49,10 +48,7 @@ const buyerDrawer = createDrawerNavigator({
     Products: productStack,
     Category: categoryStack,
     Reviews: reviewStack,
-    Live: {
-        screen: LiveStream,
-        // screen: Reviews,
-    },
+    Live: liveStack,
     Statistics: {
         screen: Statistics,
     },
@@ -103,13 +99,11 @@ const sellerDrawer = createDrawerNavigator({
     Products: productStack,
     Category: categoryStack,
     Reviews: reviewStack,
-    Live: {
-        screen: LiveStream,
-        // screen: Reviews,
-    },
+    Live: liveStack,
     Statistics: {
         screen: Statistics,
     },
+    Hire: hireStack,
     Credit: {
         screen: Credit,
     },
@@ -117,11 +111,11 @@ const sellerDrawer = createDrawerNavigator({
     drawerWidth:250,
     drawerType:'slide',
     // initialRouteName:'Category',
-    initialRouteName:'Products',
+    // initialRouteName:'Products',
     // initialRouteName:'Reviews',
     // initialRouteName:'Hire',
     // initialRouteName:'Statistics',
-    // initialRouteName:'Live',
+    initialRouteName:'Live',
     contentComponent: drawerContentComponents,
     
     // The drawer menu will be added throough here (thorugh component just like NavBar)

@@ -71,11 +71,13 @@ class NavBar extends React.Component {
             iconStyle={styles.iconStyle} />;
 
         let rightComp;
+        var middleComponentText = "MiddleComponent";
 
         console.log("NAVBAR ::: " + this.props.products.currentScreen);
 
         if (this.props.products.currentScreen === 'products'){
           // console.log('debug1');
+          middleComponentText = 'Products';
           rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             {/*searchIcon*/}  
           <Icon
@@ -84,14 +86,15 @@ class NavBar extends React.Component {
                   // onPress={() => console.log('add enabled')} 
                   onPress={() => this.props.navigation.navigate('addProduct')} 
                   iconStyle={styles.iconStyle} />
-            <Icon
+            {/*<Icon
                   name='tune'
                   color='#fff'
                   onPress={() => this.props.toggleFilter()}
-                  iconStyle={styles.iconStyle}  />
+            iconStyle={styles.iconStyle}  />*/}
           </View>
         } else if (this.props.products.currentScreen === 'category') {
           // console.log('debug');
+          middleComponentText = 'Category';
           rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             {/*searchIcon*/}
             <Icon
@@ -104,6 +107,7 @@ class NavBar extends React.Component {
           </View>
         } else if (this.props.products.currentScreen === 'reviews') {
           // console.log('debug');
+          middleComponentText = 'Reviews';
           rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             {/*searchIcon*/}
             <Icon
@@ -116,6 +120,7 @@ class NavBar extends React.Component {
           </View>
         } else if (this.props.products.currentScreen === 'hire') {
           // console.log('debug');
+          middleComponentText = 'Hiring';
           rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             {/*searchIcon*/}
             <Icon
@@ -126,11 +131,60 @@ class NavBar extends React.Component {
                   iconStyle={styles.iconStyle}
                   />
           </View>
-        }
+        } else if (this.props.products.currentScreen === 'livelist') {
+          // console.log('debug');
+          middleComponentText = 'Live Streams';
+          rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            {/*searchIcon*/}
+            <Icon
+                  name='cloud'
+                  color='#fff'
+                  // onPress={() => console.log('add enabled')} 
+                  onPress={() => this.props.navigation.navigate('LiveStream')} 
+                  iconStyle={styles.iconStyle}
+                  />
+            <Icon
+                  name='add'
+                  color='#fff'
+                  // onPress={() => console.log('add enabled')} 
+                  onPress={() => this.props.navigation.navigate('addLiveRequest')} 
+                  iconStyle={styles.iconStyle}
+                  />
+          </View>
+        } else if (this.props.products.currentScreen === 'liverequestlist') {
+          // console.log('debug');
+          middleComponentText = 'Live Requests';
+          rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            {/*searchIcon*/}
+            <Icon
+                  name='cloud'
+                  color='#fff'
+                  // onPress={() => console.log('add enabled')} 
+                  onPress={() => this.props.navigation.navigate('LiveStream')} 
+                  iconStyle={styles.iconStyle}
+                  />
+          </View>
+        } else if (this.props.products.currentScreen === 'cart') {
+          // console.log('debug');
+          middleComponentText = 'Cart';
+        } else if (this.props.products.currentScreen === 'offers') {
+          // console.log('debug');
+          middleComponentText = 'Offers';
+        } else if (this.props.products.currentScreen === 'productReviews') {
+          // console.log('debug');
+          middleComponentText = 'Reviews';
+        } else if (this.props.products.currentScreen === 'statistics') {
+          // console.log('debug');
+          middleComponentText = 'Statistics';
+        } else if (this.props.products.currentScreen === 'buyerProducts') {
+          // console.log('debug');
+          middleComponentText = 'Products';
+        }    
         return(
       <View>
        {this.props.children}
        <Header leftComponent={MenuIcon}
+              centerComponent={<Text style={{color:'#fff', fontSize:24}}>{middleComponentText}</Text>}
               rightComponent={rightComp}
               backgroundColor="#6600ff"
               >

@@ -23,6 +23,8 @@ import Slideshow from 'react-native-image-slider-show';
 
 import ProductStyles from '../../../common/productStyle';
 
+import storage from '@react-native-firebase/storage';
+
 class EditProduct extends React.Component {
 
   // static navigationOptions = {
@@ -37,8 +39,13 @@ class EditProduct extends React.Component {
     visible: false,
     snackVisible: false,
     category:'NONE',
+    categoryId: '',
     snackMessage:'',
-    itemImages:[]
+    itemImage:null,
+    itemBrand:'',
+    storageRef:null,
+    imageDiff:null,
+    itemRating:null,
   };
 
   // START
@@ -123,18 +130,40 @@ class EditProduct extends React.Component {
       return this.state.itemImages;
   }
 
+  filterCatByUid(ds){
+    var rowsCat = [{"description": "NONE", "name": "NONE"}];
+    for(var i in eJSON){
+      // console.log(this.props.products.userObj.uid + " " + eJSON[i].userId);
+      if (this.props.products.userObj.uid === eJSON[i].userId) {
+        // console.log('bih')
+        tempJSON = eJSON[i]
+        tempJSON["id"] = i;
+        rowsCat.push(tempJSON);
+      }
+    }
+    return rowsCat;
+  }
+
   componentDidMount() {
     this.backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       this.backAction
     );
-    
+    console.log()
     // Set the state with the incoming item
     this.setState({itemName:this.props.navigation.state.params.item.name,
       itemDescription:this.props.navigation.state.params.item.description,
       price:'69',
       itemId:this.props.navigation.state.params.item.id,
-      category:this.props.navigation.state.params.item.category});
+      category:this.props.navigation.state.params.item.category,
+      itemImage:this.props.navigation.state.params.item.image,
+      imageDiff:this.props.navigation.state.params.item.image,
+      itemBrand:this.props.navigation.state.params.item.brand,
+      itemRating:this.props.navigation.state.params.item.aggregateRating,
+      categoryId:this.props.navigation.state.params.item.categoryId,
+      sellerId:this.props.navigation.state.params.item.sellerId,  
+    },
+      );
 
     // connect to a Firebase table
     var dbref = this.props.products.dbh.ref('products');
@@ -160,7 +189,9 @@ class EditProduct extends React.Component {
             rowsCat.push(eJSON[i]);
           }
   
-          var dsCat = rowsCat;
+          var dsCat = this.filterCatByUid(rowsCat);
+
+          // var dsCat = rowsCat;
           // console.log('>>>>>>>>>>>')
           // // console.log(ds[0])
           // console.log(dsCat)
@@ -225,21 +256,65 @@ class EditProduct extends React.Component {
 
     if (isSave){
       if (isBool){
-        database().ref('products'+'/'+this.state.itemId)
-        .set(
-          {
-            brand: "Acme",
-            logo: "http://www.example.com/logo.png",
-            name: this.state.itemName,
-            category: this.state.category,
-            image: "http://www.example.com/image.jpg",
-            description: this.state.itemDescription,
-            aggregateRating: {
-              type: "aggregateRating",
-              ratingValue: "5",
-              reviewCount: "21"
-            }
-          })
+
+        if (this.state.imageDiff !== this.state.itemImage){
+          var junk = this.state;
+          this.state.storageRef.getDownloadURL().then(function(url) {
+              console.log(url);
+              // console.log(this.state)
+              // console.log(junk)
+              
+              database()
+                .ref('products'+'/'+junk.itemId)
+                // .push()
+                .set(
+                  {
+                    brand: junk.itemBrand,
+                    logo: "http://www.example.com/logo.png",
+                    name: junk.itemName,
+                    category: junk.category,
+                    categoryId: junk.categoryId,
+                    sellerId: junk.sellerId,
+                    image: url,
+                    description: junk.itemDescription,
+                    aggregateRating: junk.itemRating
+                  })
+
+          }, function(error){
+              console.log(error);
+          });
+        } else {
+          database().ref('products'+'/'+this.state.itemId)
+            .set(
+              {
+                brand: this.state.itemBrand,
+                logo: "http://www.example.com/logo.png",
+                name: this.state.itemName,
+                category: this.state.category,
+                categoryId: this.state.categoryId,
+                sellerId: this.state.sellerId,
+                image: this.state.itemImage,
+                description: this.state.itemDescription,
+                aggregateRating: this.state.itemRating
+              })
+        }
+
+        // database().ref('products'+'/'+this.state.itemId)
+        // .set(
+        //   {
+        //     brand: "Acme",
+        //     logo: "http://www.example.com/logo.png",
+        //     name: this.state.itemName,
+        //     category: this.state.category,
+        //     image: "http://www.example.com/image.jpg",
+        //     description: this.state.itemDescription,
+        //     aggregateRating: {
+        //       type: "aggregateRating",
+        //       ratingValue: "5",
+        //       reviewCount: "21"
+        //     }
+        //   })
+
         this.setState({ snackMessage: "Product saved successfully." })
         this._onToggleSnackBar()
         // this.setState({
@@ -300,16 +375,30 @@ class EditProduct extends React.Component {
           itemImages: [],
         });
       } else {
-        let tempsource = this.state.itemImages// { uri: response.uri };
-        tempsource.push( {url: response.uri} )
 
-        const source = tempsource;
+        let tempsource = response;
+        
+        this.setState({
+          itemImage: tempsource.uri,
+        });
+        
+        this.state.storageRef = storage().ref('/images/products/' + tempsource.fileName);
+        this.state.storageRef.putFile(tempsource.path).then(function (snapshot) {
+            console.log('Uploaded a data_url string!');
+            // console.log(this.state)
+            // bazooka()
+        });
+
+        // let tempsource = this.state.itemImages// { uri: response.uri };
+        // tempsource.push( {url: response.uri} )
+
+        // const source = tempsource;
         // You can also display the image using data:
         // const source = { uri: 'data:image/jpeg;base64,' + response.data };
 
-        this.setState({
-          itemImages: source,
-        });
+        // this.setState({
+        //   itemImages: source,
+        // });
       }
     });
   }
@@ -345,10 +434,10 @@ class EditProduct extends React.Component {
     </Snackbar>
       <ScrollView>
 
-            
-            <Slideshow 
-            dataSource={this.getImages()}/>
-
+            <Card style={styles.cardContainer}>
+              <Card.Title title="Product Image" titleStyle={styles.purpDreams} />
+              <Card.Cover source={{ uri: this.state.itemImage }} />
+            </Card>   
             <View style={{justifyContent: 'center', flexDirection:'row'}}>
               <Button 
                 // icon="plus" 
@@ -366,6 +455,15 @@ class EditProduct extends React.Component {
               label='Product Name'
               value={this.state.itemName}
               onChangeText={itemName => this.setState({ itemName })}
+              style={{marginVertical:'2%'}}
+            />
+
+            <TextInput
+              selectionColor='#6600ff'
+              // mode='outlined'
+              label='Product Brand'
+              value={this.state.itemBrand}
+              onChangeText={itemBrand => this.setState({ itemBrand })}
               style={{marginVertical:'2%'}}
             />
             
@@ -388,7 +486,7 @@ class EditProduct extends React.Component {
                   <List.Item
                     title={l.name}
                     onPress={category => {
-                      this.setState({category:l.name})
+                      this.setState({category:l.name, categoryId:l.id})
                     }}
                   />
                 ))

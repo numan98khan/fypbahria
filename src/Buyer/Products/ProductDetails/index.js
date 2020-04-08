@@ -198,9 +198,11 @@ class ProductDetails extends React.Component {
       {/* <View > */}
       <ScrollView>
             
+            <Card style={styles.cardContainer}>
+              <Card.Title title="Product Image" titleStyle={styles.purpDreams} />
+              <Card.Cover source={{ uri: item.image }} />
+            </Card>   
 
-            <Slideshow 
-            dataSource={this.getImages(item.image)}/>
             <Text style={ProductStyles.headerText}>{item.name}</Text>
             <Text style={ProductStyles.categoryText}>{item.category}</Text>
             <Text style={ProductStyles.priceText}>Price</Text>

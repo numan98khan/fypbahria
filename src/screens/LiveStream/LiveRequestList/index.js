@@ -85,7 +85,7 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu';
-class Hire extends React.Component {
+class LiveRequestList extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -96,13 +96,28 @@ class Hire extends React.Component {
 
   onFocusFunction = () => {
     // do some stuff on every screen focus
-    this.props.updateScreenVar({screen:'livelist'});
+    this.props.updateScreenVar({screen:'liverequestlist'});
     console.log("livelist focused");
   }
 
   // and don't forget to remove the listener
   componentWillUnmount () {
     this.focusListener.remove()
+  }
+
+  filterReqByUid(eJSON){
+    var rowsCat = [];// = [{"description": "NONE", "name": "NONE"}];
+    for(var i in eJSON){
+      // console.log(this.props.products.userObj.uid + " " + eJSON[i].sellerId);
+      // console.log('bih + ' + eJSON[i])
+      if (this.props.products.userObj.uid === eJSON[i].sellerId) {
+        // console.log('bih + ' + eJSON[i])
+        tempJSON = eJSON[i]
+        // tempJSON["id"] = i;
+        rowsCat.push(tempJSON);
+      }
+    }
+    return rowsCat;
   }
 
   componentDidMount() {
@@ -138,10 +153,11 @@ class Hire extends React.Component {
             rowsCat.push(tempJSON);
           }
   
-          var dsCat = rowsCat;
+          var dsCat = this.filterReqByUid(rowsCat);
+          // var dsCat = rowsCat;
           // console.log('>>>>>>>>>>>')
           // // console.log(ds)
-          // console.log(dsCat)
+          console.log(dsCat)
           // console.log('>>>>>>>>>>>')
           this.setState({liveRequests: dsCat});
           // this.props.updateCategory(
@@ -201,6 +217,16 @@ class Hire extends React.Component {
     }
   }
 
+  acceptLiveRequest(req) {
+    const reference = database().ref(`/liveRequests/${req.id}/status`);
+
+    // Execute transaction
+    return reference.transaction(currentLikes => {
+      // if (currentLikes === null) return 1;
+      return "ACCEPTED";
+    });
+  }
+
   render() {
 
     const { search } = this.props.products.search;
@@ -256,16 +282,21 @@ class Hire extends React.Component {
                 // containerStyle={{height:100,width:1080}}
                 key={i}
                 // leftAvatar={{ source: { uri: l.avatar_url } }}
-                title={l.sellerEmail}
+                title={l.buyerEmail}
                 subtitle={l.status}
                 subtitleStyle={this.getSubStyle(l.status)}
                 bottomDivider
-                // chevron={<MenuPopUp item={l} attachHire={1}/>}
-                onPress={() => {
-                  this.props.navigation.navigate('detailHire', {
-                    hireObj: l,
-                  });
-                }}
+                chevron={<Icon
+                  name='check'
+                  type='material'
+                  color='#6600ff'
+                  onPress={() => {this.acceptLiveRequest(l)}}
+                />}
+                // onPress={() => {
+                //   this.props.navigation.navigate('detailHire', {
+                //     hireObj: l,
+                //   });
+                // }}
               />
             ))
           }
@@ -347,4 +378,4 @@ const mapDispatchToProps = dispatch => (
   }, dispatch)
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Hire);
+export default connect(mapStateToProps, mapDispatchToProps)(LiveRequestList);

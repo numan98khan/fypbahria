@@ -153,6 +153,7 @@ class AddCategory extends React.Component {
         .set(
           {
             userId: this.props.products.userObj.uid,
+            userEmail: this.props.products.userObj.email,
             name: this.state.categoryName,
             description: this.state.categoryDescription,
           })

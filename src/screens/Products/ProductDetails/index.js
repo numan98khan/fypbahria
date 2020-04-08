@@ -1,6 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, Button, BackHandler, Alert, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Button, BackHandler, Clipboard, Alert, Text } from 'react-native';
 import { TextInput, Picker, Platform ,ScrollView} from 'react-native';
+
+import { Card } from 'react-native-paper';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {toggleImageFilter } from '../../../state/actions';
@@ -103,6 +106,11 @@ class ProductDetails extends React.Component {
         console.log("response", response);
         })
     }
+
+    copyToClipboard = () => {
+      Clipboard.setString('hello world')
+    }
+
   render() {
     const { navigation } = this.props;
 
@@ -123,9 +131,16 @@ class ProductDetails extends React.Component {
       <View style={styles.container}>
       {/* <View > */}
       <ScrollView>
-            <Slideshow 
-            dataSource={this.getImages(item.image)}/>
+            
+            <Card style={styles.cardContainer}>
+              <Card.Title title="Product Image" titleStyle={styles.purpDreams} />
+              <Card.Cover source={{ uri: item.image }} />
+            </Card>   
+      
             <Text style={ProductStyles.headerText}>{item.name}</Text>
+            <TouchableOpacity onPress={() => Clipboard.setString(item.id)}>
+              <Text>Click here to copy product ID</Text>
+            </TouchableOpacity>
             <Text style={ProductStyles.categoryText}>{item.category}</Text>
             <Text style={ProductStyles.priceText}>Price</Text>
             <Divider style={ProductStyles.dividerStyle} />

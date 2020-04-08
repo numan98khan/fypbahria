@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, BackHandler, Alert, Text } from 'react-native';
-import {  Picker, Platform ,ScrollView} from 'react-native';
+import {  Picker, Platform , ScrollView} from 'react-native';
 
 import {Snackbar, TextInput, Card, Avatar, Button, Dialog, Portal, Title,List, Checkbox , Paragraph  } from 'react-native-paper';
 
@@ -23,6 +23,10 @@ import Slideshow from 'react-native-image-slider-show';
 
 import ProductStyles from '../../../common/productStyle';
 
+import storage from '@react-native-firebase/storage';
+import auth from '@react-native-firebase/auth';
+
+
 class AddProduct extends React.Component {
 
   // static navigationOptions = {
@@ -37,7 +41,10 @@ class AddProduct extends React.Component {
     snackVisible: false,
     category:'NONE',
     snackMessage:'',
-    itemImages:[],
+    itemImage:null,
+    itemBrand:'',
+    storageRef:null,
+    categoryId:'',
   };
 
   // START
@@ -125,6 +132,20 @@ class AddProduct extends React.Component {
       return this.state.itemImages;
   }
 
+  filterCatByUid(eJSON){
+    var rowsCat = [{"description": "NONE", "name": "NONE"}];
+    for(var i in eJSON){
+      // console.log(this.props.products.userObj.uid + " " + eJSON[i].userId);
+      if (this.props.products.userObj.uid === eJSON[i].userId) {
+        // console.log('bih')
+        tempJSON = eJSON[i]
+        tempJSON["id"] = i;
+        rowsCat.push(tempJSON);
+      }
+    }
+    return rowsCat;
+  }
+
   componentDidMount() {
     this.backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
@@ -153,8 +174,11 @@ class AddProduct extends React.Component {
           for(var i in eJSON){
             rowsCat.push(eJSON[i]);
           }
+
+          // console.log(this.filterCatByUid(rowsCat))
   
-          var dsCat = rowsCat;
+          var dsCat = this.filterCatByUid(rowsCat);
+          // var dsCat = rowsCat;
           // console.log('>>>>>>>>>>>')
           // // console.log(ds[0])
           // console.log(dsCat)
@@ -196,9 +220,11 @@ class AddProduct extends React.Component {
     let dummyState = {
       price:null,
       itemName:'',
+      itemImage:null,
       itemDescription:'',
       visible: false,
       category:'NONE',
+      itemBrand:''
     };
 
     let isBool = true;
@@ -215,25 +241,59 @@ class AddProduct extends React.Component {
     if (this.state.category === 'NONE') {
       isBool = false;
     }
+    if (this.state.itemBrand === '') {
+      isBool = false;
+    }
 
+    
+
+  
     if (isBool){
+      // var newProductRef = database()
+      // .ref("products")
+      // .push()
+
+    // var storageRef = storage().ref('/images/products/' + this.state.itemImage.fileName);
+    // storageRef.putFile(this.state.itemImage.path).then(function (snapshot) {
+    //     console.log('Uploaded a data_url string!');
+    // });
+
+    // var firebaseUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.props.products.bucket + "/o/";
+    // // var finalUrl = firebaseUrl+'images%2Fproducts%2F' + this.state.itemImage.fileName;
+
+    this.setState({sellerId: this.props.products.userObj.uid});
+    var junk = this.state;
+
+    this.state.storageRef.getDownloadURL().then(function(url) {
+      console.log(url);
+      // console.log(this.state)
+      // console.log(junk)
+      
       database()
-      .ref("products")
-      .push()
-      .set(
-        {
-          brand: "Acme",
-          logo: "http://www.example.com/logo.png",
-          name: this.state.itemName,
-          category: this.state.category,
-          image: "http://www.example.com/image.jpg",
-          description: this.state.itemDescription,
-          aggregateRating: {
-            type: "aggregateRating",
-            ratingValue: "5",
-            reviewCount: "21"
-          }
-        })
+        .ref("products")
+        .push()
+        .set(
+          {
+            brand: junk.itemBrand,
+            logo: "http://www.example.com/logo.png",
+            name: junk.itemName,
+            category: junk.category,
+            categoryId: junk.categoryId,
+            sellerId: junk.sellerId,
+            image: url,
+            description: junk.itemDescription,
+            aggregateRating: {
+              type: "aggregateRating",
+              ratingValue: "0",
+              reviewCount: "0"
+            }
+          })
+
+  }, function(error){
+      console.log(error);
+  });
+
+      
       this.setState({ snackMessage: "Product added successfully." })
       this._onToggleSnackBar()
       this.setState({
@@ -242,6 +302,8 @@ class AddProduct extends React.Component {
         itemDescription:'',
         visible: false,
         category:'NONE',
+        itemBrand:'',
+        storageRef:null,
       })
 
     } else {
@@ -265,6 +327,10 @@ class AddProduct extends React.Component {
     }
   }
 
+  bazooka(){
+    console.log('Bazooka');
+  }
+
   uploadImages(){
     // More info on all the options is below in the API Reference... just some common use cases shown here
     const options = {
@@ -276,12 +342,14 @@ class AddProduct extends React.Component {
       },
     };
 
+  
+
     /**
      * The first arg is the options object for customization (it can also be null or omitted for default options),
      * The second arg is the callback which sends object: response (more info in the API Reference)
      */
     ImagePicker.showImagePicker(options, (response) => {
-      console.log('Response = ', response);
+      console.log('Response = ', Object.keys(response));
 
       if (response.didCancel) {
         console.log('User cancelled image picker');
@@ -290,19 +358,30 @@ class AddProduct extends React.Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
         this.setState({
-          itemImages: [],
+          itemImage: null,
         });
       } else {
-        let tempsource = this.state.itemImages// { uri: response.uri };
-        tempsource.push( {url: response.uri} )
+        let tempsource = response;
+        
+        this.setState({
+          itemImage: tempsource,
+        });
+        
+        this.state.storageRef = storage().ref('/images/products/' + this.state.itemImage.fileName);
+        this.state.storageRef.putFile(this.state.itemImage.path).then(function (snapshot) {
+            console.log('Uploaded a data_url string!');
+            // console.log(this.state)
+            // bazooka()
+        });
+        // tempsource.push( {url: response.uri} )
 
-        const source = tempsource;
+        // const source = tempsource;
         // You can also display the image using data:
         // const source = { uri: 'data:image/jpeg;base64,' + response.data };
 
-        this.setState({
-          itemImages: source,
-        });
+        // this.setState({
+        //   itemImage: tempsource,
+        // });
       }
     });
   }
@@ -321,6 +400,13 @@ class AddProduct extends React.Component {
     const TitleView = <View style={{ flexDirection: 'row', justifyContent: 'space-between', width:100 }}>
                           <Text>Add Product</Text>
                       </View>
+    
+            //           <Image
+            //   style={{height: '40%'}}
+            //   source={{
+            //     uri: this.state.itemImage ? this.state.itemImage.uri : 'https://reactnative.dev/img/tiny_logo.png',
+            //   }}
+            // />
     return (
       <View style={styles.container}>
       {/* <View > */}
@@ -340,9 +426,10 @@ class AddProduct extends React.Component {
     </Snackbar>
       <ScrollView>
 
-            
-            <Slideshow 
-            dataSource={this.getImages()}/>
+          <Card style={styles.cardContainer}>
+            <Card.Title title="Product Image" titleStyle={styles.purpDreams} />
+            <Card.Cover source={{ uri: this.state.itemImage ? this.state.itemImage.uri : 'https://reactnative.dev/img/tiny_logo.png' }} />
+          </Card>            
             
 
             <View style={{justifyContent: 'center', flexDirection:'row'}}>
@@ -352,7 +439,7 @@ class AddProduct extends React.Component {
                 color="#6600ff"
                 style={{marginVertical:'3%', marginTop:'5%', width:'100%'}} 
                 onPress={() => this.uploadImages()}>
-                  Add Images              
+                  Add Image              
               </Button>  
             </View>
             
@@ -362,6 +449,15 @@ class AddProduct extends React.Component {
               label='Product Name'
               value={this.state.itemName}
               onChangeText={itemName => this.setState({ itemName })}
+              style={{marginVertical:'2%'}}
+            />
+
+            <TextInput
+              selectionColor='#6600ff'
+              // mode='outlined'
+              label='Product Brand'
+              value={this.state.itemBrand}
+              onChangeText={itemBrand => this.setState({ itemBrand })}
               style={{marginVertical:'2%'}}
             />
             
@@ -384,7 +480,7 @@ class AddProduct extends React.Component {
                   <List.Item
                     title={l.name}
                     onPress={category => {
-                      this.setState({category:l.name})
+                      this.setState({category:l.name, categoryId: l.id})
                     }}
                   />
                 ))

@@ -46,8 +46,8 @@ class ScreenOne extends React.Component {
 
   onFocusFunction = () => {
     // do some stuff on every screen focus
-    this.props.updateScreenVar({screen:'products'});
-    console.log("producst focused");
+    this.props.updateScreenVar({screen:'buyerProducts'});
+    console.log("buyerProducts focused");
   }
 
   // and don't forget to remove the listener
@@ -380,8 +380,8 @@ class ScreenOne extends React.Component {
                     <ListItem
                       // containerStyle={{height:100,width:1080}}
                       key={i}
-                      // leftAvatar={{ source: { uri: l.avatar_url } }}
-                      leftAvatar={{ source: { uri: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg" } }}
+                      leftAvatar={{ source: { uri: l.image } }}
+                      // leftAvatar={{ source: { uri: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg" } }}
                       title={l.name}
                       subtitle={l.brand}
                       bottomDivider
@@ -423,8 +423,8 @@ class ScreenOne extends React.Component {
                 <ListItem
                   // containerStyle={{height:100,width:1080}}
                   key={i}
-                  // leftAvatar={{ source: { uri: l.avatar_url } }}
-                  leftAvatar={{ source: { uri: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg" } }}
+                  leftAvatar={{ source: { uri: l.image } }}
+                  // leftAvatar={{ source: { uri: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg" } }}
                   title={l.name}
                   subtitle={l.brand}
                   bottomDivider

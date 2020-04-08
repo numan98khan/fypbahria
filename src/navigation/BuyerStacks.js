@@ -43,6 +43,8 @@ import LiveStream from '../screens/LiveStream';
 import Offer from '../Buyer/Offer';
 import LiveList from '../screens/LiveStream/LiveList';
 
+import RequestLive from '../screens/LiveStream/RequestLive'
+
 export const liveStack = createStackNavigator(
     {
         LiveStream: {
@@ -59,6 +61,13 @@ export const liveStack = createStackNavigator(
             },
             
         },
+        addLiveRequest: {
+            screen: RequestLive,
+            navigationOptions: {
+                headerShown: false,
+            },
+            
+        }
         
         // detailProduct: {
         //     screen:ProductDetails,

@@ -38,6 +38,83 @@ import AddHire from '../screens/Hire/AddHire';
 import drawerContentComponents from './drawerContentComponents'
 import CategoryDetails from '../screens/Category/CategoryDetails';
 
+import LiveRequestList from '../screens/LiveStream/LiveRequestList';
+
+export const liveStack = createStackNavigator(
+    {
+        LiveStream: {
+            screen: LiveStream,
+            navigationOptions: {
+                headerShown: false,
+            },
+            
+        },
+        LiveRequestList: {
+            screen: LiveRequestList,
+            navigationOptions: {
+                headerShown: false,
+            },
+            
+        },
+        // addLiveRequest: {
+        //     screen: RequestLive,
+        //     navigationOptions: {
+        //         headerShown: false,
+        //     },
+            
+        // }
+        
+        // detailProduct: {
+        //     screen:ProductDetails,
+        //     navigationOptions: {
+        //         title:"Details",
+        //     },
+            
+        // },
+        // editProduct: {
+        //     screen:EditProduct,
+        //     navigationOptions: {
+        //         title:"Edit Product",
+        //     },
+        // },
+        // addProduct: {
+        //     screen:AddProduct,
+        //     navigationOptions: {
+        //         title:"Add Product",
+        //         // headerShown: false,
+        //     },
+        // }
+    },
+    {
+        initialRouteName:'LiveRequestList',
+        defaultNavigationOptions: {
+            header: ({ scene, previous, navigation }) => {
+                const { options } = scene.descriptor;
+                const title =
+                  options.headerTitle !== undefined
+                    ? options.headerTitle
+                    : options.title !== undefined
+                    ? options.title
+                    : scene.route.routeName;
+                // console.log(title)
+              
+                return (<Header backgroundColor="#6600ff"
+                centerComponent={{ text: title, style: { color: '#fff', fontSize:24 } }}
+                // leftContainerStyle={{width: 400}}
+                // leftComponent={previous ? <Icon
+                //         name="clear"
+                //         color='#fff'
+                //         onPress={navigation.goBack}
+                //         iconStyle={styles.iconStyle} /> : undefined}
+                >
+              {/* <MyCustomLeftComponent />
+              <MyCustomCenterComponent />
+              <MyCustomRightComponent /> */}
+              </Header>);
+              }
+        }
+    }
+);
 
 export const reviewStack = createStackNavigator(
     {
