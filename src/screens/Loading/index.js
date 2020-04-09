@@ -17,11 +17,18 @@ class Loading extends Component {
     auth().onAuthStateChanged(user => {
       // **for the purpose of directly logging in if creds entered already
       
-      // const routeToGoTo = 'home';
+      // console.log("USERS: ");
+      // console.log(user);
+
+      this.props.updateUserobj( { userObj: user } );
+
+      // console.log(this.props.products.userObj);
+
+      const routeToGoTo = 'home';
       // const routeToGoTo = 'detailProduct';
       // const routeToGoTo = 'addProduct';
       // const routeToGoTo = 'addCategory';
-      const routeToGoTo = 'LiveStream';
+      // const routeToGoTo = 'LiveStream';
 
       // this.props.navigation.navigate(routeToGoTo)
 
@@ -50,12 +57,7 @@ class Loading extends Component {
       
       // this.props.navigation.dispatch(resetAction);
       
-      console.log("USERS: ");
-      console.log(user);
-
-      this.props.updateUserobj( { userObj: user } );
-
-      console.log(this.props.products.userObj);
+      
 
       // this.props.navigation.dispatch(DrawerActions.openDrawer());
     })

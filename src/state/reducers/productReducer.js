@@ -21,7 +21,8 @@ const INITIAL_STATE = {
     currentScreen:'',
     isSearchBar:false,
     userObj:null,
-    appMode: 'seller',
+    appMode: 'buyer',
+    // appMode: 'seller',
     specials: ds,
     currentCart:[],
     liveProductList:[]

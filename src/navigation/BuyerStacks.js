@@ -45,10 +45,14 @@ import LiveList from '../screens/LiveStream/LiveList';
 
 import RequestLive from '../screens/LiveStream/RequestLive'
 
+console.log(LiveStream)
+
 export const liveStack = createStackNavigator(
     {
+
         LiveStream: {
             screen: LiveStream,
+            // screen: LiveList,
             navigationOptions: {
                 headerShown: false,
             },

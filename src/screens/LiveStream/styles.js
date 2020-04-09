@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    zIndex: 2
+    zIndex: 2,
+    // backgroundColor: '#000'
   },
   viewDismissKeyboard: {
     position: 'absolute',
@@ -278,7 +279,7 @@ const styles = StyleSheet.create({
   iconCancel: {
     width: 20,
     height: 20,
-    tintColor: 'white'
+    tintColor: '#6600ff'
   },
   col: {
     flex: 1,

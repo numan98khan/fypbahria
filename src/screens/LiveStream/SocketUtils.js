@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 import moment from 'moment';
 import Utils from './Utils';
 import LiveStatus from './LiveStatus';
+import database from '@react-native-firebase/database';
 
 let socket = null;
 
@@ -13,6 +14,22 @@ const getSocket = () => {
 const connect = () => {
   console.log("connecting BIAATch")
   socket = io.connect(Utils.getSocketIOIP(), {transports: ['websocket']});
+  // socket = io.connect(Utils.getSocketIOIP(), {
+  //   timeout: 10000,
+  //   jsonp: false,
+  //   transports: ['websocket'],
+  //   autoConnect: false,
+  //   agent: '-',
+  //   path: '/', // Whatever your path is
+  //   pfx: '-',
+  //   key: token, // Using token-based auth.
+  //   passphrase: cookie, // Using cookie auth.
+  //   cert: '-',
+  //   ca: '-',
+  //   ciphers: '-',
+  //   rejectUnauthorized: '-',
+  //   perMessageDeflate: '-'
+  // });
   // console.log(socket)
 };
 
@@ -23,13 +40,23 @@ const handleOnConnect = () => {
 };
 
 const emitRegisterLiveStream = (roomName, userId) => {
+  console.log('Registration : ' + roomName + ' ' + userId);
   socket.emit('register-live-stream', {
     roomName,
     userId,
   });
 };
 
-const emitBeginLiveStream = (roomName, userId) => {
+const emitBeginLiveStream = (roomName, userId, email) => {
+  database()
+      .ref("live")
+      .push()
+      .set(
+        {
+          streamerId: userId,
+          streamerRoom: email,
+        })
+      
   socket.emit(
     'begin-live-stream',
     {
@@ -43,6 +70,16 @@ const emitBeginLiveStream = (roomName, userId) => {
 };
 
 const emitFinishLiveStream = (roomName, userId) => {
+  database().ref('/').child('live').orderByChild('streamerId').equalTo(userId).once("value", function(snapshot) {
+      // console.log(snapshot.val().key();
+
+      snapshot.forEach(function(data) {
+        database()
+          .ref('/live/'+data.key)
+          .remove();  
+        
+      });
+  });
   socket.emit(
     'finish-live-stream',
     {

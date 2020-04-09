@@ -136,13 +136,13 @@ class NavBar extends React.Component {
           middleComponentText = 'Live Streams';
           rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             {/*searchIcon*/}
-            <Icon
+            {/*<Icon
                   name='cloud'
                   color='#fff'
                   // onPress={() => console.log('add enabled')} 
                   onPress={() => this.props.navigation.navigate('LiveStream')} 
                   iconStyle={styles.iconStyle}
-                  />
+            />*/}
             <Icon
                   name='add'
                   color='#fff'
@@ -189,7 +189,7 @@ class NavBar extends React.Component {
                   name='cloud'
                   color='#fff'
                   // onPress={() => console.log('add enabled')} 
-                  onPress={() => this.props.navigation.navigate('LiveStream')} 
+                  onPress={() => this.props.navigation.navigate('LiveStreamSeller')} 
                   iconStyle={styles.iconStyle}
                   />
           </View>

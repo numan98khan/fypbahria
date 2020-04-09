@@ -91,7 +91,7 @@ class Hire extends React.Component {
   }
 
   state = {
-    liveRequests: [],
+    liveStreams: [],
   }
 
   onFocusFunction = () => {
@@ -129,7 +129,7 @@ class Hire extends React.Component {
         // }
         // var ds = rows;
 
-        this.props.products.dbh.ref('liveRequests').on('value', (e) => {
+        this.props.products.dbh.ref('live').on('value', (e) => {
           var rowsCat = [];
           var eJSON = e.toJSON()
           for(var i in eJSON){
@@ -143,7 +143,7 @@ class Hire extends React.Component {
           // // console.log(ds)
           // console.log(dsCat)
           // console.log('>>>>>>>>>>>')
-          this.setState({liveRequests: dsCat});
+          this.setState({liveStreams: dsCat});
           // this.props.updateCategory(
           //   {
           //       dataCategorySearch: dsCat,
@@ -251,19 +251,20 @@ class Hire extends React.Component {
         <View style={{flex: 1}}>
           {
             // list.map((l, i) => (
-            this.state.liveRequests.map((l, i) => (
+            this.state.liveStreams.map((l, i) => (
               <ListItem
                 // containerStyle={{height:100,width:1080}}
                 key={i}
                 // leftAvatar={{ source: { uri: l.avatar_url } }}
-                title={l.sellerEmail}
-                subtitle={l.status}
-                subtitleStyle={this.getSubStyle(l.status)}
+                title={l.streamerRoom}
+                // title={'sellerEmail'}
+                subtitle={'LIVE'}
+                subtitleStyle={this.getSubStyle('ACCEPTED')}
                 bottomDivider
                 // chevron={<MenuPopUp item={l} attachHire={1}/>}
                 onPress={() => {
-                  this.props.navigation.navigate('detailHire', {
-                    hireObj: l,
+                  this.props.navigation.navigate('LiveStream', {
+                    streamerInfo: l,
                   });
                 }}
               />

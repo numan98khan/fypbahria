@@ -142,7 +142,7 @@ class LiveStreamScreen extends Component {
 
   onBeginLiveStream = () => {
     this.setState({liveStatus: LiveStatus.ON_LIVE});
-    SocketUtils.emitBeginLiveStream(Utils.getRoomName(), Utils.getUserId());
+    SocketUtils.emitBeginLiveStream(Utils.getRoomName(), Utils.getUserId(), this.props.products.userObj.email);
     this.vbCamera.start();
     // this.vbCamera.switchCamera();
     
@@ -334,6 +334,32 @@ class LiveStreamScreen extends Component {
               : styles.notLiveText
           }>
           LIVE
+        </Text>
+      </View>
+    );
+  };
+
+  renderLiveProducts = () => {
+    const {liveStatus} = this.state;
+    return (
+      <View
+        style={{position: 'absolute',
+        top: 30,
+        left: 260,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        paddingHorizontal: 8,
+        paddingVertical: 6,
+        borderRadius: 5,
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center'}}>
+        <Text
+          style={
+            liveStatus === LiveStatus.ON_LIVE
+              ? styles.liveText
+              : styles.notLiveText
+          }>
+          Products
         </Text>
       </View>
     );
@@ -730,10 +756,13 @@ class LiveStreamScreen extends Component {
       ],
     });
     const {liveStatus, countViewer, countHeart} = this.state;
+    
+    console.log('LIVE STATUS: ' + liveStatus);
+    
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
-        {liveStatus === LiveStatus.ON_LIVE && (
+        {liveStatus === LiveStatus.ON_LIVE || true && (
           <NodePlayerView
             style={styles.streamerCameraView}
             ref={vb => {
@@ -746,7 +775,7 @@ class LiveStreamScreen extends Component {
             maxBufferTime={1000}
             autoplay
           />
-        )}
+          )}
         <TouchableWithoutFeedback
           onPress={() => {
             Keyboard.dismiss();
@@ -754,10 +783,11 @@ class LiveStreamScreen extends Component {
           }}
           accessible={false}
           style={styles.viewDismissKeyboard}>
-          {liveStatus === LiveStatus.ON_LIVE ? (
+          {liveStatus === LiveStatus.ON_LIVE || true ? (
             <View style={styles.container}>
               {this.renderCancelViewerButton()}
-              {/*this.renderLiveText()*/}
+              {this.renderLiveText()}
+              {this.renderLiveProducts()}
               <View style={styles.wrapIconView}>
                 <Image
                   source={require('../../assets/ico_view.png')}
@@ -839,27 +869,51 @@ class LiveStreamScreen extends Component {
   };
 
   render() {
-    // const type = Utils.getUserType();
-    const typo = this.props.products.appMode;
-    console.log(typo);
 
-    var type = 'STREAMER';
+    // console.disableYellowBox = true;
+    // Utils.setUserId
+    console.log('debug > ' + this.props.products.userObj.uid);
+
+
+
+    // var type = 'STREAMER';
     
-    if (typo === 'buyer'){
-      type = 'VIEWER';
+    // const typo = this.props.products.appMode;
+    
+    // Utils.setRoomName(this.props.products.userObj.email)
+    Utils.setUserId(this.props.products.userObj.uid);
+    console.log('oooooo ' + Utils.getUserId())
+
+    if (this.props.products.appMode === 'buyer'){
+      Utils.setUserType('VIEWER');
+      Utils.setRoomName(this.props.navigation.state.params.streamerInfo.streamerId)
+      // Utils.setRoomName('test')
+      // console.log(Utils.getRoomName())
+    } else {
+      Utils.setUserType('STREAMER');  
+      Utils.setRoomName(this.props.products.userObj.uid)
+      // Utils.setUserId(this.props.products.userObj.uid);
+      // console.log('oooooo ' + Utils.getUserId())
+
     }
 
-    // ****** NEEDS FRONT CAMERA SWITCH
 
+    // ****** NEEDS FRONT CAMERA SWITCH
+    const type = Utils.getUserType();
+    
 
     SocketUtils.connect()
 
     console.log(type);
+    // var type = 'STREAMER'
     if (type === 'STREAMER') {
       return this.renderStreamerUI();
     } else if (type === 'VIEWER') {
+
+      // this.setState({liveStatus: LiveStatus.ON_LIVE})
       return this.renderViewerUI();
     }
+    // return this.renderViewerUI();
   }
 }
 

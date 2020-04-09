@@ -19,7 +19,6 @@ import ScreenOne from '../screens/Products';
 // import BottomTabNavigator from './BottomTabNavigator';
 import Category from '../screens/Category';
 import AddProduct from '../screens/Products/AddProduct';
-import LiveStream from '../screens/LiveStream';
 import Credit from '../screens/Credit';
 import Hire from '../screens/Hire';
 import Reviews from '../screens/Reviews';
@@ -42,9 +41,17 @@ import LiveRequestList from '../screens/LiveStream/LiveRequestList';
 
 import LiveProductList from '../screens/LiveStream/LiveProducts';
 
+import LiveStream from '../screens/LiveStream';
+
+
+console.log('component error '+LiveStream)
+console.log('component error '+LiveRequestList)
+
+
 export const liveStack = createStackNavigator(
     {
-        LiveStream: {
+        LiveStreamSeller: {
+            // screen: LiveRequestList,
             screen: LiveStream,
             navigationOptions: {
                 headerShown: false,
