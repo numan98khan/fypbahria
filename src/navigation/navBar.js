@@ -30,7 +30,7 @@ class NavBar extends React.Component {
     render(){
       const { selectedIndex } = this.state
 
-        const MenuIcon = <Icon
+        var MenuIcon = <Icon
                 name='menu'
                 color='#fff'
                 onPress={() => this.props.navigation.toggleDrawer()}
@@ -157,10 +157,10 @@ class NavBar extends React.Component {
           rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             {/*searchIcon*/}
             <Icon
-                  name='cloud'
+                  name='list'
                   color='#fff'
                   // onPress={() => console.log('add enabled')} 
-                  onPress={() => this.props.navigation.navigate('LiveStream')} 
+                  onPress={() => this.props.navigation.navigate('LiveProductList')} 
                   iconStyle={styles.iconStyle}
                   />
           </View>
@@ -179,6 +179,20 @@ class NavBar extends React.Component {
         } else if (this.props.products.currentScreen === 'buyerProducts') {
           // console.log('debug');
           middleComponentText = 'Products';
+        } else if (this.props.products.currentScreen === 'LiveProductList') {
+          // console.log('debug');
+          MenuIcon = null;
+          middleComponentText = 'Add Products';
+          rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            {/*searchIcon*/}
+            <Icon
+                  name='cloud'
+                  color='#fff'
+                  // onPress={() => console.log('add enabled')} 
+                  onPress={() => this.props.navigation.navigate('LiveStream')} 
+                  iconStyle={styles.iconStyle}
+                  />
+          </View>
         }    
         return(
       <View>

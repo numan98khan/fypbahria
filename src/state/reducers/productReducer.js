@@ -21,13 +21,19 @@ const INITIAL_STATE = {
     currentScreen:'',
     isSearchBar:false,
     userObj:null,
-    appMode: 'buyer',
+    appMode: 'seller',
     specials: ds,
     currentCart:[],
+    liveProductList:[]
 };
 
 const productReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case types.UPDATE_LIVE_PRODUCTS:
+        // console.log('user reducer > '+ action.payload.userObj.uid);
+        return Object.assign({}, state, {
+            liveProductList: action.payload.liveProductList,
+        });
     case types.TOGGLE_MODE:
         console.log('TOGGLE_MODE reducer > ' + state.appMode);
         var modeSend;

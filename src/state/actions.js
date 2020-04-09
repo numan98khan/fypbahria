@@ -3,7 +3,14 @@ import {INITIATE_PRODUCTS, UPDATE_PRODUCTS,
   UPDATE_CATEGORY, UPDATE_SCREEN_VAR,
   TOGGLE_SEARCH_BAR, UPDATE_USEROBJ,
   TOGGLE_MODE, INITIATE_SPECIALS, 
-  CART_FUNCTION} from './TYPES'
+  CART_FUNCTION, UPDATE_LIVE_PRODUCTS} from './TYPES'
+
+export const updateLiveProducts = productsSettings => (
+  {
+    type: UPDATE_LIVE_PRODUCTS,
+    payload: productsSettings,
+  }
+);
 
 export const cartFunction = productsSettings => (
   {

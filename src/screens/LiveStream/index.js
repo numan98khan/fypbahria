@@ -93,6 +93,7 @@ class LiveStreamScreen extends Component {
     if (userType === 'STREAMER') {
       this.setState({liveStatus: LiveStatus.REGISTER});
       SocketUtils.emitRegisterLiveStream(Utils.getUserId(), Utils.getUserId());
+      // SocketUtils.emitRegisterLiveStream(this.props.products.userObj.email, this.props.products.userObj.uid);
       console.log('LIVE STREAM REGISTERED!!!!!')
     } else if (userType === 'VIEWER') {
       SocketUtils.emitJoinServer(Utils.getRoomName(), Utils.getUserId());

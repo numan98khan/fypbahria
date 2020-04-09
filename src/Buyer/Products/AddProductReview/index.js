@@ -129,6 +129,63 @@ class AddProductReview extends React.Component {
   _onToggleSnackBar = () => this.setState(state => ({ snackVisible: !state.snackVisible }));
   _onDismissSnackBar = () => this.setState({ snackVisible: false });
 
+  addReviewCount(productID) {
+    console.log("################# "+productID);
+    const reference = database().ref(`/products/${productID}/aggregateRating/reviewCount`);
+
+    // console.log('DOOBIE '+reference.value)
+
+    var counter;
+    reference.once('value').then(function(snapshot) {
+      counter = snapshot.val() ;
+      // ...
+      return reference.transaction(reviewCount => {
+        // if (reviewCount === null) return 1;
+        reviewCount = parseInt(reviewCount) + 1;
+        reviewCount = reviewCount.toString();
+        console.log('DOOBIE '+counter);
+        return reviewCount;
+      });
+    });
+
+    // var counter
+    // Execute transaction
+    
+
+    // return reference.transaction(currentLikes => {
+    //   if (currentLikes === null) return 1;
+    //   return "ACCEPTED";
+    // });
+    // return counter;
+  }
+  updateRatingScore(productID, userRating) {
+    console.log("################# "+productID);
+    const reference = database().ref(`/products/${productID}/aggregateRating/ratingValue`);
+    const countRef = database().ref(`/products/${productID}/aggregateRating/reviewCount`);
+
+    // console.log(reference.val())
+
+    var counter;
+    countRef.once('value').then(function(snapshot) {
+      counter = snapshot.val() ;
+      // ...
+      return reference.transaction(ratingValue => {
+        // if (reviewCount === null) return 1;
+        ratingValue = (parseInt(ratingValue)*(counter-1))+userRating/counter;
+        ratingValue = ratingValue.toString();
+        
+        // console.log('DOOBIE '+counter);
+        
+        return ratingValue;
+      });
+    });
+    // return reference.transaction(currentLikes => {
+    //   if (currentLikes === null) return 1;
+    //   return "ACCEPTED";
+    // });
+  }
+  
+
   isSaveable(isSave){
     let dummyState = {
         buyerEmail:'',
@@ -153,8 +210,12 @@ class AddProductReview extends React.Component {
         isBool = false;
     }
 
+    this.addReviewCount(this.props.navigation.state.params.product.id);
+
     if (isSave){
       if (isBool){
+        this.addReviewCount(this.props.navigation.state.params.product.id);
+        this.updateRatingScore(this.props.navigation.state.params.product.id, this.state.rating)
         console.log("Ok Boomer!");
         database()
         .ref("productReviews")
@@ -263,7 +324,7 @@ class AddProductReview extends React.Component {
                 imageSize={20}
                 showRating
                 startingValue={this.state.rating}
-                // onFinishRating={this.ratingCompleted}
+                onFinishRating={this.ratingCompleted.bind(this)}
                 // fractions="{2}"
                 />
             <Divider style={ProductStyles.dividerStyle} />

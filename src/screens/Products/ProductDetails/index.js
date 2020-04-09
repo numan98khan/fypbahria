@@ -147,7 +147,7 @@ class ProductDetails extends React.Component {
             <Rating
                 imageSize={20}
                 readonly
-                startingValue={2.5}
+                startingValue={item.aggregateRating.ratingValue}
                 fractions="{1}"
                 />
             <View style={{justifyContent: 'center', flexDirection:'row'}}>

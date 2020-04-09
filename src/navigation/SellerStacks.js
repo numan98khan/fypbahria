@@ -40,6 +40,8 @@ import CategoryDetails from '../screens/Category/CategoryDetails';
 
 import LiveRequestList from '../screens/LiveStream/LiveRequestList';
 
+import LiveProductList from '../screens/LiveStream/LiveProducts';
+
 export const liveStack = createStackNavigator(
     {
         LiveStream: {
@@ -51,6 +53,13 @@ export const liveStack = createStackNavigator(
         },
         LiveRequestList: {
             screen: LiveRequestList,
+            navigationOptions: {
+                headerShown: false,
+            },
+            
+        },
+        LiveProductList: {
+            screen: LiveProductList,
             navigationOptions: {
                 headerShown: false,
             },

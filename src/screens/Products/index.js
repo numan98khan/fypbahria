@@ -48,6 +48,37 @@ class ScreenOne extends React.Component {
     this.focusListener.remove()
   }
 
+  filterProdByUid(eJSON){
+    var rowsCat = [];// = [{"description": "NONE", "name": "NONE"}];
+    for(var i in eJSON){
+      // console.log(this.props.products.userObj.uid + " " + eJSON[i].sellerId);
+      // console.log('bih + ' + eJSON[i])
+      if (this.props.products.userObj.uid === eJSON[i].sellerId) {
+        // console.log('bih + ' + eJSON[i])
+        tempJSON = eJSON[i]
+        // tempJSON["id"] = i;
+        rowsCat.push(tempJSON);
+      }
+    }
+    return rowsCat;
+  }
+
+  filterCatByUid(eJSON){
+    var rowsCat = [];// = [{"description": "NONE", "name": "NONE"}];
+    for(var i in eJSON){
+      // console.log(this.props.products.userObj.uid + " " + eJSON[i].sellerId);
+      // console.log('bih + ' + eJSON[i])
+      if (this.props.products.userObj.uid === eJSON[i].userId) {
+        // console.log('bih + ' + eJSON[i])
+        tempJSON = eJSON[i]
+        // tempJSON["id"] = i;
+        rowsCat.push(tempJSON);
+      }
+    }
+    return rowsCat;
+  }
+
+
   componentDidMount() {
     // this.props.updateScreenVar({screen:'products'});
     this.focusListener = this.props.navigation.addListener('didFocus', () => {
@@ -70,7 +101,9 @@ class ScreenOne extends React.Component {
           rows.push(tempJSON);
         }
         // console.log(rows[0])
-        var ds = rows;
+        // var ds = rows;
+        var ds = this.filterProdByUid(rows);
+        
 
         this.props.products.dbh.ref('categories').on('value', (e) => {
           var rowsCat = [{"description": "NONE", "name": "NONE", "id": "NONE"}];
@@ -81,7 +114,8 @@ class ScreenOne extends React.Component {
             rowsCat.push(tempJSON);
           }
   
-          var dsCat = rowsCat;
+          // var dsCat = rowsCat;
+          var dsCat = this.filterCatByUid(rowsCat);
           // console.log('>>>>>>>>>>>')
           // // console.log(ds[0])
           // console.log(dsCat)
