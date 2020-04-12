@@ -45,7 +45,7 @@ import LiveList from '../screens/LiveStream/LiveList';
 
 import RequestLive from '../screens/LiveStream/RequestLive'
 
-console.log(LiveStream)
+// console.log(LiveStream)
 
 export const liveStack = createStackNavigator(
     {

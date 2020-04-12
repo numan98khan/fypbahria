@@ -71,7 +71,7 @@ class Statistics extends React.Component {
 
   orderProducts(){
     for (i = 0; i < this.state.orderList.length; i++) {
-      console.log(this.state.orderList[i].productList);
+      // console.log(this.state.orderList[i].productList);
       // totalSum += this.state.orderList[i].bill;
       // id = 12;
       // var count = this.state.orderList[i].filter((obj) => obj.id === id).length;
