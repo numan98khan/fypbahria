@@ -226,7 +226,7 @@ class ScreenOne extends React.Component {
     try {
       // adddlert("Welcome guest!");
       if (key === 'name') {
-        console.log('whatevr')
+        // console.log('whatevr')
         return this.state.ads[index].name;
       } else {
         return this.state.ads[index].description;  
@@ -335,9 +335,6 @@ class ScreenOne extends React.Component {
               <Card.Content style={{paddingBottom:'5%', flexDirection:'row'}}>
                 <SliderBox images={[
                         "https://source.unsplash.com/1024x768/?nature",
-                        "https://source.unsplash.com/1024x768/?water",
-                        "https://source.unsplash.com/1024x768/?girl",
-                        "https://source.unsplash.com/1024x768/?tree", // Network image
                       ]}
                       onCurrentImagePressed={index => console.log(`image ${index} pressed`)}
                       currentImageEmitter={index => this.setState({currentAdIndex: index})}

@@ -110,6 +110,8 @@ class AddProductReview extends React.Component {
   }
 
   componentWillUnmount() {
+
+
     this.backHandler.remove();
   }
     pickImage()
@@ -129,9 +131,9 @@ class AddProductReview extends React.Component {
   _onToggleSnackBar = () => this.setState(state => ({ snackVisible: !state.snackVisible }));
   _onDismissSnackBar = () => this.setState({ snackVisible: false });
 
-  addReviewCount(productID) {
+  addReviewCount(productID, rating) {
     console.log("################# "+productID);
-    const reference = database().ref(`/products/${productID}/aggregateRating/reviewCount`);
+    const reference = database().ref(`/products/${productID}/aggregateRating`);
 
     // console.log('DOOBIE '+reference.value)
 
@@ -141,22 +143,17 @@ class AddProductReview extends React.Component {
       // ...
       return reference.transaction(reviewCount => {
         // if (reviewCount === null) return 1;
-        reviewCount = parseInt(reviewCount) + 1;
-        reviewCount = reviewCount.toString();
-        console.log('DOOBIE '+counter);
+        // reviewCount = parseInt(reviewCount) + 1;
+        // reviewCount = reviewCount.toString();
+        // console.log((reviewCount.ratingValue*reviewCount.reviewCount)+rating)
+        // console.log(reviewCount.reviewCount+1)
+        reviewCount.ratingValue = (((parseInt(reviewCount.ratingValue)*parseInt(reviewCount.reviewCount))+rating)/
+                                  (parseInt(reviewCount.reviewCount)+1)).toString()
+        reviewCount.reviewCount = (parseInt(reviewCount.reviewCount)+1).toString()
+        // console.log('DOOBIE '+reviewCount.ratingValue, reviewCount.reviewCount);
         return reviewCount;
       });
     });
-
-    // var counter
-    // Execute transaction
-    
-
-    // return reference.transaction(currentLikes => {
-    //   if (currentLikes === null) return 1;
-    //   return "ACCEPTED";
-    // });
-    // return counter;
   }
   updateRatingScore(productID, userRating) {
     console.log("################# "+productID);
@@ -171,10 +168,11 @@ class AddProductReview extends React.Component {
       // ...
       return reference.transaction(ratingValue => {
         // if (reviewCount === null) return 1;
+        console.log(ratingValue, counter, userRating);
         ratingValue = (parseInt(ratingValue)*(counter-1))+userRating/counter;
         ratingValue = ratingValue.toString();
         
-        // console.log('DOOBIE '+counter);
+        console.log('DOOBIE SHMOOBIE '+ratingValue);
         
         return ratingValue;
       });
@@ -210,12 +208,12 @@ class AddProductReview extends React.Component {
         isBool = false;
     }
 
-    this.addReviewCount(this.props.navigation.state.params.product.id);
+    // this.addReviewCount(this.props.navigation.state.params.product.id);
 
     if (isSave){
       if (isBool){
-        this.addReviewCount(this.props.navigation.state.params.product.id);
-        this.updateRatingScore(this.props.navigation.state.params.product.id, this.state.rating)
+        this.addReviewCount(this.props.navigation.state.params.product.id, this.state.rating);
+        // this.updateRatingScore(this.props.navigation.state.params.product.id, this.state.rating)
         console.log("Ok Boomer!");
         database()
         .ref("productReviews")

@@ -52,10 +52,10 @@ const buyerDrawer = createDrawerNavigator({
     drawerType:'slide',
     // initialRouteName:'Offers',
     // initialRouteName:'Cart',
-    // initialRouteName:'Products',
+    initialRouteName:'Products',
     // initialRouteName:'Reviews',
     // initialRouteName:'Hire',
-    initialRouteName:'Statistics',
+    // initialRouteName:'Statistics',
     // initialRouteName:'Live',
     contentComponent: drawerContentComponents,
     

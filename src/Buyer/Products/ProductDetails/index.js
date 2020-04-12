@@ -88,7 +88,7 @@ class ProductDetails extends React.Component {
 
   componentDidMount() {
       console.log(this.props.navigation.state.params.item.id);
-      database().ref('/').child('productReviews').orderByChild('productId').equalTo(this.props.navigation.state.params.item.id).once("value", function(snapshot) {
+      database().ref('/').child('productReviews').orderByChild('productId').equalTo(this.props.navigation.state.params.item.id).on("value", function(snapshot) {
           // console.log(snapshot);
           var reviewList = [];
           snapshot.forEach(function(data) {
@@ -205,7 +205,7 @@ class ProductDetails extends React.Component {
 
             <Text style={ProductStyles.headerText}>{item.name}</Text>
             <Text style={ProductStyles.categoryText}>{item.category}</Text>
-            <Text style={ProductStyles.priceText}>Price</Text>
+            <Text style={ProductStyles.priceText}>{item.price} Rs.</Text>
             <Divider style={ProductStyles.dividerStyle} />
             <Rating
                 imageSize={20}

@@ -168,17 +168,56 @@ class Cart extends React.Component {
 
       console.log(pList);
 
-      
-      database()
+      var d = new Date();
+      var i;
+      console.log('BBBIIIIITTTTCCHHHH')
+      var prodCap = this.props.products.currentCart
+      for (var i = 0; i < prodCap.length; i++){
+        console.log('nigger '+prodCap.length)
+        console.log('nigger '+prodCap[i].price)
+        
+        var keys = [];
+        for(var k in prodCap[i]) keys.push(k);
+        console.log(keys)
+
+        database()
           .ref("orders")
           .push()
           .set(
             {
-              bill: this.getCartTotal(),
+              bill: prodCap[i].price,
               buyerId: this.props.products.userObj.uid,
-              productList: pList,
+              sellerId: prodCap[i].sellerId, 
+              product: prodCap[i].id,
+              createdAt: Math.round(d.getTime() / 1000),
+              // productList: pList,
             })
+          console.log('boomer')
+          const reference = database().ref(`/users/${prodCap[i].sellerId}/credit`);
+          
+          var tempProdCap = prodCap[i];
+          reference.transaction(credit => {
+            // console.log('DOOBIE '+reviewCount.ratingValue, reviewCount.reviewCount);
+            return credit+tempProdCap.price;
+          });
 
+        // this.props.products.dbh.ref('users/'+prod.sellerId).transaction((FirstName) => {
+        //   // if (currentViews === null) return 1;
+        //   return FirstName.toJSON();
+        // })
+      }
+
+      
+      // database()
+      //     .ref("orders")
+      //     .push()
+      //     .set(
+      //       {
+      //         bill: this.getCartTotal(),
+      //         buyerId: this.props.products.userObj.uid,
+      //         productList: pList,
+      //       })
+      console.log('flushing')
       this.props.cartFunction({flush:1});
     }
   }
@@ -228,6 +267,9 @@ class Cart extends React.Component {
     // } else {
       // MySearchComp = null;
     // }
+
+    console.log(this.props.products.currentCart)
+
     return (
       <View>
         <NavBar/>
@@ -304,7 +346,7 @@ class Cart extends React.Component {
                 // leftAvatar={{ source: { uri: l.avatar_url } }}
                 leftAvatar={{ source: { uri: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg" } }}
                 title={l.name}
-                subtitle={'price'}
+                subtitle={l.price+" Rs."}
                 bottomDivider
                 // chevron={<Icon
                 //   name='clear'
