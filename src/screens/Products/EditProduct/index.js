@@ -274,7 +274,7 @@ class EditProduct extends React.Component {
                     name: junk.itemName,
                     category: junk.category,
                     categoryId: junk.categoryId,
-                    sellerId: junk.sellerId,
+                    sellerId: this.props.products.userObj.uid,
                     image: url,
                     description: junk.itemDescription,
                     aggregateRating: junk.itemRating

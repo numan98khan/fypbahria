@@ -16,7 +16,19 @@ import { updateProducts, initiateProducts,
         toggleFilter, updateScreenVar,
       toggleMode  } from '../state/actions';
 
+import auth from '@react-native-firebase/auth';
+
 class drawerContentComponents extends Component {
+
+    signOutUser = async () => {
+        try {
+            await auth().signOut();
+            this.navigateToScreen("loading")
+            // navigate('Auth');
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     navigateToScreen = ( route ) =>(
         () => {
@@ -57,6 +69,15 @@ class drawerContentComponents extends Component {
                 <Text style={[styles.screenTextStyle, (this.props.activeItemKey=='Statistics') ? styles.selectedTextStyle : null]} 
                 onPress={this.navigateToScreen('Statistics')}>Statistics</Text>
             </View>
+            <View style={[styles.screenStyle, (this.props.activeItemKey=='Logout') ? styles.activeBackgroundColor : null]}>
+                <Text style={{
+                    fontSize: 20,
+                    marginLeft: 20, 
+                    textAlign: 'center',
+                    color:'red'
+                }} 
+                onPress={this.signOutUser}>Logout</Text>
+            </View>
         </View>
     } else {
         leftContainer = <View style={styles.screenContainer}>
@@ -88,6 +109,15 @@ class drawerContentComponents extends Component {
             <View style={[styles.screenStyle, (this.props.activeItemKey=='Credit') ? styles.activeBackgroundColor : null]}>
                 <Text style={[styles.screenTextStyle, (this.props.activeItemKey=='Credit') ? styles.selectedTextStyle : null]} 
                 onPress={this.navigateToScreen('Credit')}>Credit</Text>
+            </View>
+            <View style={[styles.screenStyle, (this.props.activeItemKey=='Logout') ? styles.activeBackgroundColor : null]}>
+                <Text style={{
+                    fontSize: 20,
+                    marginLeft: 20, 
+                    textAlign: 'center',
+                    color:'red'
+                }} 
+                onPress={this.signOutUser}>Logout</Text>
             </View>
         </View>
         

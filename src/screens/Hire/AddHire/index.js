@@ -149,6 +149,7 @@ class AddHire extends React.Component {
         .set(
           {
             employerId: this.props.products.userObj.uid,
+            employerEmail: this.props.products.userObj.email,
             employeeId: this.state.employeeId,
             state: 'REQUESTED',
             message: this.state.requestMessage,

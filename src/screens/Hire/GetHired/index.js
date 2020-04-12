@@ -33,23 +33,23 @@ import React from 'react';
 import { View, StyleSheet, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 
 // pull in the ScreenName component from ScreenName.js
-import ScreenName from '../../components/ScreenName.js'
+// import ScreenName from '../../components/ScreenName.js'
 import { SearchBar } from 'react-native-elements';
 
 import { Card, ListItem, Button, Icon, Overlay } from 'react-native-elements'
 
-import NavBar from '../../navigation/navBar'
-import FilterOverlay from '../../navigation/filterOverlay'
+import NavBar from '../../../navigation/navBar'
+// import FilterOverlay from '../../navigation/filterOverlay'
 import database from '@react-native-firebase/database';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updateProducts, initiateProducts,
-   toggleFilter, updateCategory, updateScreenVar } from '../../state/actions';
+   toggleFilter, updateCategory, updateScreenVar } from '../../../state/actions';
 
-import MenuPopUp from '../../components/MenuPopUp';
+// import MenuPopUp from '../../components/MenuPopUp';
 
-import ProductStyles from '../../common/productStyle';
+import ProductStyles from '../../../common/productStyle';
 
 import { FloatingAction } from "react-native-floating-action";
 SampleFunction=()=>{
@@ -79,9 +79,9 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu';
-import productStyle from '../../common/productStyle.js';
+// import productStyle from '../../common/productStyle.js';
 
-class Hire extends React.Component {
+class GetHired extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -92,7 +92,7 @@ class Hire extends React.Component {
 
   onFocusFunction = () => {
     // do some stuff on every screen focus
-    this.props.updateScreenVar({screen:'hire'});
+    this.props.updateScreenVar({screen:'gethire'});
     console.log("hire focused");
   }
 
@@ -211,6 +211,7 @@ class Hire extends React.Component {
 
 
   getSubStyle(state){
+    console.log('statta '+state)
     ProductStyles.smallREQText
     if (state === "REQUESTED") {
       return ProductStyles.smallREQText
@@ -244,14 +245,9 @@ class Hire extends React.Component {
         type='material'
         color='#517fa4'/>
 
-    // let subStyle = ProductStyles.smallREQText
-    
 
     return (
       <View>
-        <NavBar/>
-        <FilterOverlay/>
-
         { <ScrollView>
         <View style={{flex: 1}}>
           {
@@ -261,13 +257,13 @@ class Hire extends React.Component {
                 // containerStyle={{height:100,width:1080}}
                 key={i}
                 // leftAvatar={{ source: { uri: l.avatar_url } }}
-                title={l.empEmail}
-                subtitle={l.state}
+                title={l.employerEmail}
+                subtitle={l.message}
                 subtitleStyle={this.getSubStyle(l.state)}
                 bottomDivider
                 // chevron={<MenuPopUp item={l} attachHire={1}/>}
                 onPress={() => {
-                  this.props.navigation.navigate('detailHire', {
+                  this.props.navigation.navigate('getHiredDetails', {
                     hireObj: l,
                   });
                 }}
@@ -352,4 +348,4 @@ const mapDispatchToProps = dispatch => (
   }, dispatch)
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Hire);
+export default connect(mapStateToProps, mapDispatchToProps)(GetHired);

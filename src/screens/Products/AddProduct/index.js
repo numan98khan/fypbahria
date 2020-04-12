@@ -138,9 +138,9 @@ class AddProduct extends React.Component {
       // console.log(this.props.products.userObj.uid + " " + eJSON[i].userId);
       if (this.props.products.userObj.uid === eJSON[i].userId) {
         // console.log('bih')
-        tempJSON = eJSON[i]
-        tempJSON["id"] = i;
-        rowsCat.push(tempJSON);
+        // tempJSON = eJSON[i]
+        // tempJSON["id"] = i;
+        rowsCat.push(eJSON[i]);
       }
     }
     return rowsCat;
@@ -156,7 +156,34 @@ class AddProduct extends React.Component {
     // save database reference for later
     //  this.props.products.setState ( {dbulref: dbref});
     // meat: this is where it all happens
-     dbref.on('value', (e) => {
+    
+
+    // database()
+    //   .ref('/')
+    //   .child('categories')
+    //   .orderByChild('userId')
+    //   .equalTo(this.props.products.userObj.uid)
+    //   .once("value", function(snapshot) {
+    //     console.log(snapshot.val());
+
+    //     var fetchedCats = [];
+
+    //     snapshot.forEach(function(data) {
+    //         console.log(data.toJSON());
+    //         fetchedCats.push(data.toJSON())
+    //     });
+    //     this.props.initiateProducts(
+    //       {
+    //           // dataSourceSearch: ds,
+    //           dataSourceFilter: fetchedCats,
+    //           // dataSourceDup: ds,
+    //           loading: false,
+    //         }
+    //       );
+    // }.bind(this));
+
+    
+    dbref.on('value', (e) => {
         var rows = [];
         // console.log(e);
         eJSON = e.toJSON()
@@ -172,7 +199,9 @@ class AddProduct extends React.Component {
           var rowsCat = [{"description": "NONE", "name": "NONE"}];
           eJSON = e.toJSON()
           for(var i in eJSON){
-            rowsCat.push(eJSON[i]);
+            var tempJSON = eJSON[i]
+            tempJSON["id"] = i;
+            rowsCat.push(tempJSON);
           }
 
           // console.log(this.filterCatByUid(rowsCat))
@@ -194,6 +223,7 @@ class AddProduct extends React.Component {
             // console.log(this.props.products.dataSourceSearch);
        });
      });
+  
   }
 
   componentWillUnmount() {
@@ -224,7 +254,8 @@ class AddProduct extends React.Component {
       itemDescription:'',
       visible: false,
       category:'NONE',
-      itemBrand:''
+      itemBrand:'',
+      sellerId:null,
     };
 
     let isBool = true;
@@ -245,10 +276,13 @@ class AddProduct extends React.Component {
       isBool = false;
     }
 
+    console.log("wtttt "+this.props.products.userObj.uid)
+    this.setState({sellerId: this.props.products.userObj.uid});
+    console.log("wtttt "+this.state.sellerId)
     
 
   
-    if (isBool){
+    if (isBool || true){
       // var newProductRef = database()
       // .ref("products")
       // .push()
@@ -261,12 +295,14 @@ class AddProduct extends React.Component {
     // var firebaseUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.props.products.bucket + "/o/";
     // // var finalUrl = firebaseUrl+'images%2Fproducts%2F' + this.state.itemImage.fileName;
 
+
     this.setState({sellerId: this.props.products.userObj.uid});
+    console.log("wtttt "+this.props.products.userObj)
     var junk = this.state;
 
     this.state.storageRef.getDownloadURL().then(function(url) {
       console.log(url);
-      // console.log(this.state)
+      console.log(this.state)
       // console.log(junk)
       
       database()
@@ -279,7 +315,7 @@ class AddProduct extends React.Component {
             name: junk.itemName,
             category: junk.category,
             categoryId: junk.categoryId,
-            sellerId: junk.sellerId,
+            sellerId: this.props.products.userObj.uid,
             image: url,
             description: junk.itemDescription,
             aggregateRating: {
@@ -289,7 +325,7 @@ class AddProduct extends React.Component {
             }
           })
 
-  }, function(error){
+  }.bind(this), function(error){
       console.log(error);
   });
 
@@ -480,6 +516,7 @@ class AddProduct extends React.Component {
                   <List.Item
                     title={l.name}
                     onPress={category => {
+                      console.log(l)
                       this.setState({category:l.name, categoryId: l.id})
                     }}
                   />

@@ -155,12 +155,15 @@ class AddReview extends React.Component {
 
     if (isSave){
       if (isBool){
+        var d = new Date();
+// d.getTime() / 1000;
         console.log("Ok Boomer!");
         database()
         .ref("reviews")
         .push()
         .set(
           {
+            createdAt: Math.round(d.getTime() / 1000),
             buyerId: this.state.buyerId,
             buyerEmail: this.state.buyerEmail,
             productId: this.state.productID,

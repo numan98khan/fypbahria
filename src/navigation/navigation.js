@@ -42,60 +42,6 @@ import CategoryDetails from '../screens/Category/CategoryDetails';
 import { reviewStack, hireStack, categoryStack, productStack, liveStack } from './SellerStacks';
 
 
-// import StackNavBar from './StackNavBar';
-
-// The main drawer
-// const buyerDrawer = createDrawerNavigator({
-//     Products: productStack,
-//     Category: categoryStack,
-//     Reviews: reviewStack,
-//     Live: liveStack,
-//     Statistics: {
-//         screen: Statistics,
-//     },
-//     Hire: hireStack,
-//     Credit: {
-//         screen: Credit,
-//     },
-// },{
-//     drawerWidth:250,
-//     drawerType:'slide',
-//     // initialRouteName:'Category',
-//     // initialRouteName:'Products',
-//     initialRouteName:'Reviews',
-//     // initialRouteName:'Hire',
-//     // initialRouteName:'Statistics',
-//     // initialRouteName:'Live',
-//     contentComponent: drawerContentComponents,
-    
-//     // The drawer menu will be added throough here (thorugh component just like NavBar)
-//     // https://medium.com/@arunkmoury/customize-drawer-of-react-navigation-like-champ-9b42df489d42
-//     // contentComponent : DrawerMenu
-
-// });
-
-// const Buyer = createSwitchNavigator(
-//     {
-//         loading: Loading,
-//         signup: SignUp,
-//         login: Login,
-//         home: buyerDrawer,
-//         // editor: EditProduct,
-//     },
-//     {
-//         initialRouteName:'loading'
-//     },
-//     {
-//         navigationOptions: {
-//             headerTintColor: '#fff',
-//             headerStyle: {
-//                 backgroundColor: '#000',
-//             },
-//         },
-//     }
-// );
-
-
 const sellerDrawer = createDrawerNavigator({
     Products: productStack,
     Category: categoryStack,
@@ -111,12 +57,12 @@ const sellerDrawer = createDrawerNavigator({
 },{
     drawerWidth:250,
     drawerType:'slide',
-    // initialRouteName:'Category',
+    initialRouteName:'Credit',
     // initialRouteName:'Products',
     // initialRouteName:'Reviews',
     // initialRouteName:'Hire',
     // initialRouteName:'Statistics',
-    initialRouteName:'Live',
+    // initialRouteName:'Live',
     contentComponent: drawerContentComponents,
     
     // The drawer menu will be added throough here (thorugh component just like NavBar)

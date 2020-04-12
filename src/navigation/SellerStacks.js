@@ -43,9 +43,10 @@ import LiveProductList from '../screens/LiveStream/LiveProducts';
 
 import LiveStream from '../screens/LiveStream';
 
+import GetHired from '../screens/Hire/GetHired';
+import GetHiredDetails from '../screens/Hire/GetHireDetails';
+import GetHireDetails from '../screens/Hire/GetHireDetails';
 
-console.log('component error '+LiveStream)
-console.log('component error '+LiveRequestList)
 
 
 export const liveStack = createStackNavigator(
@@ -208,7 +209,21 @@ export const hireStack = createStackNavigator(
                 title:"Hiring Status",
                 // headerShown: false,
             },
-        }
+        },
+        getHired: {
+            screen:GetHired,
+            navigationOptions: {
+                title:"Get Hired",
+                // headerShown: false,
+            },
+        },
+        getHiredDetails: {
+            screen:GetHireDetails,
+            navigationOptions: {
+                title:"Hiring Details",
+                // headerShown: false,
+            },
+        },
     },
     {
         defaultNavigationOptions: {

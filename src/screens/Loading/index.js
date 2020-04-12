@@ -20,8 +20,9 @@ class Loading extends Component {
       // console.log("USERS: ");
       // console.log(user);
 
-      this.props.updateUserobj( { userObj: user } );
-
+      if (user !== null){
+        this.props.updateUserobj( { userObj: user } );
+      }
       // console.log(this.props.products.userObj);
 
       const routeToGoTo = 'home';
@@ -33,7 +34,7 @@ class Loading extends Component {
       // this.props.navigation.navigate(routeToGoTo)
 
       // this.props.navigation.toggleDrawer()
-      this.props.navigation.navigate(user ? routeToGoTo : 'signup')
+      this.props.navigation.navigate(user ? routeToGoTo : 'login')
 
       // console.log("user: " + user);
       // database().ref("users/"+user.uid).set(
@@ -67,8 +68,8 @@ class Loading extends Component {
     return (
       <View style={styles.container}>
         
-        <Text style={{color:'#e93766', fontSize: 40}}>Loading</Text>
-        <ActivityIndicator color='#e93766' size="large" />
+        <Text style={{color:'#6600ff', fontSize: 40}}>Loading</Text>
+        <ActivityIndicator color='#6600ff' size="large" />
       </View>
     )
   }

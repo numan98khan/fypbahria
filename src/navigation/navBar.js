@@ -124,6 +124,13 @@ class NavBar extends React.Component {
           rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             {/*searchIcon*/}
             <Icon
+                  name='notifications'
+                  color='#fff'
+                  // onPress={() => console.log('add enabled')} 
+                  onPress={() => this.props.navigation.navigate('getHired')} 
+                  iconStyle={styles.iconStyle}
+            />
+            <Icon
                   name='add'
                   color='#fff'
                   // onPress={() => console.log('add enabled')} 
@@ -176,6 +183,9 @@ class NavBar extends React.Component {
         } else if (this.props.products.currentScreen === 'statistics') {
           // console.log('debug');
           middleComponentText = 'Statistics';
+        } else if (this.props.products.currentScreen === 'credit') {
+          // console.log('debug');
+          middleComponentText = 'Credit';
         } else if (this.props.products.currentScreen === 'buyerProducts') {
           // console.log('debug');
           middleComponentText = 'Products';

@@ -52,6 +52,33 @@ class ReviewDetails extends React.Component {
   }
 
   componentDidMount() {
+    this.props.products.dbh
+      .ref('/products/'+this.props.navigation.state.params.review.productId)
+      // .child('products')
+      // .orderByChild('userId')
+      // .equalTo(this.props.products.userObj.uid)
+      .once("value", function(snapshot) {
+        console.log(snapshot.val().name);
+
+        this.setState({productReviewName:snapshot.val().name})
+
+        // var fetchedCats = [];
+
+        // snapshot.forEach(function(data) {
+        //     console.log("skinny"+data.toJSON());
+        //     // this.setState({productReviewName:})
+        //     // fetchedCats.push(data.toJSON())
+        // });
+        // this.props.initiateProducts(
+        //   {
+        //       // dataSourceSearch: ds,
+        //       dataSourceFilter: fetchedCats,
+        //       // dataSourceDup: ds,
+        //       loading: false,
+        //     }
+        //   );
+    }.bind(this));
+
   }
 
 
@@ -107,6 +134,7 @@ class ReviewDetails extends React.Component {
       <ScrollView>
             <Text style={ProductStyles.headerText}>{review.buyerEmail}</Text>
             <Text style={ProductStyles.priceText}>{review.productId}</Text>
+            <Text style={ProductStyles.priceText}>{this.state.productReviewName}</Text>
             <Divider style={ProductStyles.dividerStyle} />
             <Rating
                 imageSize={20}

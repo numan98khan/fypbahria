@@ -18,7 +18,7 @@ import Loading from '../screens/Loading';
 // import BottomTabNavigator from './BottomTabNavigator';
 import LiveStream from '../screens/LiveStream';
 import Credit from '../screens/Credit';
-import Statistics from '../screens/Statistics';
+import Statistics from '../Buyer/Statistics';
 
 
 import drawerContentComponents from './drawerContentComponents'
@@ -55,8 +55,8 @@ const buyerDrawer = createDrawerNavigator({
     // initialRouteName:'Products',
     // initialRouteName:'Reviews',
     // initialRouteName:'Hire',
-    // initialRouteName:'Statistics',
-    initialRouteName:'Live',
+    initialRouteName:'Statistics',
+    // initialRouteName:'Live',
     contentComponent: drawerContentComponents,
     
     // The drawer menu will be added throough here (thorugh component just like NavBar)

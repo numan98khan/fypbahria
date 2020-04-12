@@ -14,7 +14,7 @@ const list = [
 ]
 
 import React from 'react'
-import { StyleSheet, Platform, Image, Text, View, ScrollView } from 'react-native'
+import { StyleSheet, Platform, Image, Text, View, ScrollView, Dimensions } from 'react-native'
 
 import {Snackbar, TextInput, Card, Avatar, Button, Dialog, Portal, Title,List, Checkbox , Paragraph  } from 'react-native-paper';
 
@@ -27,11 +27,23 @@ import { updateProducts, initiateProducts,
   toggleFilter, updateCategory, updateScreenVar } from '../../state/actions';
 
 import NavBar from '../../navigation/navBar'
+import database from '@react-native-firebase/database';
+
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart
+} from "react-native-chart-kit";
 
 class Statistics extends React.Component {
   state = { 
     currentUser: null,
-    totalSession: 163  
+    totalSession: 163,
+    orderList: [],
+    totalSpending: 0,
   }
 
   onFocusFunction = () => {
@@ -45,12 +57,55 @@ class Statistics extends React.Component {
     this.focusListener.remove()
   }
 
+  countTotalSpending(){
+    var i;
+
+    var totalSum = 0;
+    for (i = 0; i < this.state.orderList.length; i++) {
+      totalSum += this.state.orderList[i].bill;
+    }  
+
+    this.setState({ totalSpending: totalSum });
+    // console.log(totalSum);
+  }
+
+  orderProducts(){
+    for (i = 0; i < this.state.orderList.length; i++) {
+      console.log(this.state.orderList[i].productList);
+      // totalSum += this.state.orderList[i].bill;
+      // id = 12;
+      // var count = this.state.orderList[i].filter((obj) => obj.id === id).length;
+      // console.log(count);
+    }
+
+    
+    const id = 12;
+    const count = array.filter((obj) => obj.id === id).length;
+  }
+
   componentDidMount() {
     // this.props.updateScreenVar({screen:'reviews'});
 
     this.focusListener = this.props.navigation.addListener('didFocus', () => {
       this.onFocusFunction()
     })
+
+    // database().ref('/').child('orders').orderByChild('buyerId').equalTo(this.props.products.userObj.uid).once("value", function(snapshot) {
+    database().ref('/').child('orders').orderByChild('buyerId').equalTo('uHrYlhp39KS7Bsl5FYsSQzm9m8x2').once("value", function(snapshot) {
+        // uHrYlhp39KS7Bsl5FYsSQzm9m8x2  
+      // console.log(snapshot);
+        var orderList = [];
+        snapshot.forEach(function(data) {
+          orderList.push(data.val());
+        }.bind(this));
+        this.setState({orderList: orderList});
+        this.countTotalSpending();
+        this.orderProducts();
+        // console.log(orderList)
+    }.bind(this));    
+
+    // console.log(this.state.fetchedReviews);
+
     // connect to a Firebase table
     //  var dbref = this.props.products.dbh.ref('products');
     // save database reference for later
@@ -73,92 +128,66 @@ class Statistics extends React.Component {
     return Math.round(((count/this.state.totalSession)*100) * 10) / 10
   }
 
+
+
 render() {
     const { currentUser } = this.state
-return (
+    const data = {
+      labels: ["January", "February", "March", "April", "May", "June"],
+      datasets: [
+        {
+          data: [20, 45, 28, 80, 99, 43]
+        }
+      ]
+    };
+    return (
     <View>
       <NavBar/>
       <ScrollView>
       <Card style={styles.firstCardContainer}>
-        <Card.Title title="Sales" titleStyle={styles.purpDreams} subtitle="Last Week" />
+        <Card.Title title="Sales" titleStyle={styles.purpDreams} subtitle="All Time" />
         <Card.Content style={{paddingBottom:'1%'}}>
-          <Text style={{fontSize:40, color:'#b380ff'}}>2,409 Rs.</Text>
+          <Text style={{fontSize:40, color:'#b380ff'}}>{this.state.totalSpending} Rs.</Text>
         </Card.Content>
       </Card>
 
       <Card style={styles.cardContainer}>
         <Card.Title title="Product Views" titleStyle={styles.purpDreams} subtitle="Weekly" />
         <Card.Content style={{paddingBottom:'1%'}}>
-          <Text style={{fontSize:40, color:'#b380ff'}}>45</Text>
-        </Card.Content>
-      </Card>
-
-      <Card style={styles.cardContainer}>
-        <Card.Title title="World Domination" titleStyle={styles.purpDreams} subtitle="Audience" />
-        <Card.Content>
-          <View style={{justifyContent: 'center', flexDirection:'row'}}>
-            <Text style={{marginVertical:'1%', marginHorizontal:'2%', width:'56%', fontSize:11}}>
-                Country
-            </Text>
-            <Text style={{marginVertical:'1%', marginHorizontal:'2%', width:'18%', fontSize:11}}>
-                Sessions
-            </Text>
-            <Text style={{marginVertical:'1%', marginHorizontal:'2%', width:'18%', fontSize:11}}>
-              Total %
-            </Text>
-            
-          </View>
-          <Divider style={{ 
-            backgroundColor: '#6600ff', 
-              marginVertical:'1%',
-            }} />
-
-            {
-              // list.map((l, i) => (
-              list.map((l, i) => (
-                <View>
-                <View style={{justifyContent: 'center', flexDirection:'row'}}>
-                  <Text style={{color:"#6600ff", marginVertical:'1%', marginHorizontal:'2%', width:'56%', fontSize:11}}>
-                      {l.country}
-                  </Text>
-                  <Text style={{color:"#6600ff", marginVertical:'1%', marginHorizontal:'2%', width:'18%', fontSize:11}}>
-                      {l.sessions}
-                  </Text>
-                  <Text style={{color:"#6600ff", marginVertical:'1%', marginHorizontal:'2%', width:'18%', fontSize:11}}>
-                      {this.getPercentage(l.sessions)}%
-                  </Text>
-                  
-                </View>
-                <Divider style={{ 
-                  backgroundColor: '#6600ff', 
-                    marginVertical:'1%',
-                    height:3,
-                    marginRight: String(100-this.getPercentage(l.sessions))+'%'
-                  }} />
-                </View>
-              ))
-            }
-        </Card.Content>
-      </Card>
-
-      <Card style={styles.cardContainer}>
-        <Card.Title title="Top 3 Users" titleStyle={styles.purpDreams}/>
-        <Card.Content>
-        {
-          // list.map((l, i) => (
-          list.map((l, i) => (
-            <ListItem
-                containerStyle={{width:'100%'}}
-                key={i}
-                // leftAvatar={{ source: { uri: l.avatar_url } }}
-                leftAvatar={{ source: { uri: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg" } }}
-                title={l.country}
-                titleStyle={{color:"#6600ff"}}
-                // bottomDivider
-                // chevron={myMenu}
-              />
-          ))
-        }
+          <BarChart
+            data={{
+              labels: [
+                'January',
+                'February',
+                'March',
+                'April',
+              ],
+              datasets: [
+                {
+                  data: [20, 45, 28, 40],
+                },
+              ],
+            }}
+            width={Dimensions.get('window').width*0.81}
+            // width={'80%'}
+            height={200}
+            // yAxisLabel={'Rs'}
+            chartConfig={{
+              backgroundColor: '#1cc910',
+              backgroundGradientFrom: '#f0e6ff',
+              backgroundGradientTo: '#f0e6ff',
+              decimalPlaces: 1,
+              color: (opacity = 1) => `rgba(102, 0, 255, ${opacity})`,
+              style: {
+                borderRadius: 30,
+                // padding:50
+              },
+            }}
+            style={{
+              marginVertical: 8,
+              borderRadius: 10,
+            }}
+          />
         </Card.Content>
       </Card>
 

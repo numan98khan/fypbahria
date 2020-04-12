@@ -95,9 +95,9 @@ export default class signUp extends React.Component {
 render() {
     return (
       <View style={styles.container}>
-      <Text style={{color:'#e93766', fontSize: 40}}>Sign Up</Text>
+      <Text style={{color:'#6600ff', fontSize: 40}}>Sign Up</Text>
         {this.state.errorMessage &&
-          <Text style={{ color: 'red' }}>
+          <Text style={{ color: '#6600ff' }}>
             {this.state.errorMessage}
           </Text>}
         <TextInput
@@ -115,10 +115,10 @@ render() {
           onChangeText={password => this.setState({ password })}
           value={this.state.password}
         />
-        <Button title="Sign Up" color="#e93766" onPress={this.handleSignUp}/>
+        <Button title="Sign Up" color="#6600ff" onPress={this.handleSignUp}/>
         <View>
         <Text> Already have an account? 
-          <Text onPress = {() => this.props.navigation.navigate('login')} style={{color:'#e93766', fontSize: 18}}> 
+          <Text onPress = {() => this.props.navigation.navigate('login')} style={{color:'#6600ff', fontSize: 18}}> 
             Login 
           </Text>
         </Text>
