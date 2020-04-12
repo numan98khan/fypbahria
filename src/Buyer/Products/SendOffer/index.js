@@ -156,7 +156,6 @@ class SendOffer extends React.Component {
 
     if (isSave){
       if (isBool){
-        console.log("Ok Boomer!");
         database()
         .ref("offers")
         .push()
@@ -227,7 +226,7 @@ class SendOffer extends React.Component {
 
   checkAndSet(price){
     if (isNaN(parseInt(price))){
-      console.log('not int');
+      // console.log('not int');
       this.setState({ snackMessage: "Please enter a numerical value" })
       this._onToggleSnackBar()
     } else {

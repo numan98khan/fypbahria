@@ -68,7 +68,7 @@ class ReviewDetails extends React.Component {
     // }))
     this.props.products.dbh.ref('users/'+userId).once('value', (e) => {
       eJSON = e.toJSON()
-      console.log(eJSON);
+      // console.log(eJSON);
       // console.log(eJSON.FirstName+' '+eJSON.LastName);
     //   this.setState({tempNameSet:eJSON.FirstName+' '+eJSON.LastName});
       this.setState({tempNameSet:eJSON.email});
@@ -85,7 +85,7 @@ class ReviewDetails extends React.Component {
     // }))
     this.props.products.dbh.ref('products/'+productId).once('value', (e) => {
       eJSON = e.toJSON()
-      console.log(eJSON.name);
+      // console.log(eJSON.name);
       this.setState({tempProductSet:eJSON.name});
     });
     return this.state.tempProductSet;

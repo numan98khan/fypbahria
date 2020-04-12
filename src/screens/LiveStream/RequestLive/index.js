@@ -146,7 +146,6 @@ class SendOffer extends React.Component {
 
     if (isSave){
       if (isBool){
-        console.log("Ok Boomer!");
         database()
         .ref("liveRequests")
         .push()

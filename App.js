@@ -8,14 +8,6 @@ import Home from './src/navigation/navigation'
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 
-// database().ref("products").push().getKey()//set({name:"dallu"})
-// database().getReference("quiz").push().getKey();
-// console.log(database().app.name); // '[DEFAULT]'
-// await newUserRef.set({
-//   first: 'Ada',
-//   last: 'Lovelace',
-// });
-
 // *****************YELLLLLLLLL*****************
 // *****************YELLLLLLLLL*****************
 // *****************YELLLLLLLLL*****************
@@ -62,26 +54,6 @@ YellowBox.ignoreWarnings([
 export default class App extends React.Component{
 render()
 {
-
-  // var i;
-
-  // for (i = 0; i < 4; i++) {
-    // console.log('>>>>>>'+
-      // database()
-      // .ref("ads")
-      // .push()
-      // .set(
-      //   {
-      //     description: "This is an excellent AD.",
-      //     name: "AD",
-      //     buyerId: "id",
-      //     sellerId: "id",
-      //   })
-      // )
-  // }  
-
-  console.log("total angst: " + this.props.products);
-  
   const handleButtonPress = () => {
     LocalNotification()
     // RemotePushController()

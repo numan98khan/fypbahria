@@ -103,7 +103,7 @@ class ProductDetails extends React.Component {
             noData:true
         }
         ImagePicker.launchImageLibrary(options, response => {
-        console.log("response", response);
+        // console.log("response", response);
         })
     }
 

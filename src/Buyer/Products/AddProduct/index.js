@@ -257,7 +257,6 @@ class AddProduct extends React.Component {
 
   checkAndSet(price){
     if (isNaN(parseInt(price))){
-      console.log('not int');
       this.setState({ snackMessage: "Please enter a numerical value" })
       this._onToggleSnackBar()
     } else {
@@ -281,7 +280,7 @@ class AddProduct extends React.Component {
      * The second arg is the callback which sends object: response (more info in the API Reference)
      */
     ImagePicker.showImagePicker(options, (response) => {
-      console.log('Response = ', response);
+      // console.log('Response = ', response);
 
       if (response.didCancel) {
         console.log('User cancelled image picker');

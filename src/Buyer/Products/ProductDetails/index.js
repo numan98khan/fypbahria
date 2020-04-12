@@ -87,7 +87,7 @@ class ProductDetails extends React.Component {
 
 
   componentDidMount() {
-      console.log(this.props.navigation.state.params.item.id);
+      // console.log(this.props.navigation.state.params.item.id);
       database().ref('/').child('productReviews').orderByChild('productId').equalTo(this.props.navigation.state.params.item.id).on("value", function(snapshot) {
           // console.log(snapshot);
           var reviewList = [];

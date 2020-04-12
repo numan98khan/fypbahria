@@ -158,7 +158,7 @@ class Reviews extends React.Component {
             
             tempJSON["id"] = i;
             // tempJSON["buyerName"] = this.getNameFromId(tempJSON.buyerId);
-            console.log(tempJSON)
+            // console.log(tempJSON)
             rowsCat.push(tempJSON);
           }
   

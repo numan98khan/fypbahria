@@ -117,8 +117,8 @@ class ScreenOne extends React.Component {
       // console.log(rows[0])
       var ds = rows;
 
-        console.log('>>>>>>>>>>>')
-        console.log(ds)
+        // console.log('>>>>>>>>>>>')
+        // console.log(ds)
         // console.log(dsCat)
         // console.log('>>>>>>>>>>>')
         this.props.initiatespecials(

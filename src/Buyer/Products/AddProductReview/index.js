@@ -132,7 +132,7 @@ class AddProductReview extends React.Component {
   _onDismissSnackBar = () => this.setState({ snackVisible: false });
 
   addReviewCount(productID, rating) {
-    console.log("################# "+productID);
+    // console.log("################# "+productID);
     const reference = database().ref(`/products/${productID}/aggregateRating`);
 
     // console.log('DOOBIE '+reference.value)
@@ -156,7 +156,7 @@ class AddProductReview extends React.Component {
     });
   }
   updateRatingScore(productID, userRating) {
-    console.log("################# "+productID);
+    // console.log("################# "+productID);
     const reference = database().ref(`/products/${productID}/aggregateRating/ratingValue`);
     const countRef = database().ref(`/products/${productID}/aggregateRating/reviewCount`);
 
@@ -168,11 +168,9 @@ class AddProductReview extends React.Component {
       // ...
       return reference.transaction(ratingValue => {
         // if (reviewCount === null) return 1;
-        console.log(ratingValue, counter, userRating);
+        // console.log(ratingValue, counter, userRating);
         ratingValue = (parseInt(ratingValue)*(counter-1))+userRating/counter;
         ratingValue = ratingValue.toString();
-        
-        console.log('DOOBIE SHMOOBIE '+ratingValue);
         
         return ratingValue;
       });
@@ -214,7 +212,6 @@ class AddProductReview extends React.Component {
       if (isBool){
         this.addReviewCount(this.props.navigation.state.params.product.id, this.state.rating);
         // this.updateRatingScore(this.props.navigation.state.params.product.id, this.state.rating)
-        console.log("Ok Boomer!");
         database()
         .ref("productReviews")
         .push()

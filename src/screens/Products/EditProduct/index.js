@@ -126,7 +126,7 @@ class EditProduct extends React.Component {
     // datasource.push({url:'http://placeimg.com/640/480/any'})
     // datasource.push({url:'http://placeimg.com/640/480/any'})
       // return datasource;
-      console.log(this.state.itemImages);
+      // console.log(this.state.itemImages);
       return this.state.itemImages;
   }
 

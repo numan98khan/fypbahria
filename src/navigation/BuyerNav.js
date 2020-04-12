@@ -29,7 +29,6 @@ import CategoryDetails from '../screens/Category/CategoryDetails';
 import { reviewStack, cartStack, categoryStack, 
     productStack, offerStack, liveStack } from './BuyerStacks';
 
-// console.log('SEXXXXXXXXXXXXXXXXX');
 
 const buyerDrawer = createDrawerNavigator({
     Products: productStack,

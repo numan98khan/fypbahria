@@ -66,7 +66,7 @@ class AddHire extends React.Component {
         // console.log(snapshot.val().key();
   
         snapshot.forEach(function(data) {
-            console.log(data.key);
+            // console.log(data.key);
             // this.setState({productID:'wow'});
             this.setState({employeeId:data.key.toString()});
             // console.log(">>>>>>>>>>> "+this.state.buyerId);
@@ -142,7 +142,6 @@ class AddHire extends React.Component {
 
     if (isSave){
       if (isBool){
-        console.log("Ok Boomer!");
         database()
         .ref("hire")
         .push()

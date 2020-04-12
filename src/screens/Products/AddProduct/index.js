@@ -364,7 +364,6 @@ class AddProduct extends React.Component {
   }
 
   bazooka(){
-    console.log('Bazooka');
   }
 
   uploadImages(){

@@ -153,7 +153,6 @@ const productReducer = (state = INITIAL_STATE, action) => {
         }
         return updateSend
     case types.TOGGLE_SEARCH_BAR:
-        console.log('saex');
         var boolSet;
         if (state.isSearchBar){
             boolSet = false;

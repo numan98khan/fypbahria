@@ -107,7 +107,7 @@ class Cart extends React.Component {
 
   componentDidUnMount() {
     this.props.products.dbulref.off('value');
-    console.log("unmountedddddddd");
+    // console.log("unmountedddddddd");
   } 
 
   // deleteProduct(){}
@@ -166,19 +166,15 @@ class Cart extends React.Component {
         pList.push(this.props.products.currentCart[i].id)
       }
 
-      console.log(pList);
 
       var d = new Date();
       var i;
-      console.log('BBBIIIIITTTTCCHHHH')
       var prodCap = this.props.products.currentCart
       for (var i = 0; i < prodCap.length; i++){
-        console.log('nigger '+prodCap.length)
-        console.log('nigger '+prodCap[i].price)
         
         var keys = [];
         for(var k in prodCap[i]) keys.push(k);
-        console.log(keys)
+        // console.log(keys)
 
         database()
           .ref("orders")

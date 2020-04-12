@@ -114,15 +114,15 @@ class GetHired extends React.Component {
       .orderByChild('employerId')
       .equalTo(this.props.products.userObj.uid)
       .on("value", function(snapshot) {
-        console.log(snapshot.val());
+        // console.log(snapshot.val());
 
         var fetchedCats = [];
 
         snapshot.forEach(function(data) {
-            console.log(data.toJSON());
+            // console.log(data.toJSON());
             var tempJSON = data.toJSON();
             tempJSON['id'] = data.key;
-            console.log(tempJSON);
+            // console.log(tempJSON);
             
             fetchedCats.push(tempJSON)
         });
@@ -211,7 +211,6 @@ class GetHired extends React.Component {
 
 
   getSubStyle(state){
-    console.log('statta '+state)
     ProductStyles.smallREQText
     if (state === "REQUESTED") {
       return ProductStyles.smallREQText

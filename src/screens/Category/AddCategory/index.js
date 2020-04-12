@@ -146,7 +146,6 @@ class AddCategory extends React.Component {
 
     if (isSave){
       if (isBool){
-        console.log("Ok Boomer!");
         database()
         .ref("categories")
         .push()
