@@ -48,6 +48,9 @@ class Statistics extends React.Component {
   componentDidMount() {
     // this.props.updateScreenVar({screen:'reviews'});
 
+    console.log('toggle drawer')
+    // this.props.navigation.toggleDrawer()
+
     this.focusListener = this.props.navigation.addListener('didFocus', () => {
       this.onFocusFunction()
     })

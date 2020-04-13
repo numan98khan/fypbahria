@@ -58,10 +58,10 @@ const sellerDrawer = createDrawerNavigator({
     drawerWidth:250,
     drawerType:'slide',
     // initialRouteName:'Credit',
-    initialRouteName:'Products',
+    // initialRouteName:'Products',
     // initialRouteName:'Reviews',
     // initialRouteName:'Hire',
-    // initialRouteName:'Statistics',
+    initialRouteName:'Statistics',
     // initialRouteName:'Live',
     contentComponent: drawerContentComponents,
     

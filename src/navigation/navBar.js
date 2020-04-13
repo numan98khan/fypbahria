@@ -79,7 +79,12 @@ class NavBar extends React.Component {
           // console.log('debug1');
           middleComponentText = 'Products';
           rightComp = <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            {/*searchIcon*/}  
+            {/*searchIcon*/}
+            <Icon
+                  name='notifications'
+                  color='#fff'
+                  onPress={() => this.props.navigation.navigate('addProductNotif')}
+            iconStyle={styles.iconStyle}  />  
           <Icon
                   name='add'
                   color='#fff'

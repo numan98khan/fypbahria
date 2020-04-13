@@ -21,6 +21,7 @@ class Loading extends Component {
       // console.log(user);
 
       if (user !== null){
+        console.log(user)
         this.props.updateUserobj( { userObj: user } );
       }
       // console.log(this.props.products.userObj);

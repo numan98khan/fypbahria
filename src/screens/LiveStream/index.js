@@ -44,6 +44,7 @@ class LiveStreamScreen extends Component {
       countViewer: 0,
       countHeart: 0,
       message: '',
+      cameraId: 0,
       visibleListMessages: true,
       listMessages: [
         // {
@@ -643,6 +644,16 @@ class LiveStreamScreen extends Component {
     );
   };
 
+  flipCamera = () => {
+    console.log(this.state.cameraId)
+
+    if (this.state.cameraId === 0) {
+      this.setState({cameraId: 1})
+    } else {
+      this.setState({cameraId: 0})
+    }
+  }
+
   renderStreamerUI = () => {
     const {liveStatus, countViewer, countHeart} = this.state;
     return (
@@ -657,7 +668,7 @@ class LiveStreamScreen extends Component {
             // this.vbCamera.start();
           }}
           outputUrl={Utils.getRtmpPath() + Utils.getRoomName()}
-          camera={{cameraId: 0, cameraFrontMirror: false}}
+          camera={{cameraId: this.state.cameraId, cameraFrontMirror: false}}
           audio={{bitrate: 32000, profile: 1, samplerate: 44100}}
           video={{
             preset: 1,
@@ -678,6 +689,21 @@ class LiveStreamScreen extends Component {
           style={styles.viewDismissKeyboard}>
           <View style={styles.container}>
             {this.renderCancelStreamerButton()}
+            <TouchableOpacity
+                style={{
+                  position: 'absolute',
+                  top: 30,
+                  right: 240,
+                  backgroundColor: '#00000085',
+                  paddingVertical: 7,
+                  // paddingTop: 6,
+                  paddingHorizontal: 17,
+                  alignItems: 'center',
+                  borderRadius: 10
+                }}
+                onPress={this.flipCamera}>
+                <Text style={styles.beginLiveStreamText}>flip</Text>
+              </TouchableOpacity>
             <View style={styles.wrapIconView}>
               <Image
                 source={require('../../assets/ico_view.png')}

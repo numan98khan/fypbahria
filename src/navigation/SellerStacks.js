@@ -47,6 +47,8 @@ import GetHired from '../screens/Hire/GetHired';
 import GetHiredDetails from '../screens/Hire/GetHireDetails';
 import GetHireDetails from '../screens/Hire/GetHireDetails';
 
+import GetOffers from '../screens/Products/GetOffers';
+import GetOfferDetails from '../screens/Products/GetOfferDetails';
 
 
 export const liveStack = createStackNavigator(
@@ -335,6 +337,20 @@ export const productStack = createStackNavigator(
             screen:AddProduct,
             navigationOptions: {
                 title:"Add Product",
+                // headerShown: false,
+            },
+        },
+        addProductNotif: {
+            screen: GetOffers,
+            navigationOptions: {
+                title:"Available Offers",
+                // headerShown: false,
+            },
+        },
+        addProductNotifDetails: {
+            screen: GetOfferDetails,
+            navigationOptions: {
+                title:"Offer Details",
                 // headerShown: false,
             },
         }
