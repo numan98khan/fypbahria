@@ -61,8 +61,8 @@ const sellerDrawer = createDrawerNavigator({
     // initialRouteName:'Products',
     // initialRouteName:'Reviews',
     // initialRouteName:'Hire',
-    initialRouteName:'Statistics',
-    // initialRouteName:'Live',
+    // initialRouteName:'Statistics',
+    initialRouteName:'Live',
     contentComponent: drawerContentComponents,
     
     // The drawer menu will be added throough here (thorugh component just like NavBar)

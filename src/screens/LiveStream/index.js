@@ -25,12 +25,17 @@ import FloatingHearts from './FloatingHearts';
 import Draggable from './Draggable';
 import styles from './styles';
 
+import { Snackbar, Button, Paragraph, Dialog, Portal } from 'react-native-paper';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updateProducts, initiateProducts, 
         toggleFilter, updateScreenVar,
-      toggleSearch , initiatespecials } from '../../state/actions';
+      toggleSearch , initiatespecials, 
+      cartFunction } from '../../state/actions';
 
+import { ListItem, Icon } from 'react-native-elements'
+import { Drawer } from 'react-native-paper';
 
 class LiveStreamScreen extends Component {
   static navigationOptions = ({navigation}) => ({
@@ -64,13 +69,27 @@ class LiveStreamScreen extends Component {
       productImageUrl: null,
       modalVisible: false,
       inputHeight: 40,
+      visible: false,
+      snackVisible: false,
+      active: 'first',
+      liveProducts: [],
     };
     this.Animation = new Animated.Value(0);
     this.scrollView = null;
   }
 
+  _onToggleSnackBar = () => this.setState(state => ({ snackVisible: !state.snackVisible }));
+  // _onToggleSnackBar = () => console.log('Snack Bar Toggled!!!');
+  _onDismissSnackBar = () => this.setState({ snackVisible: false });
+
+  _showDialog = () => this.setState({ visible: !this.state.visible });
+
+  _hideDialog = () => this.setState({ visible: false });
+
   componentDidMount = () => {
     console.log('componentDidMount')
+
+    this.liveProducts()
 
     let keyboardShowEvent = 'keyboardWillShow';
     let keyboardHideEvent = 'keyboardWillHide';
@@ -343,8 +362,15 @@ class LiveStreamScreen extends Component {
   renderLiveProducts = () => {
     const {liveStatus} = this.state;
     return (
-      <View
-        style={{position: 'absolute',
+      <TouchableOpacity
+                // style={styles.wrapIconSend}
+                onPress={this._showDialog}
+                // activeOpacity={0.6}>
+                // <Image
+                //   source={require('../../assets/ico_send.png')}
+                //   style={styles.iconSend}
+                // /
+                style={{position: 'absolute',
         top: 30,
         left: 260,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -353,7 +379,23 @@ class LiveStreamScreen extends Component {
         borderRadius: 5,
         height: 40,
         justifyContent: 'center',
-        alignItems: 'center'}}>
+        alignItems: 'center'}}
+                >
+              
+      <View
+        // onPress={this._showDialog}
+        // style={{position: 'absolute',
+        // top: 30,
+        // left: 260,
+        // backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        // paddingHorizontal: 8,
+        // paddingVertical: 6,
+        // borderRadius: 5,
+        // height: 40,
+        // justifyContent: 'center',
+        // alignItems: 'center'}}
+        >
+        
         <Text
           style={
             liveStatus === LiveStatus.ON_LIVE
@@ -363,6 +405,7 @@ class LiveStreamScreen extends Component {
           Products
         </Text>
       </View>
+      </TouchableOpacity>
     );
   };
 
@@ -769,6 +812,68 @@ class LiveStreamScreen extends Component {
     );
   };
 
+  liveProducts = () => {
+    console.log(this.props.navigation.state.params.streamerInfo.pList)
+
+    var tempP = this.props.navigation.state.params.streamerInfo.pList;
+
+    // console.log(this.props.products.dataSourceDup)
+
+    var dbref = this.props.products.dbh.ref('products');
+    // save database reference for later
+    //  this.props.products.setState ( {dbulref: dbref});
+    // meat: this is where it all happens
+    var productOnline; 
+    dbref.on('value', (e) => {
+        var rows = [];
+        // console.log(e);
+        var eJSON = e.toJSON()
+        for(var i in eJSON){
+          var tempJSON = eJSON[i]
+          tempJSON["id"] = i;
+          rows.push(tempJSON);
+        }
+        // console.log(rows[0])
+        productOnline = rows;
+
+        // console.log(productOnline)
+
+        var pList = []
+        for (var i = 0; i < tempP.length; ++i) {
+          // console.log(productOnline.filter(function(el) { return el.id === tempP[i] })[0])
+
+          var yo = productOnline.filter(function(el) { return el.id === tempP[i] })[0]
+          // yo['isCart'] = false
+
+          console.log('yo ', yo)
+
+          pList.push(yo)
+               
+        }
+
+        this.setState({ liveProducts: pList })
+
+     }).bind(this);
+
+
+    
+
+  }
+
+  flipProduct(key) {
+    console.log(key)
+    
+    var pList = this.state.liveProducts
+    // pList[key].isCheck = !pList[key].isCheck
+
+    this.setState({ liveProducts: pList })
+
+    // if (pList[key].isCheck){
+      this.props.cartFunction({product:pList[key], add:1})
+    // }
+    this._onToggleSnackBar()
+  }
+
   renderViewerUI = () => {
     const BackgroundColorConfig = this.Animation.interpolate({
       inputRange: [0, 0.2, 0.4, 0.6, 0.8, 1],
@@ -787,6 +892,7 @@ class LiveStreamScreen extends Component {
     
     return (
       <View style={styles.container}>
+
         <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
         {liveStatus === LiveStatus.ON_LIVE || true && (
           <NodePlayerView
@@ -813,6 +919,77 @@ class LiveStreamScreen extends Component {
             <View style={styles.container}>
               {this.renderCancelViewerButton()}
               {this.renderLiveText()}
+              
+              {this.state.visible ? 
+                <Dialog
+                  style={{height: '50%'}}
+                  visible={this.state.visible}
+                  onDismiss={this._hideDialog}>
+                  <Dialog.Title>Live Products</Dialog.Title>
+                  {/*<Dialog.Content>*/}
+                    <Dialog.ScrollArea>
+                      <ScrollView contentContainerStyle={{ paddingHorizontal: 24 }}>
+                      {
+                      
+                        // list.map((l, i) => (
+                        this.state.liveProducts.map((l, i) => (
+                          <ListItem
+                            // containerStyle={{height:100,width:1080}}
+                            key={i}
+                            leftAvatar={{ source: { uri: l.image } }}
+                            // leftAvatar={{ source: { uri: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg" } }}
+                            title={l.name}
+                            subtitle={l.price}
+                            bottomDivider
+                            // chevron={l.isCheck }
+                            
+                            // containerStyle={!l.isCheck ? {backgroundColor:'#6600ff30'} : (null)}
+                            
+                            onPress={() => {
+
+                              this.flipProduct(i)
+                              // this.props.navigation.navigate('detailProduct', {
+                              //   item: l,
+                              // });
+                            }}
+                          />
+                        ))
+                        
+                      }
+                      </ScrollView>
+                      <Dialog.Content>
+                        <Snackbar
+                          visible={this.state.snackVisible}
+                          // visible={true}
+                          onDismiss={this._onDismissSnackBar}
+                          duration={1000}
+                          action={{
+                            label: 'Ok',
+                            onPress: () => {
+                              this._onDismissSnackBar()
+                            },
+                          }}
+                          style={{width:'100%', marginHorizontal:'6.2%'}}
+                        >
+                        {/*this.state.snackMessage*/}
+                        Product Added
+                      </Snackbar>
+                      </Dialog.Content>
+                    </Dialog.ScrollArea>
+                  
+                  
+                  {/*</Dialog.Content>*/}
+                </Dialog>
+                 : (null)}  
+              {/*<Overlay
+                  isVisible={this.state.visible}
+                  windowBackgroundColor="rgba(255, 255, 255, .5)"
+                  overlayBackgroundColor="red"
+                  width="auto"
+                  height="auto"
+                >
+                  <Text>Hello from Overlay!</Text>
+                </Overlay>*/}
               {this.renderLiveProducts()}
               <View style={styles.wrapIconView}>
                 <Image
@@ -955,7 +1132,8 @@ const mapDispatchToProps = dispatch => (
     toggleFilter,
     updateScreenVar,
     toggleSearch,
-    initiatespecials
+    initiatespecials,
+    cartFunction
   }, dispatch)
 );
 

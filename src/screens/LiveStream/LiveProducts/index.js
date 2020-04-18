@@ -1,34 +1,3 @@
-// import React from 'react';
-// import { View, StyleSheet } from 'react-native';
-
-// import ScreenName from '../../components/ScreenName.js'
-
-// import NavBar from '../../navigation/navBar'
-
-// export default class Category extends React.Component {
-
-//   static navigationOptions = {
-
-//   };
-
-//   render() {
-//     return (
-//       <View>
-//         <NavBar/>
-//         <ScreenName name={'Add'} />
-//       </View>
-//     );
-//   }
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
-
 import React from 'react';
 import { View, StyleSheet, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 
@@ -112,6 +81,21 @@ class LiveProductList extends React.Component {
   // and don't forget to remove the listener
   componentWillUnmount () {
     this.focusListener.remove()
+
+    // var pList = [];
+    // for (var i = 0; i < this.state.liveProducts.length; ++i){
+    //   pList.push(this.state.liveProducts[i].id)
+    // }
+
+    // database()
+    //   .ref("live")
+    //   .push()
+    //   .set(
+    //     {
+    //       streamerId: this.props.products.userObj.uid,
+    //       streamerRoom: this.props.products.userObj.uid,
+    //       pList: pList,
+    //     })
   }
 
   filterProdByUid(eJSON){
@@ -160,6 +144,17 @@ class LiveProductList extends React.Component {
         this.setState({fetchedProducts: ds})
 
      });
+
+     database()
+      .ref("live/"+this.props.products.userObj.uid)
+      // .push()
+      .set(
+        {
+          streamerId: this.props.products.userObj.uid,
+          streamerRoom: this.props.products.userObj.email,
+          status: 'PREPPING',
+          // pList: ['null'],
+        })
 
   }
 
@@ -215,10 +210,41 @@ class LiveProductList extends React.Component {
     // } else {
     //   this.state.fetchedProducts[key].isChecked = true;  
     // }
-    var prodList = this.state.liveProducts
-    prodList.push(this.state.fetchedProducts[key])
-    this.props.updateLiveProducts({liveProductList: prodList})
-    this.setState({liveProducts: prodList})
+
+    console.log('key: ', key)
+
+    var i;
+    var isAdd = true;
+    for (i = 0; i < this.state.liveProducts.length; ++i){
+      console.log(this.state.liveProducts[i]) 
+      if (this.state.liveProducts[i].id === this.state.fetchedProducts[key].id){
+        console.log('true')
+        isAdd = false
+        break;
+      } else {
+        console.log('false')
+        isAdd = true
+      }
+    }
+
+    // console.log('matcher ', this.state.liveProducts.findIndex(this.state.liveProducts[key]))
+
+    if (isAdd) {
+      var prodList = this.state.liveProducts
+      prodList.push(this.state.fetchedProducts[key])
+      this.props.updateLiveProducts({liveProductList: prodList})
+      this.setState({liveProducts: prodList})
+    }
+
+    this.props.products.dbh.ref('live/'+this.props.products.userObj.uid+'/pList').transaction((pList) => {
+      var pList = [];
+      for (var i = 0; i < this.state.liveProducts.length; ++i){
+        pList.push(this.state.liveProducts[i].id)
+      }
+      return pList;
+    })
+
+    
 
   }
 
@@ -237,6 +263,14 @@ class LiveProductList extends React.Component {
     this.props.updateLiveProducts({liveProductList: prodList})
     // prodList.push(this.state.fetchedProducts[key])
     this.setState({liveProducts: prodList})
+
+    this.props.products.dbh.ref('live/'+this.props.products.userObj.uid+'/pList').transaction((pList) => {
+      var pList = [];
+      for (var i = 0; i < this.state.liveProducts.length; ++i){
+        pList.push(this.state.liveProducts[i].id)
+      }
+      return pList;
+    })
 
   }
 

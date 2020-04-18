@@ -48,14 +48,18 @@ const emitRegisterLiveStream = (roomName, userId) => {
 };
 
 const emitBeginLiveStream = (roomName, userId, email) => {
-  database()
-      .ref("live")
-      .push()
-      .set(
-        {
-          streamerId: userId,
-          streamerRoom: email,
-        })
+  // database()
+  //     .ref("live")
+  //     .push()
+  //     .set(
+  //       {
+  //         streamerId: userId,
+  //         streamerRoom: email,
+  //       })
+
+  database().ref('live/'+userId+'/status').transaction((status) => {
+    return 'LIVE';
+  })
       
   socket.emit(
     'begin-live-stream',
@@ -70,16 +74,20 @@ const emitBeginLiveStream = (roomName, userId, email) => {
 };
 
 const emitFinishLiveStream = (roomName, userId) => {
-  database().ref('/').child('live').orderByChild('streamerId').equalTo(userId).once("value", function(snapshot) {
-      // console.log(snapshot.val().key();
+  
+  // UNCOMMENT
 
-      snapshot.forEach(function(data) {
-        database()
-          .ref('/live/'+data.key)
-          .remove();  
+  // database().ref('/').child('live').orderByChild('streamerId').equalTo(userId).once("value", function(snapshot) {
+  //     // console.log(snapshot.val().key();
+
+  //     snapshot.forEach(function(data) {
+  //       database()
+  //         .ref('/live/'+data.key)
+  //         .remove();  
         
-      });
-  });
+  //     });
+  // });
+
   socket.emit(
     'finish-live-stream',
     {
