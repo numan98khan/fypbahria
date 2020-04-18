@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Animated, StyleSheet, Text, Image, ScrollView, TouchableOpacity, Alert, Dimensions } from 'react-native';
+import { View, Animated, Linking, StyleSheet, Text, Image, ScrollView, TouchableOpacity, Alert, Dimensions } from 'react-native';
 
 import ScreenName from '../../components/ScreenName.js'
 // import { SearchBar } from 'react-native-elements';
@@ -227,7 +227,11 @@ class ScreenOne extends React.Component {
       // adddlert("Welcome guest!");
       if (key === 'name') {
         // console.log('whatevr')
-        return this.state.ads[index].name;
+        return this.state.ads[index].sponsorName;
+      } else if (key === 'url') {
+        return this.state.ads[index].sponsorURL;  
+      } else if (key === 'img') {
+        return this.state.ads[index].banner;  
       } else {
         return this.state.ads[index].description;  
       }
@@ -334,7 +338,8 @@ class ScreenOne extends React.Component {
               <Card.Title title="Sponsors" titleStyle={styles.purpDreams} subtitle="This Week" />
               <Card.Content style={{paddingBottom:'5%', flexDirection:'row'}}>
                 <SliderBox images={[
-                        "https://source.unsplash.com/1024x768/?nature",
+                      this.getItemInAds(this.state.currentAdIndex, 'img')
+                        // "https://source.unsplash.com/1024x768/?nature",
                       ]}
                       onCurrentImagePressed={index => console.log(`image ${index} pressed`)}
                       currentImageEmitter={index => this.setState({currentAdIndex: index})}
@@ -346,7 +351,8 @@ class ScreenOne extends React.Component {
 
               </Card.Content>
               <Card.Content style={{paddingBottom:'5%'}}>
-                <Text style={styles.listHead}> {this.getItemInAds(this.state.currentAdIndex, 'name')} </Text>
+                <Text onPress={ ()=> Linking.openURL(this.getItemInAds(this.state.currentAdIndex, 'url'))} 
+                    style={styles.listHead}> {this.getItemInAds(this.state.currentAdIndex, 'name')} </Text>
                 <Text style={{paddingLeft:'1%'}}> {this.getItemInAds(this.state.currentAdIndex, 'description')} </Text>
                 </Card.Content>
             </Card>
@@ -385,7 +391,7 @@ class ScreenOne extends React.Component {
                       // chevron={myMenu}
                       // chevron={<MenuPopUp item={l} attachProduct={1}/>}
                       onPress={() => {
-                        this.props.navigation.navigate('detailProduct', {
+                        this.props.navigation.navigate('detailFeatured', {
                           item: l,
                         });
                       }}

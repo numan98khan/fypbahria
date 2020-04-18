@@ -146,6 +146,21 @@ class AddProduct extends React.Component {
     return rowsCat;
   }
 
+  filterProdByUid(eJSON){
+    var rowsCat = [];// = [{"description": "NONE", "name": "NONE"}];
+    for(var i in eJSON){
+      // console.log(this.props.products.userObj.uid + " " + eJSON[i].sellerId);
+      // console.log('bih + ' + eJSON[i])
+      if (this.props.products.userObj.uid === eJSON[i].sellerId) {
+        // console.log('bih + ' + eJSON[i])
+        tempJSON = eJSON[i]
+        // tempJSON["id"] = i;
+        rowsCat.push(tempJSON);
+      }
+    }
+    return rowsCat;
+  }
+
   componentDidMount() {
     this.backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
@@ -154,35 +169,7 @@ class AddProduct extends React.Component {
     // connect to a Firebase table
     var dbref = this.props.products.dbh.ref('products');
     // save database reference for later
-    //  this.props.products.setState ( {dbulref: dbref});
     // meat: this is where it all happens
-    
-
-    // database()
-    //   .ref('/')
-    //   .child('categories')
-    //   .orderByChild('userId')
-    //   .equalTo(this.props.products.userObj.uid)
-    //   .once("value", function(snapshot) {
-    //     console.log(snapshot.val());
-
-    //     var fetchedCats = [];
-
-    //     snapshot.forEach(function(data) {
-    //         console.log(data.toJSON());
-    //         fetchedCats.push(data.toJSON())
-    //     });
-    //     this.props.initiateProducts(
-    //       {
-    //           // dataSourceSearch: ds,
-    //           dataSourceFilter: fetchedCats,
-    //           // dataSourceDup: ds,
-    //           loading: false,
-    //         }
-    //       );
-    // }.bind(this));
-
-    
     dbref.on('value', (e) => {
         var rows = [];
         // console.log(e);
@@ -193,7 +180,8 @@ class AddProduct extends React.Component {
           rows.push(tempJSON);
         }
         // console.log(rows[0])
-        var ds = rows;
+        // var ds = rows;
+        var ds = this.filterProdByUid(rows);
 
         this.props.products.dbh.ref('categories').on('value', (e) => {
           var rowsCat = [{"description": "NONE", "name": "NONE"}];
@@ -282,7 +270,7 @@ class AddProduct extends React.Component {
     
 
   
-    if (isBool || true){
+    if (isBool){
       // var newProductRef = database()
       // .ref("products")
       // .push()
@@ -318,6 +306,7 @@ class AddProduct extends React.Component {
             sellerId: this.props.products.userObj.uid,
             image: url,
             description: junk.itemDescription,
+            price: junk.price,
             aggregateRating: {
               type: "aggregateRating",
               ratingValue: "0",

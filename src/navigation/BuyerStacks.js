@@ -44,6 +44,7 @@ import Offer from '../Buyer/Offer';
 import LiveList from '../screens/LiveStream/LiveList';
 
 import RequestLive from '../screens/LiveStream/RequestLive'
+import FeaturedDetails from '../Buyer/Products/FeaturedDetails';
 
 // console.log(LiveStream)
 
@@ -310,6 +311,13 @@ export const productStack = createStackNavigator(
         },
         detailProduct: {
             screen:ProductDetails,
+            navigationOptions: {
+                title:"Details",
+            },
+            
+        },
+        detailFeatured: {
+            screen:FeaturedDetails,
             navigationOptions: {
                 title:"Details",
             },

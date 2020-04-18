@@ -41,6 +41,8 @@ class drawerContentComponents extends Component {
   render() {
     const windowHeight = Dimensions.get('window').height;
     
+    // console.log('photoURL : ', this.props.products.userObj.photoURL)
+
     var leftContainer;
     if (this.props.products.appMode === 'buyer'){
         leftContainer = <View style={styles.screenContainer}>
@@ -133,11 +135,11 @@ class drawerContentComponents extends Component {
                         rounded
                         source={{
                         uri:
-                            'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+                            this.props.products.userObj.photoURL
                         }}
                         containerStyle={{justifyContent:'center', marginTop:windowHeight*0.03}}
                     />
-                    <Text style={styles.headerText}>Buyer</Text>
+                    <Text style={styles.headerText}>{this.props.products.userObj.displayName}</Text>
                 </ImageBackground>
             </View>
             

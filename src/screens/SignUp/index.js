@@ -150,14 +150,7 @@ export default class signUp extends React.Component {
     auth().onAuthStateChanged(user => {
       // This function captures the user id and adds it to the db
       
-      user.updateProfile({
-        displayName: this.state.displayName,
-      }).then(function() {
-        // Update successful.
-        console.log('user updated!!!')
-      }).catch(function(error) {
-        // An error happened.
-      });
+      // if (user){
 
       console.log("oidwngewngoirnwopn")
         this.state.storageRef = storage().ref('/images/users/' + this.state.itemImage.fileName);
@@ -173,10 +166,22 @@ export default class signUp extends React.Component {
                   // This function captures the user id and adds it to the db
                   
                   user.updateProfile({
-                    photoURL: url
+                    photoURL: url,
+                    displayName: this.state.displayName
                   }).then(function() {
                     // Update successful.
-                    console.log('user image updated!!!')
+                    auth().onAuthStateChanged(user => {
+                      console.log('user image updated!!!')
+                      console.log("user: " + user);
+                      database().ref("users/"+user.uid).set(
+                        {
+                          displayName: user.displayName,
+                          credit: 0,
+                          email: user.email,
+                          image: user.photoURL,
+                        })
+                    });
+                    
                   }).catch(function(error) {
                     // An error happened.
                   });
@@ -191,15 +196,8 @@ export default class signUp extends React.Component {
             // bazooka()
         }.bind(this));
 
-
-      console.log("user: " + user);
-      database().ref("users/"+user.uid).set(
-        {
-          property1:"dallu",
-          property2:"dallu",
-          property3:"dallu",
-          property4:"dallu",
-        })
+      // }
+      
     })
     
     this.props.navigation.navigate('main')

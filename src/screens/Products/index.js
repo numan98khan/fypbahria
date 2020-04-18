@@ -69,7 +69,7 @@ class ScreenOne extends React.Component {
       // console.log(this.props.products.userObj.uid + " " + eJSON[i].sellerId);
       // console.log('bih + ' + eJSON[i])
       if (this.props.products.userObj.uid === eJSON[i].userId) {
-        // console.log('bih + ' + eJSON[i])
+        console.log('bih + ' + eJSON[i])
         tempJSON = eJSON[i]
         // tempJSON["id"] = i;
         rowsCat.push(tempJSON);

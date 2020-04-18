@@ -38,12 +38,32 @@ import {
   StackedBarChart
 } from "react-native-chart-kit";
 
+class OrderCollection extends Array {
+  sum(key) {
+      return this.reduce((a, b) => a + (b[key] || 0), 0);
+  }
+}
+
 class Statistics extends React.Component {
   state = { 
     currentUser: null,
     totalSession: 163,
     orderList: [],
     totalSpending: 0,
+    productOrder: [],
+    monthlySpending: {
+      labels: [
+        'January',
+        'February',
+        'March',
+        'April',
+      ],
+      datasets: [
+        {
+          data: [20, 45, 28, 40],
+        },
+      ],
+    }//{ labels: [], datasets: { data: [] } },
   }
 
   onFocusFunction = () => {
@@ -69,18 +89,134 @@ class Statistics extends React.Component {
     // console.log(totalSum);
   }
 
+  getMonthlySpending(){
+    var orders = this.state.orderList 
+
+    const monthData=['Jan', 'Feb', 'Mar', 'Apr',
+                    'May', 'Jun', 'Jul', 'Aug',
+                    'Sep', 'Oct', 'Nov', 'Dec']
+
+        const dataStruct = []
+
+      if (orders.length > 0) {
+        var date;// = new Date(1578154896000);
+        // var month = date.getMonth();
+
+        orders = orders.sort((a, b) => (a.createdAt > b.createdAt) ? 1 : -1).reverse()
+        
+        // console.log(orders[0].createdAt)
+        // date = new Date(orders[0].createdAt*1000)
+        // console.log(date.getMonth())
+
+        var sumOrdersMonthly;// = new OrderCollection(...orders)
+        var monthCounter = 0;
+        var prevBracket = 0;
+        var currMonth = (new Date(orders[0].createdAt*1000)).getMonth();
+        var isDone = false;
+        // console.log(orders)
+
+        // console.log()
+
+        var uniqueMonths = [];
+        
+
+        var order;
+        for (order = 0; order < orders.length; ++order){
+            
+            orders[order]['month'] = monthData[(new Date(orders[order].createdAt*1000)).getMonth()]
+            // console.log('arr ', orders[order])
+
+            if (uniqueMonths.indexOf(orders[order].month) === -1){
+                uniqueMonths.push(orders[order].month)
+            }
+        }
+
+        // console.log(uniqueMonths)
+
+        for (var month in uniqueMonths){
+            // console.log('uniquer ', orders.filter(obj => { return obj.month === month }))
+            sumOrdersMonthly = new OrderCollection(...orders.filter(obj => { return obj.month === uniqueMonths[month] }))
+            // console.log('sumOrder ', sumOrdersMonthly)
+            dataStruct.push([uniqueMonths[month], sumOrdersMonthly.sum('bill')]);
+        }
+
+
+        // dataStruct.push(['Month', 'Sales'])
+
+        dataStruct.reverse()
+      }
+    
+      var final = { labels: [], datasets: [{ data: new Array }] }
+
+      var i;
+      for (i = 0; i < dataStruct.length; ++i) {
+        final.labels.push(dataStruct[i][0])
+        final.datasets[0].data.push(dataStruct[i][1])
+      }
+
+      
+      console.log({
+        labels: [
+          'January',
+          'February',
+          'March',
+          'April',
+        ],
+        datasets: [ 
+          {
+            data: [20, 45, 28, 40],
+          },
+        ],
+      })
+
+    this.setState({monthlySpending: final})
+    console.log('STRUCTURE :', dataStruct, final)
+    // return dataStruct.reverse()
+
+
+  }
+
   orderProducts(){
-    for (i = 0; i < this.state.orderList.length; i++) {
-      // console.log(this.state.orderList[i].productList);
-      // totalSum += this.state.orderList[i].bill;
-      // id = 12;
-      // var count = this.state.orderList[i].filter((obj) => obj.id === id).length;
-      // console.log(count);
+
+    var orders = this.state.orderList 
+    var products = this.state.productList
+
+    // var i;
+    // var totalProd = [];
+
+    var uniqueIds = []
+
+    for (var order in orders){
+        // console.log(uniqueIds.indexOf(orders[order].product))
+        if (uniqueIds.indexOf(orders[order].product) === -1){
+            uniqueIds.push(orders[order].product)
+        }
     }
 
-    
-    const id = 12;
-    const count = array.filter((obj) => obj.id === id).length;
+    // console.log(uniqueIds)
+    // console.log(products)
+
+    // console.log(products.filter(obj => { return obj.id === uniqueIds[0] })[0])
+
+    const dataStruct = [];
+    for (var id in uniqueIds){
+        dataStruct.push([products.filter(obj => { return obj.id === uniqueIds[id] })[0],
+                        orders.filter((obj) => obj.product === uniqueIds[id]).length])
+        // console.log('yeah', orders.filter((obj) => obj.product === uniqueIds[id]).length)
+        // dataStruct.push([products.filter(obj => { return obj.id === uniqueIds[id] })[0],
+        //                 3])
+        
+    }
+
+    dataStruct.sort(function(a,b) {
+        return a[1]-b[1]
+    });
+
+    dataStruct.reverse()
+
+    this.setState({ productOrder: dataStruct })
+    // return dataStruct.reverse()
+
   }
 
   componentDidMount() {
@@ -90,20 +226,32 @@ class Statistics extends React.Component {
       this.onFocusFunction()
     })
 
-    // database().ref('/').child('orders').orderByChild('buyerId').equalTo(this.props.products.userObj.uid).once("value", function(snapshot) {
-    database().ref('/').child('orders').orderByChild('buyerId').equalTo('uHrYlhp39KS7Bsl5FYsSQzm9m8x2').once("value", function(snapshot) {
-        // uHrYlhp39KS7Bsl5FYsSQzm9m8x2  
-      // console.log(snapshot);
-        var orderList = [];
-        snapshot.forEach(function(data) {
-          orderList.push(data.val());
-        }.bind(this));
-        this.setState({orderList: orderList});
-        this.countTotalSpending();
-        this.orderProducts();
-        // console.log(orderList)
-    }.bind(this));    
 
+    var productList = []
+
+    database().ref('/').child('products').on("value", function(snapshot) {
+      
+      snapshot.forEach(function(data) {
+        var tempJSON = data.val()
+        tempJSON['id'] = data.key
+
+        productList.push(tempJSON);
+      }.bind(this));
+      
+      database().ref('/').child('orders').orderByChild('buyerId').equalTo(this.props.products.userObj.uid).on("value", function(snapshot) {
+          // uHrYlhp39KS7Bsl5FYsSQzm9m8x2  
+        // console.log(snapshot);
+          var orderList = [];
+          snapshot.forEach(function(data) {
+            orderList.push(data.val());
+          }.bind(this));
+          this.setState({orderList: orderList, productList: productList});
+          this.countTotalSpending();
+          this.getMonthlySpending();
+          this.orderProducts();
+          // console.log(orderList)
+      }.bind(this));    
+    }.bind(this));
     // console.log(this.state.fetchedReviews);
 
     // connect to a Firebase table
@@ -145,29 +293,32 @@ render() {
       <NavBar/>
       <ScrollView>
       <Card style={styles.firstCardContainer}>
-        <Card.Title title="Sales" titleStyle={styles.purpDreams} subtitle="All Time" />
+        <Card.Title title="Spendings" titleStyle={styles.purpDreams} subtitle="All Time" />
         <Card.Content style={{paddingBottom:'1%'}}>
           <Text style={{fontSize:40, color:'#b380ff'}}>{this.state.totalSpending} Rs.</Text>
         </Card.Content>
       </Card>
 
       <Card style={styles.cardContainer}>
-        <Card.Title title="Product Views" titleStyle={styles.purpDreams} subtitle="Weekly" />
+        <Card.Title title="Spendings" titleStyle={styles.purpDreams} subtitle="Monthly" />
         <Card.Content style={{paddingBottom:'1%'}}>
           <BarChart
-            data={{
-              labels: [
-                'January',
-                'February',
-                'March',
-                'April',
-              ],
-              datasets: [
-                {
-                  data: [20, 45, 28, 40],
-                },
-              ],
-            }}
+            data={
+              this.state.monthlySpending
+            //   {
+            //   labels: [
+            //     'January',
+            //     'February',
+            //     'March',
+            //     'April',
+            //   ],
+            //   datasets: [
+            //     {
+            //       data: [20, 45, 28, 40],
+            //     },
+            //   ],
+            // }
+          }
             width={Dimensions.get('window').width*0.81}
             // width={'80%'}
             height={200}
@@ -192,17 +343,18 @@ render() {
       </Card>
 
       <Card style={styles.cardContainer}>
-        <Card.Title title="Top 3 Products" titleStyle={styles.purpDreams}/>
+        <Card.Title title="Top Bought Products" titleStyle={styles.purpDreams}/>
         <Card.Content>
         {
           // list.map((l, i) => (
-          list.map((l, i) => (
+          this.state.productOrder.map((l, i) => (
             <ListItem
                 containerStyle={{width:'100%'}}
                 key={i}
                 // leftAvatar={{ source: { uri: l.avatar_url } }}
-                leftAvatar={{ source: { uri: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg" } }}
-                title={l.country}
+                leftAvatar={{ source: { uri: l[0].image } }}
+                title={l[0].name}
+                subtitle={"Bought "+l[1]+" Times"}
                 titleStyle={{color:"#6600ff"}}
                 // bottomDivider
                 // chevron={myMenu}
