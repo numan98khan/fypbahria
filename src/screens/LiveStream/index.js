@@ -939,7 +939,7 @@ class LiveStreamScreen extends Component {
                             leftAvatar={{ source: { uri: l.image } }}
                             // leftAvatar={{ source: { uri: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg" } }}
                             title={l.name}
-                            subtitle={l.price}
+                            subtitle={l.price + " Rs."}
                             bottomDivider
                             // chevron={l.isCheck }
                             
