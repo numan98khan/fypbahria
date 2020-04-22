@@ -15,6 +15,7 @@ import {
   Modal,
   StatusBar,
 } from 'react-native';
+import {BackHandler} from 'react-native'
 import {WebView} from 'react-native-webview';
 import KeyboardAccessory from 'react-native-sticky-keyboard-accessory';
 import {NodeCameraView, NodePlayerView} from 'react-native-nodemediaclient';
@@ -86,10 +87,22 @@ class LiveStreamScreen extends Component {
 
   _hideDialog = () => this.setState({ visible: false });
 
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+  
+  handleBackButton() {
+    return true;
+  }
+
   componentDidMount = () => {
     console.log('componentDidMount')
 
-    this.liveProducts()
+    if (this.props.products.appMode === 'buyer'){
+      this.liveProducts()
+    }
+
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 
     let keyboardShowEvent = 'keyboardWillShow';
     let keyboardHideEvent = 'keyboardWillHide';
@@ -170,6 +183,7 @@ class LiveStreamScreen extends Component {
 
   onFinishLiveStream = () => {
     // this.setState({liveStatus: LiveStatus.FINISH});
+    console.log('Live Stream Ended')
     this.setState({liveStatus: LiveStatus.REGISTER});
     SocketUtils.emitFinishLiveStream(Utils.getRoomName(), Utils.getUserId());
     this.vbCamera.stop();
@@ -690,11 +704,13 @@ class LiveStreamScreen extends Component {
   flipCamera = () => {
     console.log(this.state.cameraId)
 
-    if (this.state.cameraId === 0) {
-      this.setState({cameraId: 1})
-    } else {
-      this.setState({cameraId: 0})
-    }
+    this.vbCamera.switchCamera()
+
+    // if (this.state.cameraId === 0) {
+    //   this.setState({cameraId: 1})
+    // } else {
+    //   this.setState({cameraId: 0})
+    // }
   }
 
   renderStreamerUI = () => {
@@ -711,7 +727,8 @@ class LiveStreamScreen extends Component {
             // this.vbCamera.start();
           }}
           outputUrl={Utils.getRtmpPath() + Utils.getRoomName()}
-          camera={{cameraId: this.state.cameraId, cameraFrontMirror: false}}
+          camera={{cameraId: 1//this.state.cameraId
+                  , cameraFrontMirror: false}}
           audio={{bitrate: 32000, profile: 1, samplerate: 44100}}
           video={{
             preset: 1,
@@ -839,16 +856,19 @@ class LiveStreamScreen extends Component {
         // console.log(productOnline)
 
         var pList = []
-        for (var i = 0; i < tempP.length; ++i) {
-          // console.log(productOnline.filter(function(el) { return el.id === tempP[i] })[0])
 
-          var yo = productOnline.filter(function(el) { return el.id === tempP[i] })[0]
-          // yo['isCart'] = false
+        if (tempP !== undefined){
+          for (var i = 0; i < tempP.length; ++i) {
+            // console.log(productOnline.filter(function(el) { return el.id === tempP[i] })[0])
 
-          console.log('yo ', yo)
+            var yo = productOnline.filter(function(el) { return el.id === tempP[i] })[0]
+            // yo['isCart'] = false
 
-          pList.push(yo)
-               
+            console.log('yo ', yo)
+
+            pList.push(yo)
+                
+          }
         }
 
         this.setState({ liveProducts: pList })
@@ -1081,13 +1101,17 @@ class LiveStreamScreen extends Component {
 
     // var type = 'STREAMER';
     
-    // const typo = this.props.products.appMode;
+    const typo = this.props.products.appMode;
     
     // Utils.setRoomName(this.props.products.userObj.email)
     Utils.setUserId(this.props.products.userObj.uid);
-    console.log('oooooo ' + Utils.getUserId())
+    // console.log('oooooo ' + Utils.getUserId())
+    // console.log(typo)
 
     if (this.props.products.appMode === 'buyer'){
+
+      // console.log()
+
       Utils.setUserType('VIEWER');
       Utils.setRoomName(this.props.navigation.state.params.streamerInfo.streamerId)
       // Utils.setRoomName('test')

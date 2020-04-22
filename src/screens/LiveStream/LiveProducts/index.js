@@ -160,6 +160,17 @@ class LiveProductList extends React.Component {
 
   componentDidUnMount() {
     this.props.products.dbulref.off('value');
+
+    database().ref('/').child('live').orderByChild('streamerId').equalTo(this.props.products.userObj.uid).once("value", function(snapshot) {
+        // console.log(snapshot.val().key();
+
+        snapshot.forEach(function(data) {
+          database()
+            .ref('/live/'+data.key)
+            .remove();  
+          
+        });
+    });
   } 
 
   // deleteProduct(){}

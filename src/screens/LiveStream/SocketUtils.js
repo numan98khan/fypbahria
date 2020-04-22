@@ -12,7 +12,6 @@ const getSocket = () => {
 };
 
 const connect = () => {
-  console.log("connecting BIAATch")
   socket = io.connect(Utils.getSocketIOIP(), {transports: ['websocket']});
   // socket = io.connect(Utils.getSocketIOIP(), {
   //   timeout: 10000,
@@ -76,6 +75,10 @@ const emitBeginLiveStream = (roomName, userId, email) => {
 const emitFinishLiveStream = (roomName, userId) => {
   
   // UNCOMMENT
+
+  database().ref('live/'+userId+'/status').transaction((status) => {
+    return 'PREPPING';
+  })
 
   // database().ref('/').child('live').orderByChild('streamerId').equalTo(userId).once("value", function(snapshot) {
   //     // console.log(snapshot.val().key();

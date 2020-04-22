@@ -258,8 +258,8 @@ class Hire extends React.Component {
                 // leftAvatar={{ source: { uri: l.avatar_url } }}
                 title={l.streamerRoom}
                 // title={'sellerEmail'}
-                subtitle={'LIVE'}
-                subtitleStyle={this.getSubStyle('ACCEPTED')}
+                subtitle={l.status}
+                subtitleStyle={ l.status === 'LIVE' ? this.getSubStyle('ACCEPTED') : this.getSubStyle('REQUESTED') }
                 bottomDivider
                 // chevron={<MenuPopUp item={l} attachHire={1}/>}
                 onPress={() => {
