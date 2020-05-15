@@ -702,7 +702,7 @@ class LiveStreamScreen extends Component {
   };
 
   flipCamera = () => {
-    console.log(this.state.cameraId)
+    // console.log(this.state.cameraId)
 
     this.vbCamera.switchCamera()
 
@@ -727,7 +727,7 @@ class LiveStreamScreen extends Component {
             // this.vbCamera.start();
           }}
           outputUrl={Utils.getRtmpPath() + Utils.getRoomName()}
-          camera={{cameraId: 1//this.state.cameraId
+          camera={{cameraId: 0//this.state.cameraId
                   , cameraFrontMirror: false}}
           audio={{bitrate: 32000, profile: 1, samplerate: 44100}}
           video={{

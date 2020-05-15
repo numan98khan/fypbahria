@@ -109,7 +109,6 @@ class Hire extends React.Component {
     })
 
     // connect to a Firebase table
-     var dbref = this.props.products.dbh.ref('products');
     // save database reference for later
     //  this.props.products.setState ( {dbulref: dbref});
     // meat: this is where it all happens

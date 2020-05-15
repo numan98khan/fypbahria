@@ -130,6 +130,21 @@ class Reviews extends React.Component {
     this.focusListener.remove()
   }
 
+  filterRevByUid(eJSON){
+    var rowsCat = [];// = [{"description": "NONE", "name": "NONE"}];
+    for(var i in eJSON){
+      // console.log(this.props.products.userObj.uid + " " + eJSON[i].sellerId);
+      // console.log('bih + ' + eJSON[i])
+      if (this.props.products.userObj.uid === eJSON[i].sellerId) {
+        //console.log('bih + ' + eJSON[i])
+        tempJSON = eJSON[i]
+        // tempJSON["id"] = i;
+        rowsCat.push(tempJSON);
+      }
+    }
+    return rowsCat;
+  }
+
   componentDidMount() {
     // this.props.updateScreenVar({screen:'reviews'});
 
@@ -158,11 +173,12 @@ class Reviews extends React.Component {
             
             tempJSON["id"] = i;
             // tempJSON["buyerName"] = this.getNameFromId(tempJSON.buyerId);
-            console.log(tempJSON)
+            // console.log(tempJSON)
             rowsCat.push(tempJSON);
           }
   
-          var dsCat = rowsCat;
+          var dsCat = this.filterRevByUid(rowsCat)
+          // var dsCat = rowsCat;
           // console.log('>>>>>>>>>>>')
           // // console.log(ds)
           // console.log(dsCat)

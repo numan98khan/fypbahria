@@ -15,8 +15,8 @@ let timeOutMessages = [];
  */
 
  // Always depends on where the deployment is done
-const socketIOIP = 'http://192.168.10.8:3333';
-const rtmpPath = 'rtmp://192.168.10.8:1935/live/';
+const socketIOIP = 'http://34.90.91.190:3333';
+const rtmpPath = 'rtmp://34.90.91.190:1935/live/';
 /**
  *----------------------------------------------
  */

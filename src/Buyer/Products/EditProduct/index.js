@@ -132,7 +132,7 @@ class EditProduct extends React.Component {
     // Set the state with the incoming item
     this.setState({itemName:this.props.navigation.state.params.item.name,
       itemDescription:this.props.navigation.state.params.item.description,
-      price:'69',
+      price:'60',
       itemId:this.props.navigation.state.params.item.id,
       category:this.props.navigation.state.params.item.category});
 
@@ -141,41 +141,7 @@ class EditProduct extends React.Component {
     // save database reference for later
     //  this.props.products.setState ( {dbulref: dbref});
     // meat: this is where it all happens
-     dbref.on('value', (e) => {
-        var rows = [];
-        // console.log(e);
-        eJSON = e.toJSON()
-        for(var i in eJSON){
-          tempJSON = eJSON[i]
-          tempJSON["id"] = i;
-          rows.push(tempJSON);
-        }
-        // console.log(rows[0])
-        var ds = rows;
-
-        this.props.products.dbh.ref('categories').on('value', (e) => {
-          var rowsCat = [{"description": "NONE", "name": "NONE"}];
-          eJSON = e.toJSON()
-          for(var i in eJSON){
-            rowsCat.push(eJSON[i]);
-          }
-  
-          var dsCat = rowsCat;
-          // console.log('>>>>>>>>>>>')
-          // // console.log(ds[0])
-          // console.log(dsCat)
-          // console.log('>>>>>>>>>>>')
-          this.props.initiateProducts(
-            {
-                dataSourceSearch: ds,
-                dataSourceFilter: dsCat,
-                dataSourceDup: ds,
-                 loading: false,
-              }
-            );
-            // console.log(this.props.products.dataSourceSearch);
-       });
-     });
+     
   }
 
   componentWillUnmount() {

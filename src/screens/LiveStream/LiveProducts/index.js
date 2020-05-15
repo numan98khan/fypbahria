@@ -139,8 +139,8 @@ class LiveProductList extends React.Component {
           rows.push(tempJSON);
           // rows.push(eJSON[i]);
         }
-        var ds = rows;
-        // var ds = this.filterProdByUid(rows);
+        // var ds = rows;
+        var ds = this.filterProdByUid(rows);
         this.setState({fetchedProducts: ds})
 
      });

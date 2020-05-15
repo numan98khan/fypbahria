@@ -100,10 +100,10 @@ class ScreenOne extends React.Component {
           tempJSON["id"] = i;
           rows.push(tempJSON);
         }
-        // console.log(rows[0])
+        console.log(rows)
         // var ds = rows;
         var ds = this.filterProdByUid(rows);
-        
+        console.log(ds)
 
         this.props.products.dbh.ref('categories').on('value', (e) => {
           var rowsCat = [{"description": "NONE", "name": "NONE", "id": "NONE"}];
@@ -118,7 +118,7 @@ class ScreenOne extends React.Component {
           var dsCat = this.filterCatByUid(rowsCat);
           // console.log('>>>>>>>>>>>')
           // // console.log(ds[0])
-          // console.log(dsCat)
+          console.log(dsCat)
           // console.log('>>>>>>>>>>>')
           this.props.initiateProducts(
             {

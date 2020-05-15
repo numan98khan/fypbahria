@@ -94,6 +94,21 @@ class Category extends React.Component {
     this.focusListener.remove()
   }
 
+  filterCatByUid(eJSON){
+    var rowsCat = [];// = [{"description": "NONE", "name": "NONE"}];
+    for(var i in eJSON){
+      // console.log(this.props.products.userObj.uid + " " + eJSON[i].sellerId);
+      // console.log('bih + ' + eJSON[i])
+      if (this.props.products.userObj.uid === eJSON[i].userId) {
+        //console.log('bih + ' + eJSON[i])
+        tempJSON = eJSON[i]
+        // tempJSON["id"] = i;
+        rowsCat.push(tempJSON);
+      }
+    }
+    return rowsCat;
+  }
+
   componentDidMount() {
     // this.props.updateScreenVar({screen:'category'});
 
@@ -123,7 +138,8 @@ class Category extends React.Component {
             rowsCat.push(tempJSON);
           }
   
-          var dsCat = rowsCat;
+          // var dsCat = rowsCat;
+          var dsCat = this.filterCatByUid(rowsCat);
           // console.log('>>>>>>>>>>>')
           // // console.log(ds)
           // console.log(dsCat)
@@ -146,32 +162,16 @@ class Category extends React.Component {
     this.props.products.dbulref.off('value');
   } 
 
-  // deleteProduct(){}
-
-  updateSearch = search => {
-    // this.setState({ search });
-
-    // Normal filter
-    this.props.updateCategory(
-      {
-        dataCategorySearch: this.props.products.dataCategoryDup.filter(function (el) {
-            return el.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
-          }),
-        }
-      );
-
-    
-
-    // this.props.products.dataSourceSearch = this.props.products.dataSourceDup.filter(function (el) {
-    //   return el.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
-    // });
-  };
-
   static navigationOptions = {
     // title: 'Shop',  
   };
 
   getTruncText(textObj){
+
+    if (textObj === undefined) {
+      return "";
+    }
+
     var match = /\r|\n/.exec(textObj);
     var textLimit = 40;
 
@@ -185,7 +185,6 @@ class Category extends React.Component {
       textObj = textObj.slice(0, textLimit)+"...";
     } 
     return textObj;
-    
   }
 
   render() {

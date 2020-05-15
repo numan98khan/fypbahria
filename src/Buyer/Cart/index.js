@@ -65,43 +65,44 @@ class Cart extends React.Component {
     // save database reference for later
     //  this.props.products.setState ( {dbulref: dbref});
     // meat: this is where it all happens
-     dbref.on('value', (e) => {
-        var rows = [];
-        // console.log(e);
-        eJSON = e.toJSON()
-        for(var i in eJSON){
-          tempJSON = eJSON[i]
-          tempJSON["id"] = i;
-          rows.push(tempJSON);
-        }
-        // console.log(rows[0])
-        var ds = rows;
+     
+    // dbref.on('value', (e) => {
+    //     var rows = [];
+    //     // console.log(e);
+    //     eJSON = e.toJSON()
+    //     for(var i in eJSON){
+    //       tempJSON = eJSON[i]
+    //       tempJSON["id"] = i;
+    //       rows.push(tempJSON);
+    //     }
+    //     // console.log(rows[0])
+    //     var ds = rows;
 
-        this.props.products.dbh.ref('categories').on('value', (e) => {
-          var rowsCat = [{"description": "NONE", "name": "NONE", "id": "NONE"}];
-          eJSON = e.toJSON()
-          for(var i in eJSON){
-            tempJSON = eJSON[i]
-            tempJSON["id"] = i;
-            rowsCat.push(tempJSON);
-          }
+    //     this.props.products.dbh.ref('categories').on('value', (e) => {
+    //       var rowsCat = [{"description": "NONE", "name": "NONE", "id": "NONE"}];
+    //       eJSON = e.toJSON()
+    //       for(var i in eJSON){
+    //         tempJSON = eJSON[i]
+    //         tempJSON["id"] = i;
+    //         rowsCat.push(tempJSON);
+    //       }
   
-          var dsCat = rowsCat;
-          // console.log('>>>>>>>>>>>')
-          // // console.log(ds[0])
-          // console.log(dsCat)
-          // console.log('>>>>>>>>>>>')
-          this.props.initiateProducts(
-            {
-                dataSourceSearch: ds,
-                dataSourceFilter: dsCat,
-                dataSourceDup: ds,
-                 loading: false,
-              }
-            );
-            // console.log(this.props.products.dataSourceSearch);
-       });
-     });
+    //       var dsCat = rowsCat;
+    //       // console.log('>>>>>>>>>>>')
+    //       // // console.log(ds[0])
+    //       // console.log(dsCat)
+    //       // console.log('>>>>>>>>>>>')
+    //       this.props.initiateProducts(
+    //         {
+    //             dataSourceSearch: ds,
+    //             dataSourceFilter: dsCat,
+    //             dataSourceDup: ds,
+    //              loading: false,
+    //           }
+    //         );
+    //         // console.log(this.props.products.dataSourceSearch);
+    //    });
+    //  });
 
   }
 
@@ -189,6 +190,16 @@ class Cart extends React.Component {
               // productList: pList,
             })
           console.log('boomer')
+          
+          const buyreference = database().ref(`/users/${this.props.products.userObj.uid}/credit`);
+          
+          var tempProdBuy = prodCap[i];
+          buyreference.transaction(credit => {
+            // console.log('DOOBIE '+reviewCount.ratingValue, reviewCount.reviewCount);
+            // Transaction from buyer's wallet
+            return credit-tempProdBuy.price;
+          });
+
           const reference = database().ref(`/users/${prodCap[i].sellerId}/credit`);
           
           var tempProdCap = prodCap[i];

@@ -64,6 +64,7 @@ class AddCategory extends React.Component {
       "hardwareBackPress",
       this.backAction
     );
+    /**
     // connect to a Firebase table
     var dbref = this.props.products.dbh.ref('products');
     // save database reference for later
@@ -104,6 +105,7 @@ class AddCategory extends React.Component {
             // console.log(this.props.products.dataSourceSearch);
        });
      });
+      */
   }
 
   componentWillUnmount() {

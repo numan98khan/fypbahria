@@ -72,41 +72,7 @@ class AddProductReview extends React.Component {
     // save database reference for later
     //  this.props.products.setState ( {dbulref: dbref});
     // meat: this is where it all happens
-     dbref.on('value', (e) => {
-        var rows = [];
-        // console.log(e);
-        eJSON = e.toJSON()
-        for(var i in eJSON){
-          tempJSON = eJSON[i]
-          tempJSON["id"] = i;
-          rows.push(tempJSON);
-        }
-        // console.log(rows[0])
-        var ds = rows;
-
-        this.props.products.dbh.ref('categories').on('value', (e) => {
-          var rowsCat = [{"description": "NONE", "name": "NONE"}];
-          eJSON = e.toJSON()
-          for(var i in eJSON){
-            rowsCat.push(eJSON[i]);
-          }
-  
-          var dsCat = rowsCat;
-          // console.log('>>>>>>>>>>>')
-          // // console.log(ds[0])
-          // console.log(dsCat)
-          // console.log('>>>>>>>>>>>')
-          this.props.initiateProducts(
-            {
-                dataSourceSearch: ds,
-                dataSourceFilter: dsCat,
-                dataSourceDup: ds,
-                 loading: false,
-              }
-            );
-            // console.log(this.props.products.dataSourceSearch);
-       });
-     });
+     
   }
 
   componentWillUnmount() {

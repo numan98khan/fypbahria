@@ -152,31 +152,6 @@ class Hire extends React.Component {
         // }
         // var ds = rows;
 
-        this.props.products.dbh.ref('hire').on('value', (e) => {
-          var rowsCat = [];
-          eJSON = e.toJSON()
-          for(var i in eJSON){
-            tempJSON = eJSON[i]
-            tempJSON["id"] = i;
-            rowsCat.push(tempJSON);
-          }
-  
-          var dsCat = rowsCat;
-          // console.log('>>>>>>>>>>>')
-          // // console.log(ds)
-          // console.log(dsCat)
-          // console.log('>>>>>>>>>>>')
-          this.props.updateCategory(
-            {
-                dataCategorySearch: dsCat,
-                dataCategoryDup: dsCat,
-                // dataSourceDup: ds,
-                //  loading: false,
-              }
-            );
-            // console.log(this.props.products.dataSourceSearch);
-       });
-    //  });
 
   }
 

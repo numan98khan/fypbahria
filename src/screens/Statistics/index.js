@@ -232,7 +232,7 @@ class Statistics extends React.Component {
 
     var productList = []
 
-    database().ref('/').child('products').on("value", function(snapshot) {
+    database().ref('/').child('products').orderByChild('sellerId').equalTo(this.props.products.userObj.uid).on("value", function(snapshot) {
       
       snapshot.forEach(function(data) {
         var tempJSON = data.val()
@@ -338,7 +338,7 @@ return (
     </Card>
 
       <Card style={styles.cardContainer}>
-        <Card.Title title="Products" titleStyle={styles.purpDreams} subtitle="On The Marker" />
+        <Card.Title title="Products" titleStyle={styles.purpDreams} subtitle="On The Market" />
         <Card.Content style={{paddingBottom:'1%'}}>
           <Text style={{fontSize:40, color:'#b380ff'}}>{this.state.productCount}</Text>
         </Card.Content>
